@@ -25,7 +25,7 @@ Salidas (con --salida results/bench/mpi.csv, el valor por defecto):
 El script se niega a medir un build Debug (use --permitir-debug solo para probarlo).
 
 Ejemplo (en la imagen pp-g8, build Release con -DPP_BUILD_MPI=ON):
-    python3 scripts/bench/medir_mpi.py --build-dir build --procesos 2,4,8,16
+    python3 scripts/bench/medir_mpi.py --build-dir build/docker --procesos 2,4,8,16
 """
 import argparse
 import datetime
@@ -70,7 +70,7 @@ def fila_resumen(esquema, procesos, cal, reps, verif, t_serial, fuente_t1, equiv
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--build-dir", default=str(RAIZ / "build"))
+    ap.add_argument("--build-dir", default=str(RAIZ / "build" / "docker"))
     ap.add_argument("--config", default=str(RAIZ / "config" / "sintetico.yaml"))
     ap.add_argument("--n", type=int, default=20_000_000, help="escenarios por corrida (igual en todo el barrido)")
     ap.add_argument("--semilla", type=int, default=20261015)

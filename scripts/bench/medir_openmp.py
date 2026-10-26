@@ -19,7 +19,8 @@ El commit se toma de PP_COMMIT si está definida (también la leen los ejecutabl
 IMPORTANTE: los tiempos solo valen en la máquina de referencia con el binario en Release. El script
 se niega a medir un build Debug (use --permitir-debug solo para probar el script).
 
-Ejemplo (máquina de referencia, tras `cmake -S . -B build -DCMAKE_BUILD_TYPE=Release && cmake --build build`):
+Ejemplo (máquina de referencia, tras `cmake -S . -B build/docker -DCMAKE_BUILD_TYPE=Release && cmake --build build/docker`;
+--build-dir vale build/docker por defecto):
     python3 scripts/bench/medir_openmp.py --n 20000000 --hilos 2,4,8,16 --schedules static,dynamic,64
 """
 import argparse
@@ -122,7 +123,7 @@ def parse_schedule(s):
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--build-dir", default=str(RAIZ / "build"))
+    ap.add_argument("--build-dir", default=str(RAIZ / "build" / "docker"))
     ap.add_argument("--config", default=str(RAIZ / "config" / "sintetico.yaml"),
                     help="configuración con los parámetros del modelo (sintéticos hasta recibir T10)")
     ap.add_argument("--n", type=int, default=20_000_000, help="escenarios por corrida (igual para todo el barrido)")

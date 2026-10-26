@@ -12,7 +12,7 @@ oficial U del YAML (50 mm) y N escenarios por punto. Cada punto agrega una fila 
 - Logs del simulador en results/cientifico/logs/; manifiesto JSON con commit, hardware, semillas y
   duración de cada punto en results/cientifico/x6_manifiesto.json.
 
-Uso (en la imagen pp-g8, tras compilar en build-c):
+Uso (en la imagen pp-g8, tras compilar en build/docker con -DPP_BUILD_MPI=ON):
     python3 scripts/run/corrida-oficial.py --dry-run
     python3 scripts/run/corrida-oficial.py --n 1e7 --backend openmp --hilos 16
 """
