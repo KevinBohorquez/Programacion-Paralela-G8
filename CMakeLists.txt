@@ -10,7 +10,7 @@ if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
 endif()
 
 option(PP_BUILD_OPENMP "Compilar el backend OpenMP (T15)" ON)
-option(PP_BUILD_MPI    "Compilar los backends MPI y híbrido (T19, T20, T24; aún vacíos)" OFF)
+option(PP_BUILD_MPI    "Compilar los backends MPI estático/dinámico e híbrido (T19, T20, T24)" OFF)
 option(PP_BUILD_CUDA   "Compilar la extensión CUDA (EXT1; solo si la activa T29)" OFF)
 set(PP_SANITIZE "none" CACHE STRING "Instrumentación para V5: none | thread | address")
 set_property(CACHE PP_SANITIZE PROPERTY STRINGS none thread address)
@@ -39,7 +39,7 @@ add_subdirectory(src/backends/serial)
 if(PP_BUILD_OPENMP)
   add_subdirectory(src/backends/openmp)
 endif()
-# Los backends MPI, híbrido y CUDA siguen vacíos: no se exigen para compilar el núcleo.
+# MPI, híbrido y CUDA son opcionales: no se exigen para compilar el núcleo.
 if(PP_BUILD_MPI)
   add_subdirectory(src/backends/mpi)
   add_subdirectory(src/backends/hybrid)
