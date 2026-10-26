@@ -43,7 +43,7 @@ escenario, ≈9,6× el serial; el híbrido 2 × 8 fue más lento en un solo equi
 pp() { MSYS_NO_PATHCONV=1 docker run --rm --shm-size=1g -e PP_COMMIT="$(git rev-parse --short HEAD)" \
   -v "$PWD:/work" -w /work pp-g8 bash -c "$1"; }
 
-pp 'cmake -S . -B build-c -DCMAKE_BUILD_TYPE=Release -DPP_BUILD_MPI=ON && cmake --build build-c -j 16'
+pp 'cmake -S . -B build/docker -DCMAKE_BUILD_TYPE=Release -DPP_BUILD_MPI=ON && cmake --build build/docker -j 16'
 
 # X6: 10 configuraciones × 14 capacidades × 1e7 escenarios (≈8 min)
 pp 'python3 scripts/run/corrida-oficial.py --n 1e7 --backend openmp --hilos 16'
