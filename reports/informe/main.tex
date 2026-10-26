@@ -1,0 +1,63 @@
+% T28 | Responsable: Rhamses (R6) | Informe final en formato IEEE (borrador).
+% Compilar desde reports/informe con:  latexmk -pdf -interaction=nonstopmode main.tex
+% Las figuras se leen de ../../results/figures/, por lo que debe montarse la raíz del repositorio.
+% Marcadores pendientes: buscar «TODO-» (rg -n "TODO-" reports/informe).
+\documentclass[conference,a4paper]{IEEEtran}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-tabla,es-noshorthands]{babel}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{siunitx}
+\usepackage{url}
+\usepackage[hidelinks]{hyperref}
+
+\sisetup{output-decimal-marker={,}, group-separator={\,}, group-minimum-digits=4, group-digits=integer}
+
+% Rutas relativas a reports/informe.
+\graphicspath{{../../results/figures/}}
+
+% Notación común.
+\newcommand{\phat}{\hat{p}}
+\newcommand{\Amax}{A_{\max}}
+\newcommand{\codigo}[1]{\texttt{#1}}
+
+\begin{document}
+
+\title{Estimación paralela del riesgo de inundación urbana ante lluvias mediante simulación Monte Carlo distribuida}
+
+% TODO-T46: completar apellidos y correos institucionales de los integrantes.
+\author{\IEEEauthorblockN{David, Angela, Ashley, Lita, Miguel y Rhamses}
+\IEEEauthorblockA{Grupo 8 --- Programación Concurrente y Paralela\\
+Facultad de Ingeniería de Sistemas e Informática\\
+Universidad Nacional Mayor de San Marcos, Lima, Perú}}
+
+\maketitle
+
+\begin{abstract}
+Se presenta un simulador Monte Carlo, escrito en C++17, que estima la probabilidad de que el agua acumulada en una zona urbana supere un umbral crítico durante una temporada de lluvias, en función de la capacidad de drenaje. La lluvia diaria se genera con una cadena de Markov de dos estados y montos gamma calibrados con series del SENAMHI para estaciones de la costa norte y de Lima, separando años normales y años El Niño según el Índice Costero El Niño. La acumulación sigue la recursión de Lindley. El cómputo se paraleliza con OpenMP, con MPI en dos esquemas (reparto estático con reducción y maestro--trabajador dinámico) y con un esquema híbrido MPI + OpenMP, desplegados en contenedores Docker sobre Compose y Swarm. Un generador Philox basado en contador hace que todos los backends produzcan conteos idénticos bit a bit. En el equipo de referencia, con $N = 2\times10^{7}$ temporadas, la versión secuencial tarda \qty{59.70}{\second} y OpenMP con 16 hilos alcanza un speedup de \num{10.94}.
+% TODO-T46: completar el resumen con MPI, híbrido, X1--X3 y los resultados científicos (T33, T35, T42).
+\end{abstract}
+
+\begin{IEEEkeywords}
+Monte Carlo, OpenMP, MPI, programación híbrida, generador basado en contador, riesgo de inundación, El Niño.
+\end{IEEEkeywords}
+
+\input{secciones/01-introduccion}
+\input{secciones/02-problema}
+\input{secciones/03-modelo}
+\input{secciones/04-metodologia}
+\input{secciones/05-entorno}
+\input{secciones/06-implementacion}
+\input{secciones/07-rendimiento}
+\input{secciones/08-resultados-cientificos}
+\input{secciones/09-sensibilidad}
+\input{secciones/10-conclusiones}
+
+\bibliographystyle{IEEEtran}
+\bibliography{referencias}
+
+\end{document}
