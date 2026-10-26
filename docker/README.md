@@ -98,7 +98,10 @@ docker compose -f docker/compose.yaml down -v
 
 Escribe en `results/compose/`: `e1_estatico.csv`, `e2_dinamico.csv`, `e1_e2_comparacion_resumen.{csv,md}`
 y los `.log`. `GIT_COMMIT` se pasa desde el anfitrión porque dentro del contenedor git no siempre ve
-el repositorio (por ejemplo, en un worktree). Los contenedores comparten la CPU del anfitrión: sirve para
+el repositorio (por ejemplo, en un worktree). Lo leen los scripts de medición; los simuladores leen
+`PP_COMMIT`, que `nodo_mpi.sh` toma de `GIT_COMMIT` si no se define y reenvía a todos los rangos con
+`mpirun -x PP_COMMIT`, de modo que la columna `commit` del CSV de cada simulador también es correcta.
+Los contenedores comparten la CPU del anfitrión: sirve para
 validar el despliegue y la equivalencia de k, no para medir nodos heterogéneos.
 
 ## Ejecutor de barridos X1–X3 (T26)

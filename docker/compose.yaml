@@ -12,6 +12,7 @@
 # Parámetros (variables de entorno del anfitrión):
 #   PP_N (2000000)  PP_PROCESOS (4; lista)  PP_SLOTS (2 rangos por contenedor)  PP_REPS (5)
 #   PP_LOTE (0 = el del binario)  PP_CONFIG (config/sintetico.yaml)  PP_IMAGEN (pp-g8)
+#   GIT_COMMIT (commit del anfitrión)  PP_COMMIT (commit de los simuladores; por defecto GIT_COMMIT)
 # Resultados en results/compose/: e1_estatico.csv, e2_dinamico.csv, e1_e2_comparacion*.csv y los .log.
 # Los tres contenedores comparten la CPU del anfitrión: sirve para validar el despliegue y la
 # equivalencia de k, no como medición de nodos heterogéneos (eso es docker/swarm-stack.yaml, T25).
@@ -56,6 +57,7 @@ services:
       PP_CONFIG: ${PP_CONFIG:-config/sintetico.yaml}
       PP_RED_TCP: eth0
       GIT_COMMIT: ${GIT_COMMIT:-desconocido}
+      PP_COMMIT: ${PP_COMMIT:-}  # vacío: nodo_mpi.sh lo toma de GIT_COMMIT y lo reenvía con mpirun -x
     command: ["bash", "docker/nodo_mpi.sh", "lanzador"]
 
 volumes:

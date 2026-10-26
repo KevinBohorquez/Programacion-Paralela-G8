@@ -125,4 +125,13 @@ Reparte `[0, N)` entre los procesos como `pp_mpi_estatico` y, dentro de cada pro
 [verif] rango=0 inicio=0 fin=5004 hilos=4 n_local=5004
 ```
 
-En el CSV, `procesos` es P y `hilos` son los hilos efectivos por proceso. **Afinidad:** use `OMP_PROC_BIND=close OMP_PLACES=cores` y lance con `mpirun --bind-to none` (Open MPI ancla cada proceso a un núcleo y todos sus hilos compartirían ese núcleo) o con `--map-by ppr:1:node:PE=<hilos>` para reservar `hilos` núcleos por proceso. Un `procesos × hilos` mayor que los núcleos físicos del equipo está sobresuscrito y se analiza aparte.
+En el CSV, `procesos` es P y `hilos` son los hilos efectivos por proceso. Un `procesos × hilos` mayor que los núcleos físicos del equipo está sobresuscrito y se analiza aparte.
+
+**Afinidad.** Con su anclaje por defecto, Open MPI fija cada proceso a un núcleo y todos sus hilos compartirían ese núcleo. Hay dos combinaciones válidas:
+
+| Lanzamiento | `OMP_PROC_BIND` | Por qué |
+| --- | --- | --- |
+| `mpirun --bind-to none` (el que usan `medir_hibrido.py` y `ejecutar_barridos.py` para el híbrido) | `false` (valor por defecto de `medir_hibrido.py --bind`; en `ejecutar_barridos.py` el valor por defecto de `--omp-bind` es `close`, así que para el híbrido pase `--omp-bind false`) | Sin anclaje MPI, cada proceso ve **todos** los núcleos y la misma lista de lugares. Con `close`, el hilo 0 de **cada** proceso iría al primer lugar y los hilos de procesos distintos se apilarían en los mismos núcleos; `spread` tiene el mismo problema, porque todos los procesos reparten sus hilos sobre lugares idénticos. Con `false` el planificador del sistema operativo reparte los `procesos × hilos` hilos. |
+| `mpirun --map-by ppr:<procesos>:node:PE=<hilos>` | `close` u otro, con `OMP_PLACES=cores` | Open MPI reserva `hilos` núcleos distintos a cada proceso; la lista de lugares de cada proceso se limita a sus núcleos y `close` ya no solapa procesos. |
+
+`OMP_PROC_BIND=close` con `--bind-to none` solo es aceptable cuando se verifica equivalencia y no se mide tiempo (por ejemplo, las pruebas CTest `pp_hibrido_<p>x<h>`). Los valores efectivos quedan en la columna `afinidad` y en el log `[verif]`; el ejemplo de arriba muestra el formato, no la afinidad recomendada.

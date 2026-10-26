@@ -11,7 +11,7 @@ La tabla incluye p_hist: P(Amax > U) leída del histograma hist512 de la misma f
 debe coincidir con p̂ = k/n; es un control de consistencia entre el criterio de inundación y el
 histograma.
 
-Uso (en la imagen pp-g8, tras compilar en build-c):
+Uso (en la imagen pp-g8, tras compilar en build/docker con -DPP_BUILD_MPI=ON):
     python3 scripts/run/sensibilidad.py --dry-run
     python3 scripts/run/sensibilidad.py --n 1e7
     python3 scripts/run/sensibilidad.py --solo-analisis      # tablas y figuras desde x7.csv

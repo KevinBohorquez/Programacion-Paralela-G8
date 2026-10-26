@@ -16,7 +16,7 @@
 # Parámetros: PP_REPO (..)  PP_IMAGEN (pp-g8)  PP_RED_DRIVER (overlay)  PP_SUBRED (10.77.0.0/24)
 #   PP_HOSTS (nodo1:4,nodo2:4,nodo3:4)  PP_PROCESOS (4,8,12)  PP_N (20000000)  PP_REPS (5)
 #   PP_LOTE (0)  PP_NUCLEOS (vacío = núcleos locales x 3)  PP_RESULTADOS_HOST (../results/swarm)
-#   GIT_COMMIT (commit del anfitrión)
+#   GIT_COMMIT (commit del anfitrión)  PP_COMMIT (commit de los simuladores; por defecto GIT_COMMIT)
 version: "3.8"  # docker stack deploy aún lo usa; Compose solo avisa que es obsoleto
 
 x-nodo: &nodo
@@ -71,6 +71,7 @@ services:
       # CIDR de la red overlay: en Swarm el contenedor tiene eth0/eth1 y el orden no es fijo.
       PP_RED_TCP: ${PP_SUBRED:-10.77.0.0/24}
       GIT_COMMIT: ${GIT_COMMIT:-desconocido}
+      PP_COMMIT: ${PP_COMMIT:-}  # vacío: nodo_mpi.sh lo toma de GIT_COMMIT y lo reenvía con mpirun -x
     command: ["bash", "docker/nodo_mpi.sh", "lanzador"]
     deploy:
       endpoint_mode: dnsrr

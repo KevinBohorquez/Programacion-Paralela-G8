@@ -393,7 +393,7 @@ def agregar_args_ejecucion(parser, salida: str, manifiesto: str, n_defecto: floa
     parser.add_argument("--backend", choices=sorted(BINARIOS), default="openmp")
     parser.add_argument("--hilos", type=int, default=16, help="hilos por proceso")
     parser.add_argument("--procesos", type=int, default=2, help="procesos MPI (solo hibrido)")
-    parser.add_argument("--build-dir", type=Path, default=Path("build-c"))
+    parser.add_argument("--build-dir", type=Path, default=Path("build/docker"))
     parser.add_argument("--salida", type=Path, default=Path(salida))
     parser.add_argument("--logs", type=Path, default=Path("results/cientifico/logs"))
     parser.add_argument("--manifiesto", type=Path, default=Path(manifiesto))
