@@ -1,17 +1,30 @@
 # Tabla y gráficos OpenMP de la tarea T18
 
-**Responsables:** Ashley (generador) y Rhamses (revisión de figuras). El flujo aceptado es este: [medir_openmp.py](../scripts/bench/medir_openmp.py) produce `results/bench/openmp.csv`, y [graficar_openmp_ashley.py](../scripts/bench/graficar_openmp_ashley.py) produce el agregado y las figuras. Los CSV y las figuras del barrido de referencia ya están versionados (commit `71fddf4`).
+**Responsables:** Ashley (generador) y Rhamses (revisión de figuras). El flujo aceptado es este: [medir_openmp.py](../scripts/bench/medir_openmp.py) produce las filas por punto que se publican como `results/bench/openmp.csv`, y [graficar_openmp_ashley.py](../scripts/bench/graficar_openmp_ashley.py) produce el agregado y las figuras. Los CSV y las figuras del barrido de referencia ya están versionados (commit `71fddf4`).
 
 ## 1. Flujo
 
 ```text
-medir_secuencial.py ──► results/bench/secuencial_t1.csv (T14, T1)
-medir_openmp.py     ──► results/bench/openmp.csv        (T16, una fila por punto)
+medir_secuencial.py ──► secuencial_t1.csv                (T14, T1: una fila con t1..t5)
+medir_openmp.py --salida <dir>/openmp.csv
+        ├─► <dir>/openmp.csv                (T16, UNA FILA POR CORRIDA: calentamiento = repetición 0, luego 1..5)
+        ├─► <dir>/openmp_secuencial_ref.csv (referencia secuencial, una fila por corrida)
+        └─► <dir>/openmp_resumen.csv        (UNA FILA POR PUNTO: serial + schedule × hilos, con t1..t5)
                               │
-graficar_openmp_ashley.py ◄───┘  (--t1-csv secuencial_t1.csv)
+graficar_openmp_ashley.py ◄───┘  (--entrada <formato por punto>, --t1-csv secuencial_t1.csv)
         ├─► results/bench/openmp_agregado.csv
         └─► results/figures/openmp_{tiempo,speedup,eficiencia}.{png,svg}
 ```
+
+Los dos formatos no son intercambiables:
+
+| Archivo | Formato | Lo lee |
+| --- | --- | --- |
+| `openmp.csv` que escribe hoy `medir_openmp.py` | una fila por corrida (`modelo, hilos, repeticion, tiempo_s, …`) | [graficar_openmp.py](../scripts/bench/graficar_openmp.py) (§5) |
+| `openmp_resumen.csv` que escribe hoy `medir_openmp.py` | una fila por punto (`backend, hilos, schedule, …, t1..t5, media, desviacion, …`) | `graficar_openmp_ashley.py` |
+| `results/bench/openmp.csv` **versionado** (commit `71fddf4`) | una fila por punto: es el resumen de la medición de referencia, de una versión anterior del script que lo escribía con ese nombre | `graficar_openmp_ashley.py` (valor por defecto de `--entrada`) |
+
+`graficar_openmp_ashley.py` exige columnas `t1..t5` por punto y termina con error si recibe el `openmp.csv` por corrida. Para regenerar las figuras publicadas tras una medición nueva, copie `<dir>/openmp_resumen.csv` a `results/bench/openmp.csv` (o páselo con `--entrada`).
 
 ## 2. Medición (T16)
 
@@ -33,7 +46,7 @@ python3 scripts/bench/medir_secuencial.py --build-dir build/docker --n 20000000 
 python3 scripts/bench/medir_openmp.py --build-dir build/docker --n 20000000 --hilos 2,4,8,16 --schedules static,dynamic,64 --repeticiones 5 --salida build/barrido/openmp.csv
 ```
 
-Los CSV se copiaron después a `results/bench/`.
+Los CSV se copiaron después a `results/bench/`: `secuencial_t1.csv` tal cual y el resumen por punto como `results/bench/openmp.csv` (ver §1).
 
 | Parámetro | Valor de la medición de referencia |
 | --- | --- |
