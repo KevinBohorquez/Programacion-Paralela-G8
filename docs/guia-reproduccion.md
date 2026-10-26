@@ -276,6 +276,19 @@ docker rm -f pp-g8-demo          # detener
 
 Alternativa en el anfitrión: `uv run scripts/demo/servidor_demo.py` (cada corrida abre un contenedor `pp-g8`). Se abre en `http://127.0.0.1:8000`. La demo no escribe en el repositorio: usa un directorio temporal. Las figuras oficiales (`/api/openmp`) se leen de `results/bench/*.csv`.
 
+### 9.1 T51: demostración en clúster con respaldo
+
+[scripts/run/demo-cluster.ps1](../scripts/run/demo-cluster.ps1) (PowerShell, mismas convenciones que `desplegar_swarm.ps1`: `-Accion`, `-WhatIf`, `-Confirm`) reúne la demo web y una corrida E1/E2 en `-Destino compose`, `swarm-sim` o `swarm`:
+
+| Momento | Comando | Efecto |
+| --- | --- | --- |
+| Día anterior | `.\scripts\run\demo-cluster.ps1 -Accion ensayo -Destino compose -N 2000000 -Procesos 2,3` | Corre E1/E2 y copia CSV, resúmenes y logs a `results/demo/respaldo/compose/` con `manifiesto.txt` (fecha, commit, parámetros). |
+| Exposición | `.\scripts\run\demo-cluster.ps1 -Accion todo -Destino compose -N 2000000 -Procesos 2,3` | Levanta la demo web en `http://127.0.0.1:8000` y repite E1/E2; si la corrida falla, imprime el respaldo. |
+| Si algo falla | `.\scripts\run\demo-cluster.ps1 -Accion mostrar -Destino compose` | Muestra el manifiesto y `e1_e2_comparacion_resumen.md` del respaldo, sin ejecutar nada. |
+| Al terminar | `.\scripts\run\demo-cluster.ps1 -Accion detener` | Detiene el contenedor `pp-g8-demo`. |
+
+Con `-Destino swarm` delega en `desplegar_swarm.ps1 -Accion todo` y necesita `-Nodos`, `-Repo`, `-HostsMpi` y, opcionalmente, `-Nucleos` (§8.2). Ensaye primero con `-WhatIf`. Los `.log` de `results/demo/` están en `.gitignore`: para versionar el respaldo, use `git add -f`.
+
 ## 10. Duraciones esperadas
 
 Equipo de referencia: Intel Core Ultra 9 275HX, Docker Desktop sobre WSL2 con 24 vCPU.
