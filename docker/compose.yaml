@@ -1,1 +1,65 @@
-# T22 | Responsable: Miguel | Pendiente: Ejecución Compose de MPI E1 y E2.
+# T22 | Responsable: Miguel | Ejecución Compose de MPI E1 y E2.
+# E1 (pp_mpi_estatico) y E2 (pp_mpi_dinamico) con los mismos procesos y carga, repartidos entre
+# varios contenedores: nodo1 compila UNA vez en el volumen compartido `binarios` (mismo camino en
+# todos), espera el sshd de los demás y lanza mpirun por ssh (mensajes por TCP, sin memoria compartida).
+#
+# Uso (desde la raíz del repositorio, con la imagen pp-g8 construida):
+#   GIT_COMMIT=$(git rev-parse --short=12 HEAD) PP_N=2000000 PP_PROCESOS=2,4 \
+#     docker compose -f docker/compose.yaml up --abort-on-container-exit --exit-code-from nodo1
+#   docker compose -f docker/compose.yaml down -v
+# PowerShell: $env:GIT_COMMIT = git rev-parse --short=12 HEAD; $env:PP_N = "2000000"; docker compose ...
+#
+# Parámetros (variables de entorno del anfitrión):
+#   PP_N (2000000)  PP_PROCESOS (4; lista)  PP_SLOTS (2 rangos por contenedor)  PP_REPS (5)
+#   PP_LOTE (0 = el del binario)  PP_CONFIG (config/sintetico.yaml)  PP_IMAGEN (pp-g8)
+# Resultados en results/compose/: e1_estatico.csv, e2_dinamico.csv, e1_e2_comparacion*.csv y los .log.
+# Los tres contenedores comparten la CPU del anfitrión: sirve para validar el despliegue y la
+# equivalencia de k, no como medición de nodos heterogéneos (eso es docker/swarm-stack.yaml, T25).
+name: pp-g8-mpi
+
+x-nodo: &nodo
+  image: ${PP_IMAGEN:-pp-g8}
+  shm_size: 1g
+  working_dir: /work
+  networks: [mpi]
+
+services:
+  nodo2:
+    <<: *nodo
+    hostname: nodo2
+    volumes: [..:/work:ro, binarios:/opt/pp]
+    environment: {PP_COMPILAR: "0"}
+    command: ["bash", "docker/nodo_mpi.sh", "trabajador"]
+
+  nodo3:
+    <<: *nodo
+    hostname: nodo3
+    volumes: [..:/work:ro, binarios:/opt/pp]
+    environment: {PP_COMPILAR: "0"}
+    command: ["bash", "docker/nodo_mpi.sh", "trabajador"]
+
+  nodo1:
+    <<: *nodo
+    hostname: nodo1
+    depends_on: [nodo2, nodo3]
+    volumes:
+      - ..:/work:ro
+      - binarios:/opt/pp
+      - ../results/compose:/resultados
+    environment:
+      PP_NODOS: nodo1,nodo2,nodo3
+      PP_SLOTS: ${PP_SLOTS:-2}
+      PP_PROCESOS: ${PP_PROCESOS:-4}
+      PP_N: ${PP_N:-2000000}
+      PP_REPS: ${PP_REPS:-5}
+      PP_LOTE: ${PP_LOTE:-0}
+      PP_CONFIG: ${PP_CONFIG:-config/sintetico.yaml}
+      PP_RED_TCP: eth0
+      GIT_COMMIT: ${GIT_COMMIT:-desconocido}
+    command: ["bash", "docker/nodo_mpi.sh", "lanzador"]
+
+volumes:
+  binarios:
+
+networks:
+  mpi:

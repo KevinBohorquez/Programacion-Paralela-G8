@@ -47,6 +47,8 @@ def construir_parser():
     ap.add_argument("--semilla", type=int, default=20261015)
     ap.add_argument("--bind-mpi", default="")
     ap.add_argument("--salida", default=str(eb.RAIZ / "results" / "bench" / "mpi_heterogeneo.csv"))
+    ap.add_argument("--desde-csv", default="",
+                    help="CSV ya medidos (separados por comas): no ejecuta nada, solo resume en --salida")
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--permitir-debug", action="store_true")
     return ap
@@ -121,13 +123,18 @@ def tabla_markdown(resumen):
 
 def main(argv=None):
     a = construir_parser().parse_args(argv)
-    args_eb = argumentos_ejecutor(a)
-    codigo = eb.main(args_eb)
-    if a.dry_run or codigo not in (0, 2):
-        return codigo
+    if a.desde_csv:  # solo resume CSV ya medidos por ejecutar_barridos.py (p. ej. docker/compose.yaml)
+        codigo, filas = 0, []
+        for ruta in a.desde_csv.split(","):
+            with open(ruta, newline="") as f:
+                filas += [r for r in csv.DictReader(f) if r["backend"] in ESQUEMAS]
+    else:
+        codigo = eb.main(argumentos_ejecutor(a))
+        if a.dry_run or codigo not in (0, 2):
+            return codigo
+        with open(a.salida, newline="") as f:
+            filas = list(csv.DictReader(f))
     hosts = cb.parsear_hosts(a.hosts) if a.hosts else (cb.leer_hostfile(a.hostfile) if a.hostfile else [])
-    with open(a.salida, newline="") as f:
-        filas = list(csv.DictReader(f))
     resumen = resumir(filas, hosts)
     ruta_resumen = Path(a.salida).with_name(Path(a.salida).stem + "_resumen.csv")
     with open(ruta_resumen, "w", newline="") as f:
