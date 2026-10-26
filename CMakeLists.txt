@@ -66,8 +66,9 @@ if(Python3_FOUND)
   set_tests_properties(v6_generador PROPERTIES LABELS "v6"
                        ENVIRONMENT "PP_V6_GENERADOR=${CMAKE_BINARY_DIR}/pp_v6_generador")
 
-  # V6 frente a las series observadas de SENAMHI (data/raw + data/processed). Hoy no cumple el 10 % en
-  # todas las estaciones (hallazgo de calibración y modelo, ver results/validacion/t13_v6_observado.txt),
+  # V6 frente a las series observadas de SENAMHI (data/raw + data/processed). No cumple el 10 % en las
+  # colas en ningún grupo: hallazgo del modelo (gamma i.i.d. de cola ligera y heterogeneidad entre años
+  # El Niño), no error de código; diagnóstico e impacto en X6 en docs/validacion-v6.md,
   # así que queda registrada con la etiqueta v6_observado pero DESACTIVADA por defecto: ctest la lista
   # como "Not Run (Disabled)" sin ocultarla. Para ejecutarla:
   #   cmake -DPP_V6_OBSERVADO=ON ...  &&  ctest -L v6_observado --output-on-failure
