@@ -1,0 +1,16 @@
+# T10 | Configuración calibrada: piura_miraflores / el_nino.
+# Generado por scripts/run/generar_configs.py desde data/processed/parametros.csv (commit 1f9e7a2).
+# Calibración: scripts/run/calibrar.py (temporada por zona, Thom); años del grupo = 13.
+# Claves no calibradas copiadas de config/sintetico.yaml.
+estacion: piura_miraflores
+regimen: el_nino
+config_id: 0
+semilla: 20261015
+n: 1000000
+dias: 120
+p01: 0.105634
+p11: 0.507353
+alfa: 0.63559
+theta: 18.715851
+capacidad: 6
+umbral: 50

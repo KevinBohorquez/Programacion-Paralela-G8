@@ -1,20 +1,64 @@
 # Simulación paralela del riesgo de inundación urbana
 
-Proyecto 8 del curso Programación Concurrente y Paralela, UNMSM 2026-II. El simulador **aún no tiene implementación ni resultados de ejecución**. Este repositorio contiene la estructura, archivos reservados por tarea, la definición ajustada, los cronogramas y los planes de desarrollo para seis integrantes.
+Proyecto 8 del curso Programación Concurrente y Paralela, UNMSM 2026-II. El simulador estima con Monte Carlo la probabilidad de que el agua acumulada supere un umbral durante una temporada de lluvias, con backends **secuencial, OpenMP, MPI estático, MPI dinámico (maestro–trabajador) e híbrido MPI + OpenMP**, todos sobre el mismo núcleo y con resultados idénticos bit a bit (V1). CUDA es una extensión condicionada a la decisión de T29.
 
 ## Propósito
 
-Estimar mediante Monte Carlo la probabilidad de que el agua acumulada supere un umbral durante una temporada de lluvias. El diseño usa precipitación diaria calibrada con series SENAMHI, ocurrencia de lluvia con cadena de Markov, montos gamma y un balance hídrico simplificado. Se compararán versiones secuencial, OpenMP, MPI y MPI + OpenMP. CUDA y un nodo GPU son extensiones condicionadas a la decisión de la semana 10.
+La precipitación diaria se genera con una cadena de Markov (ocurrencia) y montos gamma, calibrados con series SENAMHI por estación y régimen (normal / El Niño); un balance hídrico simplificado compara el agua acumulada con la capacidad de drenaje y el umbral. Cada escenario usa un índice global `c*N + j` y Philox, así que el resultado no depende del número de hilos o procesos.
 
-La definición y los criterios de aceptación están en [docs/definicion-proyecto.docx](docs/definicion-proyecto.docx). El estado de las tareas se registra en [cronograma/cronograma-interno.xlsx](cronograma/cronograma-interno.xlsx). El resumen de entregables está en [cronograma/cronograma-presentacion.xlsx](cronograma/cronograma-presentacion.xlsx).
+La definición y los criterios de aceptación están en [docs/definicion-proyecto.docx](docs/definicion-proyecto.docx). El estado de las tareas se registra en [cronograma/cronograma-interno.xlsx](cronograma/cronograma-interno.xlsx) y el resumen de entregables en [cronograma/cronograma-presentacion.xlsx](cronograma/cronograma-presentacion.xlsx). La [revisión interna de la definición](docs/acta-revision-definicion.md) registra las decisiones vigentes y las aprobaciones individuales que faltan para acreditar T01.
 
-La [revisión interna de la definición](docs/acta-revision-definicion.md) registra las decisiones vigentes y las aprobaciones individuales que aún faltan para acreditar T01.
+Los [contratos de CLI, configuración y CSV (T02)](docs/contratos.md) fijan el índice global, la semilla, el acumulador y el formato de salida que comparten todos los backends.
 
-La [validación del tablero T07](scripts/validar_cronograma.py) comprueba los 53 IDs y sus campos obligatorios. El [protocolo de gráficos OpenMP T18](docs/protocolo-graficos-openmp.md) define las entradas y salidas del generador; los resultados se crearán cuando existan las mediciones T14 y T16.
+## Qué hay implementado
 
-Los [contratos de CLI, configuración y CSV (T02)](docs/contratos.md) fijan el índice global, la semilla, el acumulador y el formato de salida que comparten todos los backends. Los ejecutables MPI (T19, T20) y el híbrido MPI + OpenMP (T24) usan el núcleo de T11 y se compilan con `-DPP_BUILD_MPI=ON`; ver [`src/backends/mpi`](src/backends/mpi/CMakeLists.txt) y [`src/backends/hybrid`](src/backends/hybrid/CMakeLists.txt).
+| Pieza | Dónde | Evidencia |
+| --- | --- | --- |
+| Núcleo (Philox, Markov-gamma, balance) | `src/core/`, `include/` | `smoke`, V7 analítica |
+| Secuencial y OpenMP | `src/backends/serial/`, `src/backends/openmp/` | V1 (`v1_equivalencia_openmp`), V5 con Archer |
+| MPI estático, dinámico e híbrido | `src/backends/mpi/`, `src/backends/hybrid/` (`-DPP_BUILD_MPI=ON`) | `ctest` con 1–16 procesos |
+| Datos SENAMHI y calibración (T06–T10) | `data/raw/`, `data/processed/`, `scripts/run/` | [auditoria-datos.md](docs/auditoria-datos.md), [criterio-seleccion-estaciones.md](docs/criterio-seleccion-estaciones.md) |
+| Configuraciones por estación y régimen | `config/<estacion>_<regimen>.yaml` (5 estaciones × 2 regímenes) | `generar_configs.py` |
+| Línea base y barrido OpenMP (T14, T16, T18) | `results/bench/`, `results/figures/` | [protocolo-graficos-openmp.md](docs/protocolo-graficos-openmp.md) |
+| Validación V1, V5, V6, V7 | `tests/`, `results/validacion/` | ver la sección «Pruebas» |
+| Demo web de la exposición | `scripts/demo/servidor_demo.py` | — |
 
-Los [contratos de CLI, configuración y CSV (T02)](docs/contratos.md) fijan el índice global, la semilla, el acumulador y el formato de salida que comparten todos los backends. Los ejecutables MPI (T19, T20) y el híbrido MPI + OpenMP (T24) usan el núcleo de T11 y se compilan con `-DPP_BUILD_MPI=ON`; ver [`src/backends/mpi`](src/backends/mpi/CMakeLists.txt) y [`src/backends/hybrid`](src/backends/hybrid/CMakeLists.txt).
+## Compilar y probar (Docker)
+
+La cadena de herramientas (CMake, g++, OpenMPI, Python con pytest/numpy/scipy) vive en la imagen `pp-g8` ([docker/](docker/)). Desde la raíz del repositorio (en Git Bash anteponer `MSYS_NO_PATHCONV=1`):
+
+```bash
+# Núcleo, secuencial y OpenMP
+docker run --rm --shm-size=1g -v "$PWD:/work" -w /work pp-g8 bash -c \
+  "cmake -S . -B build -DCMAKE_BUILD_TYPE=Release && cmake --build build -j && ctest --test-dir build --output-on-failure"
+
+# Con MPI e híbrido
+docker run --rm --shm-size=1g -v "$PWD:/work" -w /work pp-g8 bash -c \
+  "cmake -S . -B build-mpi -DCMAKE_BUILD_TYPE=Release -DPP_BUILD_MPI=ON && cmake --build build-mpi -j && ctest --test-dir build-mpi --output-on-failure"
+
+# Una corrida con una configuración calibrada
+docker run --rm -v "$PWD:/work" -w /work pp-g8 \
+  build/src/backends/serial/pp_serial --config config/piura_miraflores_el_nino.yaml --n 100000 --salida /tmp/r.csv
+```
+
+Los ejecutables registran el commit desde `PP_COMMIT` si está definida (útil en contenedores o worktrees donde `git` no resuelve el repositorio).
+
+## Pruebas
+
+- `ctest` por defecto: `smoke`, `v6_generador` (V6 del generador frente a sus parámetros), `v1_equivalencia_openmp`, `v7_analitico` y, con MPI, los ejecutables MPI/híbrido con 1–16 procesos.
+- `v6_observado` (V6 frente a las series SENAMHI) está registrada con la etiqueta `v6_observado` pero **desactivada** por defecto, porque hoy no cumple el 10 % en los estadísticos de cola (ver `results/validacion/w0_v6_observado.log`). Se ejecuta con `cmake -DPP_V6_OBSERVADO=ON ...` y `ctest -L v6_observado --output-on-failure`.
+- Pruebas de scripts: `python3 -m pytest -q tests/unit` (las que necesitan binarios leen `PP_BIN_DIR` y `PP_V6_GENERADOR`).
+
+## Datos y calibración (T06–T10)
+
+Las series diarias de `data/raw/` y las salidas de `data/processed/` están versionadas. Para regenerarlas, en la imagen `pp-g8`:
+
+```bash
+python3 scripts/run/auditoria_datos.py
+python3 scripts/run/clasificar_regimenes.py
+python3 scripts/run/calibrar.py --semilla 20261015
+python3 scripts/run/generar_configs.py
+```
 
 ## Equipo
 
@@ -33,10 +77,6 @@ Los roles se asignaron en el orden en que se proporcionaron los nombres. Cualqui
 
 Cada integrante trabaja en su rama (`angela`, `ashley`, `lita`, `miguel`, `sevan`, `rhamses`), la sube y abre un pull request hacia `master` con la [plantilla](.github/pull_request_template.md). El revisor es el de la columna «Revisor» del cronograma. Un PR por tarea o grupo corto de tareas; solo se tocan los archivos reservados a la tarea. Los mensajes de commit siguen Conventional Commits en español.
 
-## Flujo de contribución (T03)
-
-Cada integrante trabaja en su rama (`angela`, `ashley`, `lita`, `miguel`, `sevan`, `rhamses`), la sube y abre un pull request hacia `master` con la [plantilla](.github/pull_request_template.md). El revisor es el de la columna «Revisor» del cronograma. Un PR por tarea o grupo corto de tareas; solo se tocan los archivos reservados a la tarea. Los mensajes de commit siguen Conventional Commits en español.
-
 ## Plan de trabajo
 
 - [Plan de desarrollo hasta la semana 8](docs/plan-desarrollo-semana-8.md): definición, datos, entorno, referencia secuencial y OpenMP.
@@ -44,41 +84,36 @@ Cada integrante trabaja en su rama (`angela`, `ashley`, `lita`, `miguel`, `sevan
 
 Las rutas reservadas para programar y los formatos de cada entrega están en las columnas **V–W** de la hoja `Tareas` del [cronograma interno](cronograma/cronograma-interno.xlsx).
 
-**Estado de seguimiento al 12/10/2026:** el equipo pidió marcar E1–E3 y sus tareas como completados en los cronogramas. Esa marca administrativa no acredita código, datos, pruebas ni mediciones; esas evidencias siguen pendientes de adjuntar. Las fechas académicas originales se conservan.
+## Estructura
 
-## Estructura prevista
-
-| Ruta | Qué deberá contener cuando empiece el desarrollo |
+| Ruta | Contenido |
 | --- | --- |
-| `docs/` | Definición vigente, planes, decisiones técnicas, bitácora y protocolo experimental. |
+| `docs/` | Definición vigente, planes, contratos, auditoría de datos y protocolos. |
 | `cronograma/` | Cronograma interno con tareas y estado, y cronograma resumido para presentar. |
-| `include/` | Interfaces públicas de los tipos de simulación, parámetros, RNG y acumuladores. |
+| `include/` | Interfaces públicas de simulación, parámetros, RNG, configuración y resultados. |
 | `src/core/` | Generador Markov + gamma, Philox, balance hídrico y lógica compartida de escenarios. |
 | `src/backends/serial/` | Implementación secuencial de referencia. |
 | `src/backends/openmp/` | Paralelización por hilos y reducciones. |
 | `src/backends/mpi/` | Reparto estático y maestro–trabajador dinámico. |
 | `src/backends/hybrid/` | Integración MPI + OpenMP. |
-| `src/backends/cuda/` | Extensión CUDA, solo si se activa en S10. |
-| `src/io/` | Lectura de parámetros y escritura de resultados CSV con metadatos. |
-| `src/stats/` | Intervalo de Wilson, histogramas y resumen de resultados. |
-| `tests/unit/` | Pruebas del RNG, balance, estimadores y casos analíticos. |
-| `tests/integration/` | Equivalencia entre versiones y conservación del número de escenarios. |
-| `tests/concurrency/` | Reproducibilidad, carreras y comprobaciones de MPI/OpenMP/CUDA. |
-| `config/` | Configuraciones reproducibles de estaciones, semilla, carga y barridos. |
-| `data/raw/` | Datos SENAMHI originales; no se versionan datos grandes. |
-| `data/processed/` | Series limpias y parámetros calibrados, generados de forma reproducible. |
-| `data/metadata/` | Inventario, procedencia, licencias y criterios de exclusión. |
-| `scripts/build/` | Instrucciones y scripts de compilación. |
-| `scripts/run/` | Ejecución local y distribuida. |
-| `scripts/bench/` | Barridos de recursos, cinco repeticiones, calentamiento y captura de hardware. |
+| `src/backends/cuda/` | Extensión CUDA, solo si se activa en T29. |
+| `src/io/` | Lectura de configuración y escritura de resultados CSV con metadatos. |
+| `src/stats/` | Intervalo de Wilson e histogramas. |
+| `tests/unit/` | Pruebas del RNG, estimadores, V6, V7 y scripts. |
+| `tests/integration/` | Equivalencia entre versiones (V1). |
+| `tests/concurrency/` | Carreras (V5) y comprobaciones de OpenMP/CUDA. |
+| `config/` | Configuración sintética y configuraciones calibradas por estación y régimen. |
+| `data/raw/` | Series diarias SENAMHI (`fecha,precipitacion_mm`). |
+| `data/processed/` | Auditoría, regímenes, parámetros calibrados, bootstrap y estaciones seleccionadas. |
+| `data/metadata/` | Inventario y procedencia de las estaciones. |
+| `data/external/` | ICEN mensual (ENFEN) para clasificar regímenes. |
+| `scripts/run/` | Tubería de datos, calibración y corridas. |
+| `scripts/bench/` | Mediciones (calentamiento + cinco repeticiones) y gráficos. |
 | `scripts/deploy/` | Preparación y comprobación del clúster. |
-| `docker/` | Imagen base, Compose y Swarm cuando estén implementados. |
-| `results/raw/` | CSV originales de corridas y logs; no se versionan resultados grandes. |
-| `results/processed/` | Tablas agregadas y análisis con trazabilidad. |
+| `docker/` | Imagen `pp-g8` y Compose. |
+| `results/bench/`, `results/validacion/`, `results/evidencia/` | CSV de mediciones, logs de validación y evidencia de pruebas (versionados). |
 | `results/figures/` | Gráficos de rendimiento y riesgo. |
 | `reports/` | Informe IEEE, anexos y presentación final. |
-
-Los archivos reservados para código, pruebas, configuración y scripts contienen solo un comentario con su tarea y propietario. Todavía no compilan ni ejecutan. Las carpetas de datos y resultados conservan `.gitkeep` hasta que se generen salidas reales.
 
 ## Criterio de comparación de recursos
 

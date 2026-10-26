@@ -1,0 +1,19 @@
+# T16 inicio 2026-10-15 18:45:44 | 13 puntos (serial + 3 schedules x 4 hilos), ~35 min
+serial hilos= 1 -          media=71.0117s sd=0.5676s V1=ok
+openmp hilos= 2 static     media=37.9339s sd=0.5781s V1=ok
+openmp hilos= 4 static     media=20.9688s sd=0.3915s V1=ok
+openmp hilos= 8 static     media=12.5078s sd=0.2982s V1=ok [SOBRESUSCRITO]
+openmp hilos=16 static     media=10.6475s sd=0.1596s V1=ok [SOBRESUSCRITO]
+openmp hilos= 2 dynamic:1  media=37.8652s sd=0.1937s V1=ok
+openmp hilos= 4 dynamic:1  media=20.9904s sd=0.3058s V1=ok
+openmp hilos= 8 dynamic:1  media=12.1148s sd=0.0984s V1=ok [SOBRESUSCRITO]
+openmp hilos=16 dynamic:1  media=10.0257s sd=0.3095s V1=ok [SOBRESUSCRITO]
+openmp hilos= 2 dynamic:64 media=37.6604s sd=0.4723s V1=ok
+openmp hilos= 4 dynamic:64 media=20.6180s sd=0.1635s V1=ok
+openmp hilos= 8 dynamic:64 media=11.9213s sd=0.0787s V1=ok [SOBRESUSCRITO]
+openmp hilos=16 dynamic:64 media=9.7044s sd=0.1546s V1=ok [SOBRESUSCRITO]
+escrito results/bench/openmp.csv
+escrito results/bench/openmp_secuencial_ref.csv
+escrito results/bench/openmp_resumen.csv
+AVISO: hilos > 6 núcleos físicos: esos puntos están sobresuscritos y se analizan aparte.
+# BARRIDO TERMINADO 2026-10-15 19:17:08 codigo=0

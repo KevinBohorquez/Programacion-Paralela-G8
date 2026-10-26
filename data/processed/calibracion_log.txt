@@ -1,0 +1,16 @@
+[lambayeque_lambayeque/el_nino] n_anios=21 n_dias=2547 faltantes=22 p01=0.0759 p11=0.3447 alfa=0.5742 theta=6.8871 estado=OK
+[lambayeque_lambayeque/normal] n_anios=53 n_dias=6424 faltantes=53 p01=0.0592 p11=0.2809 alfa=0.7353 theta=2.6099 estado=OK
+[lima_canete/el_nino] n_anios=10 n_dias=1230 faltantes=10 p01=0.0739 p11=0.3750 alfa=1.5728 theta=0.2647 estado=OK
+[lima_canete/normal] n_anios=29 n_dias=3476 faltantes=52 p01=0.1336 p11=0.4317 alfa=1.7171 theta=0.2085 estado=OK
+[lima_chosica/el_nino] n_anios=7 n_dias=850 faltantes=7 p01=0.0643 p11=0.1379 alfa=0.7359 theta=3.8002 estado=OK
+[lima_chosica/normal] n_anios=16 n_dias=1850 faltantes=16 p01=0.0742 p11=0.2298 alfa=1.1686 theta=1.6993 estado=OK
+[piura_bernal/el_nino] n_anios=17 n_dias=2062 faltantes=18 p01=0.0781 p11=0.3974 alfa=0.4714 theta=17.2273 estado=OK
+[piura_bernal/normal] n_anios=28 n_dias=3395 faltantes=28 p01=0.0521 p11=0.3017 alfa=0.6403 theta=3.8687 estado=OK
+[piura_chulucanas/el_nino] n_anios=10 n_dias=1213 faltantes=10 p01=0.2723 p11=0.6991 alfa=0.4671 theta=29.6595 estado=OK
+[piura_chulucanas/normal] n_anios=21 n_dias=2546 faltantes=30 p01=0.1561 p11=0.5980 alfa=0.4919 theta=11.0751 estado=OK
+[piura_miraflores/el_nino] n_anios=13 n_dias=1576 faltantes=13 p01=0.1056 p11=0.5074 alfa=0.6356 theta=18.7159 estado=OK
+[piura_miraflores/normal] n_anios=27 n_dias=3273 faltantes=34 p01=0.0518 p11=0.2986 alfa=0.7468 theta=5.5453 estado=OK
+[tumbes_eltigre/el_nino] n_anios=18 n_dias=2182 faltantes=19 p01=0.3086 p11=0.6449 alfa=0.5849 theta=17.3920 estado=OK
+[tumbes_eltigre/normal] n_anios=29 n_dias=3517 faltantes=29 p01=0.1944 p11=0.5743 alfa=0.5564 theta=12.0565 estado=OK
+[tumbes_puertopizarro/el_nino] n_anios=17 n_dias=2061 faltantes=18 p01=0.2223 p11=0.3927 alfa=0.6883 theta=22.5584 estado=OK
+[tumbes_puertopizarro/normal] n_anios=30 n_dias=3638 faltantes=40 p01=0.1424 p11=0.4156 alfa=0.7355 theta=9.3739 estado=OK

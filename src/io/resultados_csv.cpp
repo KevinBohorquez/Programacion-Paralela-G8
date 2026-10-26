@@ -11,6 +11,10 @@
 #include <utility>
 #include <vector>
 
+#if defined(__unix__) || defined(__APPLE__)
+#include <unistd.h>  // gethostname
+#endif
+
 #include "resultados.hpp"
 
 #ifndef PP_COMMIT_GIT
@@ -24,7 +28,9 @@ namespace {
 const char* COLUMNAS[] = {"backend", "estacion", "regimen", "config_id", "semilla", "n", "k", "p_hat",
                           "wilson_inf", "wilson_sup", "dias", "capacidad", "umbral", "p01", "p11", "alfa",
                           "theta", "hilos", "procesos", "repeticion", "calentamiento", "schedule", "afinidad", "tiempo_s", "commit", "cpu",
-                          "nucleos_fisicos", "nucleos_logicos", "hist512"};
+                          "nucleos_fisicos", "nucleos_logicos", "hist512",
+                          // S15: agregadas al final para no mover las columnas anteriores.
+                          "hardware", "nodos", "distribucion", "bloques", "hilos_por_bloque"};
 constexpr size_t NCOL = sizeof(COLUMNAS) / sizeof(COLUMNAS[0]);
 
 std::string limpiar(std::string s) {  // sin comas ni saltos: el CSV no usa comillas
@@ -71,7 +77,34 @@ int contar_nucleos_fisicos() {
     return unicos.empty() ? 0 : static_cast<int>(unicos.size());
 }
 
+std::string leer_ram_gb() {  // MemTotal de /proc/meminfo en GiB con un decimal
+    std::ifstream in("/proc/meminfo");
+    std::string l;
+    while (std::getline(in, l))
+        if (l.rfind("MemTotal:", 0) == 0) {
+            std::istringstream ss(l.substr(9));
+            double kib = 0.0;
+            if (ss >> kib) {
+                char buf[32];
+                std::snprintf(buf, sizeof buf, "%.1f", kib / (1024.0 * 1024.0));
+                return buf;
+            }
+        }
+    return "desconocida";
+}
+
+std::string opcional(int x) { return x > 0 ? std::to_string(x) : std::string(); }
+
 }  // namespace
+
+std::string nombre_nodo() {
+#if defined(__unix__) || defined(__APPLE__)
+    char buf[256] = {};
+    if (gethostname(buf, sizeof buf - 1) == 0 && buf[0]) return buf;
+#endif
+    const char* h = std::getenv("HOSTNAME");
+    return (h && *h) ? h : "desconocido";
+}
 
 MetadatosEjecucion capturar_metadatos() {
     MetadatosEjecucion m;
@@ -84,6 +117,10 @@ MetadatosEjecucion capturar_metadatos() {
     const char* bind = std::getenv("OMP_PROC_BIND");
     const char* places = std::getenv("OMP_PLACES");
     m.afinidad = std::string("OMP_PROC_BIND=") + (bind ? bind : "no_definida") + ";OMP_PLACES=" + (places ? places : "no_definida");
+    const std::string host = nombre_nodo();
+    m.hardware = "host=" + host + ";ram_gb=" + leer_ram_gb();
+    m.nodos = 1;
+    m.distribucion = host + ":1";  // los ejecutables MPI la reemplazan con los procesos por nodo
     return m;
 }
 
@@ -106,7 +143,8 @@ std::string fila_csv(const FilaResultado& f) {
         num(p.theta), std::to_string(f.meta.hilos_usados), std::to_string(f.meta.procesos),
         std::to_string(f.cfg.repeticion), f.cfg.calentamiento ? "1" : "0", limpiar(f.meta.schedule_usado), limpiar(f.meta.afinidad),
         num(f.meta.tiempo_s), limpiar(f.meta.commit), limpiar(f.meta.cpu), std::to_string(f.meta.nucleos_fisicos),
-        std::to_string(f.meta.nucleos_logicos), h};
+        std::to_string(f.meta.nucleos_logicos), h, limpiar(f.meta.hardware), std::to_string(f.meta.nodos),
+        limpiar(f.meta.distribucion), opcional(f.meta.bloques), opcional(f.meta.hilos_por_bloque)};
     std::string s;
     for (size_t i = 0; i < v.size(); ++i) s += (i ? "," : "") + v[i];
     return s;
@@ -117,6 +155,14 @@ void escribir_csv(const std::string& ruta, const FilaResultado& f) {
     {
         std::ifstream in(ruta, std::ios::binary | std::ios::ate);
         if (in && in.tellg() > 0) nuevo = false;
+    }
+    if (!nuevo) {  // no mezclar filas de dos versiones del contrato en un mismo archivo
+        std::ifstream in(ruta);
+        std::string cab;
+        std::getline(in, cab);
+        if (!cab.empty() && cab.back() == '\r') cab.pop_back();
+        if (cab != encabezado_csv())
+            throw std::runtime_error("el CSV " + ruta + " tiene otra cabecera (versión anterior del contrato); use otro archivo");
     }
     std::ofstream out(ruta, std::ios::app);
     if (!out) throw std::runtime_error("no se puede escribir el CSV: " + ruta);
@@ -149,6 +195,9 @@ FilaResultado leer_primera_fila_csv(const std::string& ruta) {
     const std::vector<std::string> h = separar(v[28], ';');
     if (h.size() != static_cast<size_t>(NBINS)) throw std::runtime_error("histograma con tamaño inesperado");
     for (size_t i = 0; i < h.size(); ++i) f.acc.hist[i] = std::stoull(h[i]);
+    f.meta.hardware = v[29]; f.meta.nodos = std::stoi(v[30]); f.meta.distribucion = v[31];
+    f.meta.bloques = v[32].empty() ? 0 : std::stoi(v[32]);
+    f.meta.hilos_por_bloque = v[33].empty() ? 0 : std::stoi(v[33]);
     return f;
 }
 

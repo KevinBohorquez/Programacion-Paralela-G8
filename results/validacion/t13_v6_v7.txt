@@ -1,0 +1,73 @@
+# T13 V6 (estadística del generador, N=10^6 temporadas) y V7 (analítico D=1, N=10^6) | commit 5fff53b8b0e5 | 2026-10-15T19:17:27-05:00 | 12th Gen Intel(R) Core(TM) i5-12400F | g++ (Ubuntu 15.2.0-16ubuntu1) 15.2.0 | Python 3.14.4
+# comando: PP_V6_N=1000000 python3 -m pytest -v -s tests/unit/test_estadistico.py tests/unit/test_analitico.py
+============================= test session starts ==============================
+platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.7.0 -- /home/litaht/.venvs/pp-g8/bin/python
+rootdir: /mnt/d/PROGRAMACIÓN_PARALELA/Programacion-Paralela-G8
+collecting ... collected 15 items
+
+tests/unit/test_estadistico.py::test_v6_estadisticos_dentro_de_10_por_ciento[sintetico_alfa_menor_1] 
+[V6] caso=sintetico_alfa_menor_1 N=1000000 semilla=20261015 params={'p01': 0.15, 'p11': 0.6, 'alfa': 0.7, 'theta': 9.0, 'dias': 120} dias_simulados=120000000
+[V6] estadistico                        esperado      observado  error_rel
+[V6] frecuencia_lluvia                  0.270868       0.271000    0.0487%
+[V6] media_monto                        6.300000       6.299360    0.0102%
+[V6] desviacion_monto                   7.529940       7.526356    0.0476%
+[V6] p95_monto                         21.443580      21.435168    0.0392%
+[V6] p99_monto                         34.881648      34.842886    0.1111%
+[V6] racha_media                        2.468269       2.469049    0.0316%
+[V6] max_diario_temporada_medio        30.256226      30.239294    0.0560%
+PASSED
+tests/unit/test_estadistico.py::test_v6_kolmogorov_smirnov_montos[sintetico_alfa_menor_1] 
+[V6] caso=sintetico_alfa_menor_1 KS n=5000 D=0.00955 p=0.7477 (se rechaza si p < 0.05)
+PASSED
+tests/unit/test_estadistico.py::test_v6_estadisticos_dentro_de_10_por_ciento[alfa_mayor_1] 
+[V6] caso=alfa_mayor_1 N=1000000 semilla=20261015 params={'p01': 0.25, 'p11': 0.55, 'alfa': 2.5, 'theta': 6.0, 'dias': 120} dias_simulados=120000000
+[V6] estadistico                        esperado      observado  error_rel
+[V6] frecuencia_lluvia                  0.355867       0.355931    0.0179%
+[V6] media_monto                       15.000000      15.000375    0.0025%
+[V6] desviacion_monto                   9.486833       9.485961    0.0092%
+[V6] p95_monto                         33.211493      33.211488    0.0000%
+[V6] p99_monto                         45.258817      45.258548    0.0006%
+[V6] racha_media                        2.199316       2.199863    0.0249%
+[V6] max_diario_temporada_medio        43.062040      43.057153    0.0114%
+PASSED
+tests/unit/test_estadistico.py::test_v6_kolmogorov_smirnov_montos[alfa_mayor_1] 
+[V6] caso=alfa_mayor_1 KS n=5000 D=0.01258 p=0.4042 (se rechaza si p < 0.05)
+PASSED
+tests/unit/test_estadistico.py::test_v6_estadisticos_dentro_de_10_por_ciento[lluvioso_persistente] 
+[V6] caso=lluvioso_persistente N=1000000 semilla=20261015 params={'p01': 0.4, 'p11': 0.8, 'alfa': 1.0, 'theta': 12.0, 'dias': 90} dias_simulados=90000000
+[V6] estadistico                        esperado      observado  error_rel
+[V6] frecuencia_lluvia                  0.661728       0.661738    0.0014%
+[V6] media_monto                       12.000000      11.999958    0.0003%
+[V6] desviacion_monto                  12.000000      11.998830    0.0098%
+[V6] p95_monto                         35.948787      35.947958    0.0023%
+[V6] p99_monto                         55.262042      55.252659    0.0170%
+[V6] racha_media                        4.773585       4.773850    0.0056%
+[V6] max_diario_temporada_medio        55.990399      55.985785    0.0082%
+PASSED
+tests/unit/test_estadistico.py::test_v6_kolmogorov_smirnov_montos[lluvioso_persistente] 
+[V6] caso=lluvioso_persistente KS n=5000 D=0.00991 p=0.7064 (se rechaza si p < 0.05)
+PASSED
+tests/unit/test_estadistico.py::test_v6_reproducible_con_semilla_fija PASSED
+tests/unit/test_estadistico.py::test_v6_control_negativo_detecta_parametros_equivocados PASSED
+tests/unit/test_analitico.py::test_v7_probabilidad_exacta_dentro_de_wilson[sintetico_cola] 
+[V7] caso=sintetico_cola N=1000000 semilla=20261015 params={'p01': 0.15, 'alfa': 0.7, 'theta': 9.0, 'capacidad': 6.0, 'umbral': 50.0}
+[V7] esperado p=0.00012714891  observado k=132 p_hat=0.000132  Wilson95=[0.00011132174, 0.00015651869]
+PASSED
+tests/unit/test_analitico.py::test_v7_probabilidad_exacta_dentro_de_wilson[alfa_mayor_1] 
+[V7] caso=alfa_mayor_1 N=1000000 semilla=20261015 params={'p01': 0.4, 'alfa': 2.0, 'theta': 10.0, 'capacidad': 5.0, 'umbral': 20.0}
+[V7] esperado p=0.114919  observado k=115243 p_hat=0.115243  Wilson95=[0.11461863, 0.11587032]
+PASSED
+tests/unit/test_analitico.py::test_v7_probabilidad_exacta_dentro_de_wilson[alfa_menor_1_sin_drenaje] 
+[V7] caso=alfa_menor_1_sin_drenaje N=1000000 semilla=20261015 params={'p01': 0.7, 'alfa': 0.5, 'theta': 20.0, 'capacidad': 0.0, 'umbral': 10.0}
+[V7] esperado p=0.22211736  observado k=222643 p_hat=0.222643  Wilson95=[0.22182868, 0.22345945]
+PASSED
+tests/unit/test_analitico.py::test_v7_histograma_exacto_chi_cuadrado[alfa_mayor_1] 
+[V7] caso=alfa_mayor_1 histograma: 117 grupos chi2=135.75 p=0.1016
+PASSED
+tests/unit/test_analitico.py::test_v7_histograma_exacto_chi_cuadrado[alfa_menor_1_sin_drenaje] 
+[V7] caso=alfa_menor_1_sin_drenaje histograma: 160 grupos chi2=146.73 p=0.7482
+PASSED
+tests/unit/test_analitico.py::test_v7_extremo_sin_lluvia_k_cero PASSED
+tests/unit/test_analitico.py::test_v7_extremo_siempre_inunda_k_igual_n PASSED
+
+============================= 15 passed in 24.47s ==============================

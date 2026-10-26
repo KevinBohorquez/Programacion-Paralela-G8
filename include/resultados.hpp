@@ -72,7 +72,16 @@ struct MetadatosEjecucion {
     std::string schedule_usado; // p. ej. "static" (solo OpenMP)
     int hilos_usados = 1;
     int procesos = 1;           // procesos MPI (1 si no hay MPI)
+    // Columnas agregadas para S15 (se escriben al final del CSV, ver docs/contratos.md §5):
+    std::string hardware;       // "host=<nombre>;ram_gb=<GiB>" del nodo del rango 0
+    int nodos = 1;              // nodos distintos (MPI_Get_processor_name)
+    std::string distribucion;   // procesos por nodo: "<host>:<p>;<host>:<p>" en orden de rango
+    int bloques = 0;            // solo CUDA: bloques de la grilla (0 = no aplica, columna vacía)
+    int hilos_por_bloque = 0;   // solo CUDA: hilos por bloque (0 = no aplica, columna vacía)
 };
+
+// Nombre del nodo (gethostname); "desconocido" si no se puede leer.
+std::string nombre_nodo();
 
 MetadatosEjecucion capturar_metadatos();
 

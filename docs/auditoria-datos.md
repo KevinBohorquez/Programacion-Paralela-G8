@@ -25,9 +25,13 @@ Una combinacion estacion/anio es elegible si tiene menos de 10% de dias faltante
 
 ## Reproducir
 
-```powershell
-python scripts/run/generar_datos_sinteticos.py
-python scripts/run/auditoria_datos.py
+Tuberia completa de T08-T10 en la imagen `pp-g8` (las series de `data/raw/` ya estan en Git):
+
+```bash
+python3 scripts/run/auditoria_datos.py
+python3 scripts/run/clasificar_regimenes.py
+python3 scripts/run/calibrar.py --semilla 20261015
+python3 scripts/run/generar_configs.py
 ```
 
-Produce `data/processed/auditoria_calidad.csv` (una fila por estacion/anio; fuera de Git por `.gitignore`, igual que el resto de `data/processed`). Este documento se regenera con cada corrida: si el script cambia, las cifras de arriba deben volver a calcularse con el mismo comando.
+Produce `data/processed/auditoria_calidad.csv` (una fila por estacion/anio; versionado en Git, igual que el resto de `data/processed`). `generar_configs.py` elige las 5 estaciones de trabajo (`data/processed/estaciones_seleccionadas.csv`) y escribe `config/<estacion>_<regimen>.yaml`. Este documento se regenera con cada corrida: si el script cambia, las cifras de arriba deben volver a calcularse con el mismo comando.

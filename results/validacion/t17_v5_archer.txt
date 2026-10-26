@@ -1,0 +1,19 @@
+# T17 V5: ThreadSanitizer + Archer (clang + libomp) con 2/4/8/16 hilos | commit 3efd2cbb08eb | 2026-10-15T19:24:17-05:00 | Ubuntu clang version 21.1.8 (6ubuntu1)
+# comando: python3 -m pytest -v -rs tests/concurrency/test_openmp_carreras.py
+============================= test session starts ==============================
+platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.7.0 -- /home/litaht/.venvs/pp-g8/bin/python
+rootdir: /mnt/d/PROGRAMACIÓN_PARALELA/Programacion-Paralela-G8
+collecting ... collected 2 items
+
+tests/concurrency/test_openmp_carreras.py::test_v5_sin_carreras_con_archer PASSED [ 50%]
+tests/concurrency/test_openmp_carreras.py::test_v5_control_negativo_detecta_una_carrera_deliberada PASSED [100%]
+
+============================== 2 passed in 5.49s ===============================
+
+# --- diagnóstico escrito por la prueba (build/v5_archer.log) ---
+# V5 ThreadSanitizer + Archer | Ubuntu clang version 21.1.8 (6ubuntu1)
+# OMP_TOOL_LIBRARIES=/usr/lib/llvm-21/lib/clang/21/../../libarcher.so
+hilos=2 schedule=static archer=activo rc=0 reportes=0
+hilos=4 schedule=dynamic:16 archer=activo rc=0 reportes=0
+hilos=8 schedule=guided archer=activo rc=0 reportes=0
+hilos=16 schedule=static archer=activo rc=0 reportes=0
