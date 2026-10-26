@@ -17,7 +17,7 @@
 !/results/raw/.gitkeep
 /results/processed/*
 !/results/processed/.gitkeep
-/results/figures/*
+# Las figuras generadas se versionan (T18, T27, T35, T42, T45).
 !/results/figures/.gitkeep
 !/results/figures/openmp_*.png
 !/results/figures/openmp_*.svg
