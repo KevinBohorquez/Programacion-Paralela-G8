@@ -1,0 +1,240 @@
+% T47 | Responsable: Rhamses (R6) | Bibliografía del informe final.
+% Regla: solo referencias reales y verificables, cada una vinculada a una decisión técnica concreta.
+% No se agregan DOI ni páginas de los que no se tenga certeza; un campo dudoso se omite.
+
+% ---- Paralelismo y generación de números aleatorios ----
+
+% Decisión: generador Philox4x32-10 basado en contador; reproducibilidad bit a bit entre backends (V1).
+@inproceedings{salmon2011,
+  author    = {John K. Salmon and Mark A. Moraes and Ron O. Dror and David E. Shaw},
+  title     = {Parallel random numbers: As easy as 1, 2, 3},
+  booktitle = {Proc. Int. Conf. High Performance Computing, Networking, Storage and Analysis (SC '11)},
+  publisher = {ACM/IEEE},
+  year      = {2011}
+}
+
+% Decisión: independencia entre caminatas aleatorias (recursión de Lindley) como fuente de paralelismo.
+@article{youssef1993,
+  author  = {Abdou Youssef},
+  title   = {A parallel algorithm for random walk construction with application to the {Monte Carlo} solution of partial differential equations},
+  journal = {IEEE Trans. Parallel Distrib. Syst.},
+  volume  = {4},
+  number  = {3},
+  pages   = {355--360},
+  year    = {1993}
+}
+
+% Decisión: pertinencia de la GPU para Monte Carlo; argumento de la decisión CUDA NO-GO (T29).
+@inproceedings{benguigui2012,
+  author    = {Michael Benguigui and Fran{\c{c}}oise Baude},
+  title     = {Towards parallel and distributed computing on {GPU} for {American} basket option pricing},
+  booktitle = {Proc. 4th IEEE Int. Conf. Cloud Computing Technology and Science (CloudCom)},
+  address   = {Taipei, Taiwan},
+  year      = {2012}
+}
+
+% Decisión: esquema MPI E2 maestro--trabajador con cola dinámica para nodos heterogéneos (X4, T32).
+@inproceedings{tse2010,
+  author    = {Anson H. T. Tse and David B. Thomas and K. H. Tsoi and Wayne Luk},
+  title     = {Dynamic scheduling {Monte-Carlo} framework for multi-accelerator heterogeneous clusters},
+  booktitle = {Proc. Int. Conf. Field-Programmable Technology (FPT)},
+  publisher = {IEEE},
+  year      = {2010}
+}
+
+% Decisión: métrica de fracción serial e_p usada en el análisis de rendimiento.
+@article{karp1990,
+  author  = {Alan H. Karp and Horace P. Flatt},
+  title   = {Measuring parallel processor performance},
+  journal = {Commun. ACM},
+  volume  = {33},
+  number  = {5},
+  pages   = {539--543},
+  year    = {1990}
+}
+
+% Decisión: modelo de referencia para escalabilidad fuerte (fracción serial fija).
+@inproceedings{amdahl1967,
+  author    = {Gene M. Amdahl},
+  title     = {Validity of the single processor approach to achieving large scale computing capabilities},
+  booktitle = {Proc. AFIPS Spring Joint Computer Conf.},
+  pages     = {483--485},
+  year      = {1967}
+}
+
+% Decisión: modelo de referencia para escalabilidad débil (X2).
+@article{gustafson1988,
+  author  = {John L. Gustafson},
+  title   = {Reevaluating {Amdahl's} law},
+  journal = {Commun. ACM},
+  volume  = {31},
+  number  = {5},
+  pages   = {532--533},
+  year    = {1988}
+}
+
+% Decisión: reducción OpenMP sobre secciones de arreglo (hist[:512]) y schedule(runtime).
+@manual{openmp45,
+  author       = {{OpenMP Architecture Review Board}},
+  title        = {{OpenMP} Application Programming Interface, Version 4.5},
+  year         = {2015},
+  url          = {https://www.openmp.org/specifications/}
+}
+
+% Decisión: MPI_THREAD_FUNNELED en el híbrido, MPI_Reduce con MPI_UINT64_T y protocolo REQ/WORK/STOP.
+@manual{mpi31,
+  author       = {{Message Passing Interface Forum}},
+  title        = {{MPI}: A Message-Passing Interface Standard, Version 3.1},
+  year         = {2015},
+  url          = {https://www.mpi-forum.org/docs/}
+}
+
+% Decisión: detector de carreras de la prueba V5 (base de Archer).
+@inproceedings{serebryany2009,
+  author    = {Konstantin Serebryany and Timur Iskhodzhanov},
+  title     = {{ThreadSanitizer}: data race detection in practice},
+  booktitle = {Proc. Workshop on Binary Instrumentation and Applications (WBIA)},
+  publisher = {ACM},
+  year      = {2009}
+}
+
+% Decisión: Archer como detector de carreras específico de OpenMP en V5.
+@inproceedings{atzeni2016,
+  author    = {Simone Atzeni and Ganesh Gopalakrishnan and Zvonimir Rakamari{\'c} and Dong H. Ahn and Ignacio Laguna and Martin Schulz and Gregory L. Lee and Joachim Protze and Matthias S. M{\"u}ller},
+  title     = {{ARCHER}: Effectively spotting data races in large {OpenMP} applications},
+  booktitle = {Proc. IEEE Int. Parallel and Distributed Processing Symp. (IPDPS)},
+  year      = {2016}
+}
+
+% Decisión: imagen Docker única en todos los nodos (entorno idéntico para V1 entre equipos).
+@article{merkel2014,
+  author  = {Dirk Merkel},
+  title   = {Docker: lightweight {Linux} containers for consistent development and deployment},
+  journal = {Linux Journal},
+  volume  = {2014},
+  number  = {239},
+  year    = {2014}
+}
+
+% ---- Modelo estocástico y estimadores ----
+
+% Decisión: ocurrencia de lluvia con cadena de Markov de dos estados y montos gamma.
+@article{richardson1981,
+  author  = {C. W. Richardson},
+  title   = {Stochastic simulation of daily precipitation, temperature, and solar radiation},
+  journal = {Water Resources Research},
+  volume  = {17},
+  number  = {1},
+  pages   = {182--190},
+  year    = {1981}
+}
+
+% Decisión: generador de tiempo Markov--gamma como modelo estándar de la lluvia diaria.
+@book{wilks2011,
+  author    = {Daniel S. Wilks},
+  title     = {Statistical Methods in the Atmospheric Sciences},
+  edition   = {3rd},
+  publisher = {Academic Press},
+  year      = {2011}
+}
+
+% Decisión: estimador de alpha y theta de la gamma en la calibración (calibrar.py).
+@article{thom1958,
+  author  = {H. C. S. Thom},
+  title   = {A note on the gamma distribution},
+  journal = {Monthly Weather Review},
+  volume  = {86},
+  number  = {4},
+  pages   = {117--122},
+  year    = {1958}
+}
+
+% Decisión: muestreo gamma de Marsaglia--Tsang en el núcleo (modelo_lluvia.cpp).
+@article{marsaglia2000,
+  author  = {George Marsaglia and Wai Wan Tsang},
+  title   = {A simple method for generating gamma variables},
+  journal = {ACM Trans. Math. Softw.},
+  volume  = {26},
+  number  = {3},
+  pages   = {363--372},
+  year    = {2000}
+}
+
+% Decisión: balance hídrico A_t = max(0, A_{t-1} + R_t - C).
+@article{lindley1952,
+  author  = {D. V. Lindley},
+  title   = {The theory of queues with a single server},
+  journal = {Math. Proc. Cambridge Philos. Soc.},
+  volume  = {48},
+  number  = {2},
+  pages   = {277--289},
+  year    = {1952}
+}
+
+% Decisión: intervalo de confianza de Wilson para p_hat = k / N.
+@article{wilson1927,
+  author  = {Edwin B. Wilson},
+  title   = {Probable inference, the law of succession, and statistical inference},
+  journal = {J. Amer. Statist. Assoc.},
+  volume  = {22},
+  number  = {158},
+  pages   = {209--212},
+  year    = {1927}
+}
+
+% Decisión: preferir Wilson a Wald para probabilidades pequeñas.
+@article{agresti1998,
+  author  = {Alan Agresti and Brent A. Coull},
+  title   = {Approximate is better than ``exact'' for interval estimation of binomial proportions},
+  journal = {The American Statistician},
+  volume  = {52},
+  number  = {2},
+  pages   = {119--126},
+  year    = {1998}
+}
+
+% Decisión: K = 100 conjuntos de parámetros por remuestreo bootstrap de años.
+@article{efron1979,
+  author  = {Bradley Efron},
+  title   = {Bootstrap methods: another look at the jackknife},
+  journal = {The Annals of Statistics},
+  volume  = {7},
+  number  = {1},
+  pages   = {1--26},
+  year    = {1979}
+}
+
+% ---- Datos y normativa ----
+
+% Decisión: fuente de las series diarias de precipitación (T06--T08).
+@misc{senamhi,
+  author       = {{Servicio Nacional de Meteorolog{\'i}a e Hidrolog{\'i}a del Per{\'u} (SENAMHI)}},
+  title        = {Datos hidrometeorol{\'o}gicos a nivel nacional},
+  howpublished = {\url{https://www.senamhi.gob.pe/servicios/?p=estaciones}},
+  note         = {Consultado en octubre de 2026}
+}
+
+% Decisión: regla de clasificación de años El Niño (ICEN > 0,4 durante >= 3 meses).
+@techreport{enfen2012,
+  author      = {{Comisi{\'o}n Multisectorial encargada del Estudio Nacional del Fen{\'o}meno El Ni{\~n}o (ENFEN)}},
+  title       = {Definici{\'o}n operacional de los eventos {El Ni{\~n}o} y {La Ni{\~n}a} y sus magnitudes en la costa del {Per{\'u}}},
+  institution = {ENFEN},
+  type        = {Nota t{\'e}cnica},
+  year        = {2012},
+  url         = {http://met.igp.gob.pe/elnino/enfen/ICEN-Nota_Tecnica.pdf}
+}
+
+% Decisión: serie mensual del ICEN usada por clasificar_regimenes.py.
+@misc{icen,
+  author       = {{Instituto Geof{\'i}sico del Per{\'u} (IGP)}},
+  title        = {{\'I}ndice Costero {El Ni{\~n}o} ({ICEN}), serie mensual},
+  howpublished = {\url{http://met.igp.gob.pe/datos/ICEN.txt}},
+  note         = {Consultado el 15 de octubre de 2026}
+}
+
+% Decisión: rango de capacidades de drenaje C como escenario de diseño.
+@misc{os060,
+  author       = {{Ministerio de Vivienda, Construcci{\'o}n y Saneamiento}},
+  title        = {Reglamento Nacional de Edificaciones, Norma {OS.060} ``Drenaje pluvial urbano''},
+  howpublished = {Lima, Per{\'u}}
+}
