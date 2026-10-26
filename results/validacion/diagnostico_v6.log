@@ -1,0 +1,234 @@
+
+=== lambayeque_lambayeque/el_nino anios=21 n_lluvia=264 D=120 ===
+H1 n_dias_lluvia y Thom reproducen parametros.csv: OK | resolucion 0,1 mm: 100.0% | fraccion = 0,1 mm: 5.3% | P_gamma(X<0,1)=9.8%
+H2 alfa Thom=0.5742 MLE=0.5562 momentos(1/CV^2)=0.2161 | theta Thom=6.8871 MLE=7.1099
+H3 exp_mixta w=0.694 b1=1.140 b2=10.328 | AIC gamma=1180.4 mixexp=1116.7 | GPD u=8.62 xi=0.372 sigma=9.346
+H4 anios con dias >= p99: [1983, 1998] | 3 anios mas lluviosos (mm): 1983=290, 1998=276, 1972=78 de 1044
+   candidato                  frecuencia media_mont desviacion  p95_monto  p99_monto racha_medi max_diario   KS_p  KS_p(0,1mm)  n_fallos
+   observado                      0.1046     3.9545     8.5071    13.7250    43.5830     1.5260    16.2714   P(Amax>U) U=30/50/80: 0.190/0.095/0.000 (n=21 temporadas)
+   gamma_thom (actual)             -1.0%      -0.3%     -38.8%      +5.0%     -44.3%      -0.4%      -7.2% 2.2e-05   4.7e-08      3   P(Amax>U): 0.026/0.001/0.000
+   gamma_mle                       -1.0%      -0.3%     -37.8%      +6.2%     -43.3%      -0.4%      -6.0% 4.2e-05   1.9e-07      3   P(Amax>U): 0.028/0.001/0.000
+   exp_mixta                       -1.0%      +0.1%     -15.3%     +36.4%     -18.5%      -0.4%     +21.7% 1.0e-01   8.9e-02      4   P(Amax>U): 0.127/0.024/0.001
+   gamma+gpd_q90                   -1.0%     +10.8%     +32.4%     +16.9%      -3.5%      -0.4%     +39.3% 3.2e-04   2.3e-06      5   P(Amax>U): 0.160/0.073/0.030
+   gamma_por_mes(k=4)              -1.0%      -0.1%     -32.5%      +7.8%     -36.7%      -0.4%      +0.3% 2.9e-05   2.0e-07      3   P(Amax>U): 0.056/0.008/0.000
+   gamma_por_anio(k=21)            -1.0%      -0.1%     -22.2%     +17.7%     -26.5%      -0.4%     +11.3% 8.7e-03   1.3e-03      5   P(Amax>U): 0.095/0.021/0.003
+
+=== lambayeque_lambayeque/normal anios=53 n_lluvia=480 D=120 ===
+H1 n_dias_lluvia y Thom reproducen parametros.csv: OK | resolucion 0,1 mm: 92.3% | fraccion = 0,1 mm: 6.2% | P_gamma(X<0,1)=9.8%
+H2 alfa Thom=0.7353 MLE=0.7215 momentos(1/CV^2)=0.2602 | theta Thom=2.6099 MLE=2.6599
+H3 exp_mixta w=0.862 b1=1.058 b2=7.295 | AIC gamma=1551.3 mixexp=1437.9 | GPD u=4.11 xi=0.464 sigma=3.488
+H4 anios con dias >= p99: [1936, 1943, 1999, 2001, 2010] | 3 anios mas lluviosos (mm): 1943=77, 2001=71, 1971=66 de 921
+   candidato                  frecuencia media_mont desviacion  p95_monto  p99_monto racha_medi max_diario   KS_p  KS_p(0,1mm)  n_fallos
+   observado                      0.0753     1.9190     3.7619     7.1000    17.5670     1.3907     7.0809   P(Amax>U) U=30/50/80: 0.038/0.000/0.000 (n=53 temporadas)
+   gamma_thom (actual)             +0.6%      -0.1%     -40.7%      -9.4%     -41.4%      -0.3%     -16.8% 9.0e-07   6.0e-09      4   P(Amax>U): 0.000/0.000/0.000
+   gamma_mle                       +0.6%      -0.1%     -40.2%      -8.7%     -40.9%      -0.3%     -16.5% 1.9e-07   7.3e-10      4   P(Amax>U): 0.000/0.000/0.000
+   exp_mixta                       +0.6%      -0.4%      -5.2%      +4.7%      +8.5%      -0.3%     +10.8% 1.4e-02   1.9e-02      2   P(Amax>U): 0.009/0.000/0.000
+   gamma+gpd_q90                   +0.6%     +11.6%     +27.7%      -2.0%      +6.9%      -0.3%     +20.1% 3.7e-05   4.0e-07      4   P(Amax>U): 0.025/0.010/0.004
+   gamma_por_mes(k=4)              +0.6%      -0.3%     -37.5%      -7.6%     -36.6%      -0.3%     -13.8% 3.7e-05   3.6e-07      4   P(Amax>U): 0.000/0.000/0.000
+   gamma_por_anio(k=50)            +0.6%      -0.3%     -21.3%      -3.4%     -15.9%      -0.3%      -1.7% 7.3e-06   9.9e-07      3   P(Amax>U): 0.004/0.000/0.000
+
+=== lima_canete/el_nino anios=10 n_lluvia=129 D=122 ===
+H1 n_dias_lluvia y Thom reproducen parametros.csv: OK | resolucion 0,1 mm: 100.0% | fraccion = 0,1 mm: 20.2% | P_gamma(X<0,1)=12.3%
+H2 alfa Thom=1.5728 MLE=1.5680 momentos(1/CV^2)=0.7495 | theta Thom=0.2647 MLE=0.2655
+H3 exp_mixta w=0.965 b1=0.373 b2=1.619 | AIC gamma=22.0 mixexp=34.1 | GPD u=0.90 xi=-0.044 sigma=0.928
+H4 anios con dias >= p99: [1997, 2008] | 3 anios mas lluviosos (mm): 1998=11, 2008=11, 1976=8 de 54
+   candidato                  frecuencia media_mont desviacion  p95_monto  p99_monto racha_medi max_diario   KS_p  KS_p(0,1mm)  n_fallos
+   observado                      0.1057     0.4163     0.4809     1.2000     2.1160     1.5875     1.2600   P(Amax>U) U=30/50/80: 0.000/0.000/0.000 (n=10 temporadas)
+   gamma_thom (actual)             -0.3%      +0.2%     -31.0%     -10.9%     -27.4%      +0.3%     -13.4% 1.4e-03   4.2e-02      5   P(Amax>U): 0.000/0.000/0.000
+   gamma_mle                       -0.3%      +0.2%     -30.9%     -10.8%     -27.3%      +0.3%     -13.3% 7.2e-04   2.0e-02      5   P(Amax>U): 0.000/0.000/0.000
+   exp_mixta                       -0.3%      -0.5%      +8.4%      +3.8%      +9.8%      +0.3%     +17.2% 9.8e-06   1.1e-01      2   P(Amax>U): 0.000/0.000/0.000
+   gamma+gpd_q90                   -0.3%     +16.5%     +14.3%     +27.5%     +38.0%      +0.3%     +33.9% 1.5e-03   3.6e-02      6   P(Amax>U): 0.000/0.000/0.000
+   gamma_por_mes(k=4)              -0.3%      +0.1%     -27.4%      -9.3%     -20.3%      +0.3%      -9.2% 3.5e-03   1.2e-01      3   P(Amax>U): 0.000/0.000/0.000
+   gamma_por_anio(k=7)             -0.3%      -0.1%     -17.1%      -5.5%      -3.0%      +0.3%      +0.8% 7.1e-03   4.9e-01      2   P(Amax>U): 0.000/0.000/0.000
+
+=== lima_canete/normal anios=29 n_lluvia=648 D=122 ===
+H1 n_dias_lluvia y Thom reproducen parametros.csv: OK | resolucion 0,1 mm: 85.3% | fraccion = 0,1 mm: 25.2% | P_gamma(X<0,1)=13.5%
+H2 alfa Thom=1.7171 MLE=1.7129 momentos(1/CV^2)=1.0405 | theta Thom=0.2085 MLE=0.2090
+H3 exp_mixta w=0.731 b1=0.358 b2=0.358 | AIC gamma=-127.6 mixexp=-29.4 | GPD u=0.70 xi=0.034 sigma=0.472
+H4 anios con dias >= p99: [1939, 1970, 1974, 1975, 2004] | 3 anios mas lluviosos (mm): 1939=17, 2004=16, 1986=14 de 232
+   candidato                  frecuencia media_mont desviacion  p95_monto  p99_monto racha_medi max_diario   KS_p  KS_p(0,1mm)  n_fallos
+   observado                      0.1893     0.3580     0.3509     1.0000     1.8795     1.7541     1.1648   P(Amax>U) U=30/50/80: 0.000/0.000/0.000 (n=29 temporadas)
+   gamma_thom (actual)             +0.2%      +0.0%     -22.4%     -10.8%     -32.6%      -0.3%      -9.5% 8.7e-12   4.0e-07      4   P(Amax>U): 0.000/0.000/0.000
+   gamma_mle                       +0.2%      +0.0%     -22.3%     -10.7%     -32.5%      -0.3%      -9.5% 7.1e-13   6.0e-08      4   P(Amax>U): 0.000/0.000/0.000
+   exp_mixta                       +0.2%      -0.3%      +1.7%      +6.7%     -12.8%      -0.3%     +13.4% 1.1e-30   7.9e-05      3   P(Amax>U): 0.000/0.000/0.000
+   gamma+gpd_q90                   +0.2%      +5.1%      +1.0%      +3.0%      -3.0%      -0.3%     +20.1% 5.3e-13   1.2e-09      2   P(Amax>U): 0.000/0.000/0.000
+   gamma_por_mes(k=4)              +0.2%      +0.0%     -21.4%     -10.2%     -31.2%      -0.3%      -8.2% 2.8e-12   4.4e-07      4   P(Amax>U): 0.000/0.000/0.000
+   gamma_por_anio(k=26)            +0.2%      +0.0%      -6.8%      -6.2%      -9.4%      -0.3%     +11.5% 8.3e-11   1.5e-05      2   P(Amax>U): 0.000/0.000/0.000
+
+=== lima_chosica/el_nino anios=7 n_lluvia=58 D=120 ===
+H1 n_dias_lluvia y Thom reproducen parametros.csv: OK | resolucion 0,1 mm: 100.0% | fraccion = 0,1 mm: 0.0% | P_gamma(X<0,1)=7.4%
+H2 alfa Thom=0.7359 MLE=0.7221 momentos(1/CV^2)=0.2025 | theta Thom=3.8002 MLE=3.8728
+H3 exp_mixta w=0.927 b1=1.516 b2=19.150 | AIC gamma=234.7 mixexp=209.4 | GPD u=3.72 xi=0.371 sigma=8.297
+H4 anios con dias >= p99: [2012] | 3 anios mas lluviosos (mm): 2012=63, 2002=34, 2008=21 de 162
+   candidato                  frecuencia media_mont desviacion  p95_monto  p99_monto racha_medi max_diario   KS_p  KS_p(0,1mm)  n_fallos
+   observado                      0.0688     2.7966     6.2151     7.9850    33.4090     1.1600    12.4429   P(Amax>U) U=30/50/80: 0.143/0.000/0.000 (n=7 temporadas)
+   gamma_thom (actual)             +0.5%      -0.1%     -47.7%     +17.3%     -55.0%      -0.2%     -32.9% 5.8e-02   3.8e-02      4   P(Amax>U): 0.000/0.000/0.000
+   gamma_mle                       +0.5%      -0.2%     -47.3%     +18.1%     -54.7%      -0.2%     -32.7% 2.4e-02   1.5e-02      5   P(Amax>U): 0.000/0.000/0.000
+   exp_mixta                       +0.5%      +0.7%     +14.6%      +7.8%     +15.4%      -0.2%      -0.2% 8.3e-02   4.2e-01      2   P(Amax>U): 0.090/0.033/0.007
+   gamma+gpd_q90                   +0.5%      +1.0%     +40.3%     +28.0%      +0.9%      -0.2%      +1.9% 1.3e-02   3.0e-01      3   P(Amax>U): 0.072/0.032/0.013
+   gamma_por_mes(k=4)              +0.5%      -0.6%     -24.4%     +38.7%     -30.0%      -0.2%     -16.6% 2.1e-01   2.5e-01      4   P(Amax>U): 0.023/0.004/0.000
+   gamma_por_anio(k=7)             +0.5%      +0.4%     -17.6%     +37.5%     -20.4%      -0.2%     -13.1% 2.0e-01   2.5e-01      4   P(Amax>U): 0.036/0.006/0.001
+
+=== lima_chosica/normal anios=16 n_lluvia=161 D=120 ===
+H1 n_dias_lluvia y Thom reproducen parametros.csv: OK | resolucion 0,1 mm: 100.0% | fraccion = 0,1 mm: 1.9% | P_gamma(X<0,1)=3.3%
+H2 alfa Thom=1.1686 MLE=1.1610 momentos(1/CV^2)=0.9060 | theta Thom=1.6993 MLE=1.7103
+H3 exp_mixta w=0.978 b1=1.901 b2=5.826 | AIC gamma=544.7 mixexp=548.3 | GPD u=5.00 xi=0.290 sigma=1.099
+H4 anios con dias >= p99: [1994, 2009] | 3 anios mas lluviosos (mm): 2009=52, 1994=40, 1999=40 de 320
+   candidato                  frecuencia media_mont desviacion  p95_monto  p99_monto racha_medi max_diario   KS_p  KS_p(0,1mm)  n_fallos
+   observado                      0.0878     1.9857     2.0862     5.8000     7.1600     1.2984     4.6875   P(Amax>U) U=30/50/80: 0.000/0.000/0.000 (n=16 temporadas)
+   gamma_thom (actual)             -0.1%      +0.1%     -12.1%      -2.9%     +18.1%      -0.2%     +16.8% 4.2e-02   7.3e-02      4   P(Amax>U): 0.000/0.000/0.000
+   gamma_mle                       -0.1%      +0.1%     -11.8%      -2.6%     +18.5%      -0.2%     +17.0% 6.7e-02   9.8e-02      3   P(Amax>U): 0.000/0.000/0.000
+   exp_mixta                       -0.1%      -0.3%      +2.3%      +2.5%     +35.3%      -0.2%     +28.5% 2.5e-01   4.4e-01      2   P(Amax>U): 0.000/0.000/0.000
+   gamma+gpd_q90                   -0.1%      +6.0%      -3.3%      +0.7%     +19.5%      -0.2%     +24.7% 5.9e-02   9.1e-02      2   P(Amax>U): 0.001/0.000/0.000
+   gamma_por_mes(k=4)              -0.1%      +0.4%      -9.7%      -0.4%     +22.4%      -0.2%     +19.4% 8.7e-02   1.6e-01      2   P(Amax>U): 0.000/0.000/0.000
+   gamma_por_anio(k=15)            -0.1%      +0.3%      -7.7%      -0.2%     +26.2%      -0.2%     +21.7% 1.8e-01   2.8e-01      2   P(Amax>U): 0.000/0.000/0.000
+
+=== piura_bernal/el_nino anios=17 n_lluvia=234 D=120 ===
+H1 n_dias_lluvia y Thom reproducen parametros.csv: OK | resolucion 0,1 mm: 100.0% | fraccion = 0,1 mm: 6.0% | P_gamma(X<0,1)=9.9%
+H2 alfa Thom=0.4714 MLE=0.4498 momentos(1/CV^2)=0.2183 | theta Thom=17.2273 MLE=18.0536
+H3 exp_mixta w=0.619 b1=1.192 b2=19.395 | AIC gamma=1310.3 mixexp=1245.8 | GPD u=18.57 xi=-0.223 sigma=38.962
+H4 anios con dias >= p99: [1998] | 3 anios mas lluviosos (mm): 1998=1199, 2002=118, 1987=99 de 1900
+   candidato                  frecuencia media_mont desviacion  p95_monto  p99_monto racha_medi max_diario   KS_p  KS_p(0,1mm)  n_fallos
+   observado                      0.1145     8.1209    17.3802    40.8200    78.9420     1.6596    23.8353   P(Amax>U) U=30/50/80: 0.235/0.118/0.059 (n=17 temporadas)
+   gamma_thom (actual)             -0.2%      -0.3%     -32.1%     -22.1%     -29.8%      -0.5%     +46.6% 5.7e-05   1.2e-07      5   P(Amax>U): 0.469/0.185/0.040
+   gamma_mle                       -0.2%      -0.3%     -30.6%     -20.8%     -28.0%      -0.5%     +49.4% 6.1e-05   2.0e-07      5   P(Amax>U): 0.479/0.194/0.046
+   exp_mixta                       -0.2%      +0.1%     -14.0%      -3.7%     -10.1%      -0.5%     +79.9% 4.1e-01   2.9e-01      3   P(Amax>U): 0.590/0.312/0.103
+   gamma+gpd_q90                   -0.2%     +10.4%      -3.9%      +6.6%     +12.0%      -0.5%    +101.3% 1.9e-04   3.3e-07      4   P(Amax>U): 0.586/0.399/0.181
+   gamma_por_mes(k=4)              -0.2%      -0.4%     -25.5%     -20.7%     -21.3%      -0.5%     +57.1% 1.1e-04   3.7e-07      5   P(Amax>U): 0.476/0.219/0.068
+   gamma_por_anio(k=15)            -0.2%      +0.2%      -5.8%      -8.7%      +4.1%      -0.5%     +90.7% 2.0e-02   1.6e-03      2   P(Amax>U): 0.538/0.320/0.144
+
+=== piura_bernal/normal anios=28 n_lluvia=232 D=120 ===
+H1 n_dias_lluvia y Thom reproducen parametros.csv: OK | resolucion 0,1 mm: 100.0% | fraccion = 0,1 mm: 12.9% | P_gamma(X<0,1)=10.6%
+H2 alfa Thom=0.6403 MLE=0.6242 momentos(1/CV^2)=0.3347 | theta Thom=3.8687 MLE=3.9685
+H3 exp_mixta w=0.545 b1=0.611 b2=4.713 | AIC gamma=847.4 mixexp=811.2 | GPD u=7.04 xi=0.259 sigma=3.784
+H4 anios con dias >= p99: [2001, 2006, 2013] | 3 anios mas lluviosos (mm): 2001=92, 1999=66, 2009=54 de 575
+   candidato                  frecuencia media_mont desviacion  p95_monto  p99_monto racha_medi max_diario   KS_p  KS_p(0,1mm)  n_fallos
+   observado                      0.0689     2.4772     4.2819    10.0450    15.6590     1.4321     7.5786   P(Amax>U) U=30/50/80: 0.036/0.000/0.000 (n=28 temporadas)
+   gamma_thom (actual)             +0.3%      -0.2%     -28.1%     -13.3%      -9.2%      -0.4%      +1.0% 1.2e-03   5.4e-06      3   P(Amax>U): 0.000/0.000/0.000
+   gamma_mle                       +0.3%      -0.2%     -27.1%     -12.5%      -8.0%      -0.4%      +1.6% 1.1e-03   1.2e-05      3   P(Amax>U): 0.000/0.000/0.000
+   exp_mixta                       +0.3%      +0.3%     -10.7%      +4.3%     +15.1%      -0.4%     +18.3% 5.8e-02   1.3e-01      3   P(Amax>U): 0.003/0.000/0.000
+   gamma+gpd_q90                   +0.3%     +13.0%      -2.2%      -1.5%     +20.8%      -0.4%     +24.1% 5.0e-04   5.8e-06      4   P(Amax>U): 0.013/0.003/0.001
+   gamma_por_mes(k=4)              +0.3%      -0.3%     -20.4%     -10.0%      +5.8%      -0.4%      +7.5% 3.6e-03   9.5e-05      2   P(Amax>U): 0.002/0.000/0.000
+   gamma_por_anio(k=23)            +0.3%      -0.5%      -4.2%     -11.8%     +28.7%      -0.4%     +16.8% 9.0e-04   2.3e-04      4   P(Amax>U): 0.016/0.003/0.000
+
+=== piura_chulucanas/el_nino anios=10 n_lluvia=568 D=120 ===
+H1 n_dias_lluvia y Thom reproducen parametros.csv: OK | resolucion 0,1 mm: 100.0% | fraccion = 0,1 mm: 4.4% | P_gamma(X<0,1)=7.9%
+H2 alfa Thom=0.4671 MLE=0.4453 momentos(1/CV^2)=0.2999 | theta Thom=29.6595 MLE=31.1076
+H3 exp_mixta w=0.514 b1=1.341 b2=27.099 | AIC gamma=3771.1 mixexp=3646.5 | GPD u=38.75 xi=0.082 sigma=33.171
+H4 anios con dias >= p99: [1972, 1983, 2012] | 3 anios mas lluviosos (mm): 1983=3140, 2008=901, 2012=890 de 7869
+   candidato                  frecuencia media_mont desviacion  p95_monto  p99_monto racha_medi max_diario   KS_p  KS_p(0,1mm)  n_fallos
+   observado                      0.4722    13.8535    25.2955    56.4200   135.8250     3.2471    98.2200   P(Amax>U) U=30/50/80: 0.900/0.900/0.900 (n=10 temporadas)
+   gamma_thom (actual)             +0.1%      -0.3%     -20.2%      -3.7%     -30.1%      +0.6%      -2.6% 4.7e-08   3.3e-12      3   P(Amax>U): 1.000/0.994/0.951
+   gamma_mle                       +0.1%      -0.4%     -18.3%      -2.0%     -28.2%      +0.6%      +0.1% 2.3e-06   1.0e-11      3   P(Amax>U): 1.000/0.994/0.953
+   exp_mixta                       +0.1%      +0.1%      -9.4%      +9.5%     -22.5%      +0.6%      +7.6% 4.0e-01   2.7e-01      1   P(Amax>U): 1.000/0.996/0.967
+   gamma+gpd_q90                   +0.1%      +9.3%      -0.7%     +10.6%      -9.8%      +0.6%     +27.8% 5.7e-10   5.3e-15      3   P(Amax>U): 1.000/0.996/0.972
+   gamma_por_mes(k=4)              +0.1%      -0.3%     -19.6%      -3.5%     -29.3%      +0.6%      -1.3% 1.1e-08   3.0e-13      3   P(Amax>U): 1.000/0.996/0.953
+   gamma_por_anio(k=10)            +0.1%      -0.2%      -9.1%      +0.6%     -17.9%      +0.6%     +16.7% 3.3e-06   1.5e-09      3   P(Amax>U): 1.000/0.993/0.950
+
+=== piura_chulucanas/normal anios=21 n_lluvia=701 D=120 ===
+H1 n_dias_lluvia y Thom reproducen parametros.csv: OK | resolucion 0,1 mm: 100.0% | fraccion = 0,1 mm: 9.1% | P_gamma(X<0,1)=11.1%
+H2 alfa Thom=0.4919 MLE=0.4712 momentos(1/CV^2)=0.2305 | theta Thom=11.0751 MLE=11.5638
+H3 exp_mixta w=0.647 b1=0.987 b2=13.642 | AIC gamma=3414.5 mixexp=3217.7 | GPD u=14.70 xi=0.032 sigma=17.759
+H4 anios con dias >= p99: [1981, 1999, 2001, 2009] | 3 anios mas lluviosos (mm): 2001=664, 1999=404, 2009=350 de 3819
+   candidato                  frecuencia media_mont desviacion  p95_monto  p99_monto racha_medi max_diario   KS_p  KS_p(0,1mm)  n_fallos
+   observado                      0.2786     5.4484    11.3490    25.6000    61.3000     2.4840    40.2524   P(Amax>U) U=30/50/80: 0.619/0.333/0.190 (n=21 temporadas)
+   gamma_thom (actual)             -0.0%      -0.4%     -31.8%     -18.1%     -40.8%      -0.8%     -21.9% 1.5e-10   1.6e-17      5   P(Amax>U): 0.429/0.113/0.012
+   gamma_mle                       -0.0%      -0.4%     -30.3%     -16.8%     -39.4%      -0.8%     -20.1% 1.9e-10   9.9e-18      5   P(Amax>U): 0.448/0.123/0.015
+   exp_mixta                       -0.0%      -0.5%     -11.2%      +3.6%     -21.2%      -0.8%      +2.3% 4.9e-03   2.6e-03      3   P(Amax>U): 0.656/0.287/0.065
+   gamma+gpd_q90                   -0.0%     +15.8%      -1.0%      +5.9%      -7.2%      -0.8%     +17.8% 5.5e-12   1.8e-19      3   P(Amax>U): 0.699/0.397/0.136
+   gamma_por_mes(k=4)              -0.0%      -0.4%     -28.5%     -17.3%     -37.0%      -0.8%     -17.3% 1.3e-08   1.9e-15      5   P(Amax>U): 0.459/0.148/0.023
+   gamma_por_anio(k=21)            -0.0%      -0.4%     -21.6%     -15.3%     -31.1%      -0.8%      -8.8% 1.0e-09   1.6e-16      4   P(Amax>U): 0.498/0.200/0.052
+
+=== piura_miraflores/el_nino anios=13 n_lluvia=273 D=120 ===
+H1 n_dias_lluvia y Thom reproducen parametros.csv: OK | resolucion 0,1 mm: 100.0% | fraccion = 0,1 mm: 0.0% | P_gamma(X<0,1)=4.0%
+H2 alfa Thom=0.6356 MLE=0.6194 momentos(1/CV^2)=0.4758 | theta Thom=18.7159 MLE=19.2061
+H3 exp_mixta w=0.490 b1=2.448 b2=20.980 | AIC gamma=1851.3 mixexp=1811.8 | GPD u=34.32 xi=-0.401 sigma=29.001
+H4 anios con dias >= p99: [1983, 1998] | 3 anios mas lluviosos (mm): 1983=1262, 1998=1195, 2002=174 de 3247
+   candidato                  frecuencia media_mont desviacion  p95_monto  p99_monto racha_medi max_diario   KS_p  KS_p(0,1mm)  n_fallos
+   observado                      0.1747    11.8956    17.2450    50.2200    77.1200     2.0299    36.2308   P(Amax>U) U=30/50/80: 0.385/0.231/0.154 (n=13 temporadas)
+   gamma_thom (actual)             +0.4%      -0.3%     -13.9%     -16.7%     -10.4%      -1.0%     +44.3% 1.6e-03   2.2e-04      5   P(Amax>U): 0.862/0.589/0.254
+   gamma_mle                       +0.4%      -0.3%     -12.8%     -15.9%      -9.2%      -1.0%     +46.1% 2.9e-03   3.1e-04      4   P(Amax>U): 0.867/0.595/0.254
+   exp_mixta                       +0.4%      -0.2%      +2.4%      -3.3%      +6.9%      -1.0%     +69.3% 5.4e-01   9.4e-01      1   P(Amax>U): 0.891/0.675/0.356
+   gamma+gpd_q90                   +0.4%     +10.5%      -2.5%      +3.2%      +0.9%      -1.0%     +63.0% 6.1e-04   7.9e-05      3   P(Amax>U): 0.908/0.726/0.373
+   gamma_por_mes(k=4)              +0.4%      -0.4%     -12.3%     -16.9%      -8.3%      -1.0%     +46.9% 2.3e-03   4.4e-04      4   P(Amax>U): 0.859/0.586/0.263
+   gamma_por_anio(k=13)            +0.4%      -0.2%      -0.5%      -7.5%      +7.0%      -1.0%     +66.9% 5.1e-02   2.8e-02      1   P(Amax>U): 0.868/0.645/0.335
+
+=== piura_miraflores/normal anios=27 n_lluvia=221 D=120 ===
+H1 n_dias_lluvia y Thom reproducen parametros.csv: OK | resolucion 0,1 mm: 100.0% | fraccion = 0,1 mm: 0.0% | P_gamma(X<0,1)=5.4%
+H2 alfa Thom=0.7468 MLE=0.7332 momentos(1/CV^2)=0.2725 | theta Thom=5.5453 MLE=5.6478
+H3 exp_mixta w=0.805 b1=2.082 b2=12.618 | AIC gamma=1058.2 mixexp=1010.5 | GPD u=9.40 xi=0.498 sigma=6.658
+H4 anios con dias >= p99: [2001] | 3 anios mas lluviosos (mm): 2001=240, 2010=86, 1994=71 de 915
+   candidato                  frecuencia media_mont desviacion  p95_monto  p99_monto racha_medi max_diario   KS_p  KS_p(0,1mm)  n_fallos
+   observado                      0.0682     4.1412     7.9335    13.5000    39.6200     1.4258    11.9370   P(Amax>U) U=30/50/80: 0.037/0.037/0.037 (n=27 temporadas)
+   gamma_thom (actual)             +0.4%      -0.1%     -39.7%      +2.2%     -44.2%      -0.4%      +1.4% 7.2e-05   1.5e-05      3   P(Amax>U): 0.008/0.000/0.000
+   gamma_mle                       +0.4%      -0.1%     -39.2%      +2.9%     -43.7%      -0.4%      +2.1% 2.1e-04   4.1e-05      3   P(Amax>U): 0.009/0.000/0.000
+   exp_mixta                       +0.4%      +0.2%      -8.3%     +28.7%      -4.6%      -0.4%     +31.9% 1.1e-02   1.5e-01      3   P(Amax>U): 0.096/0.023/0.002
+   gamma+gpd_q90                   +0.4%     +13.8%     +46.5%     +10.3%      -3.1%      -0.4%     +44.9% 8.8e-04   2.8e-04      5   P(Amax>U): 0.092/0.042/0.018
+   gamma_por_mes(k=4)              +0.4%      -0.3%     -30.8%      +8.8%     -32.1%      -0.4%     +10.8% 2.5e-03   1.2e-03      4   P(Amax>U): 0.031/0.003/0.000
+   gamma_por_anio(k=22)            +0.4%      -0.4%      -8.6%      +5.5%      -9.0%      -0.4%     +23.9% 2.3e-03   2.5e-03      2   P(Amax>U): 0.083/0.030/0.007
+
+=== tumbes_eltigre/el_nino anios=18 n_lluvia=1004 D=120 ===
+H1 n_dias_lluvia y Thom reproducen parametros.csv: OK | resolucion 0,1 mm: 100.0% | fraccion = 0,1 mm: 3.0% | P_gamma(X<0,1)=5.5%
+H2 alfa Thom=0.5849 MLE=0.5672 momentos(1/CV^2)=0.3539 | theta Thom=17.3920 MLE=17.9339
+H3 exp_mixta w=0.508 b1=2.171 b2=18.436 | AIC gamma=6397.3 mixexp=6307.1 | GPD u=26.50 xi=0.035 sigma=24.002
+H4 anios con dias >= p99: [1969, 1983, 1998, 2002, 2008, 2012] | 3 anios mas lluviosos (mm): 1998=2038, 1983=1546, 2002=768 de 10213
+   candidato                  frecuencia media_mont desviacion  p95_monto  p99_monto racha_medi max_diario   KS_p  KS_p(0,1mm)  n_fallos
+   observado                      0.4642    10.1725    17.1006    44.3400    80.0850     2.7514    74.1222   P(Amax>U) U=30/50/80: 0.944/0.833/0.611 (n=18 temporadas)
+   gamma_thom (actual)             -0.2%      -0.3%     -22.5%     -16.9%     -22.8%      +0.9%     -16.5% 1.3e-04   2.3e-07      5   P(Amax>U): 0.992/0.908/0.627
+   gamma_mle                       -0.2%      -0.3%     -21.3%     -16.0%     -21.5%      +0.9%     -15.1% 5.9e-04   4.7e-06      5   P(Amax>U): 0.993/0.908/0.636
+   exp_mixta                       -0.2%      +0.1%     -10.1%      -4.6%     -10.3%      +0.9%      -3.3% 1.8e-02   6.1e-02      3   P(Amax>U): 0.995/0.937/0.718
+   gamma+gpd_q90                   -0.2%      +9.1%      -1.2%      -2.1%      +4.8%      +0.9%     +13.8% 1.3e-04   7.0e-07      2   P(Amax>U): 0.995/0.951/0.784
+   gamma_por_mes(k=4)              -0.2%      -0.3%     -22.1%     -17.0%     -22.3%      +0.9%     -15.9% 4.5e-04   2.7e-06      5   P(Amax>U): 0.992/0.906/0.629
+   gamma_por_anio(k=18)            -0.2%      -0.2%     -13.9%     -15.7%     -12.9%      +0.9%      -2.6% 1.6e-03   5.6e-06      4   P(Amax>U): 0.990/0.905/0.657
+
+=== tumbes_eltigre/normal anios=29 n_lluvia=1085 D=120 ===
+H1 n_dias_lluvia y Thom reproducen parametros.csv: OK | resolucion 0,1 mm: 100.0% | fraccion = 0,1 mm: 4.2% | P_gamma(X<0,1)=7.8%
+H2 alfa Thom=0.5564 MLE=0.5378 momentos(1/CV^2)=0.3436 | theta Thom=12.0565 MLE=12.4726
+H3 exp_mixta w=0.485 b1=0.998 b2=12.090 | AIC gamma=5942.1 mixexp=5764.9 | GPD u=19.26 xi=-0.005 sigma=15.884
+H4 anios con dias >= p99: [1975, 1989, 1999, 2001, 2006, 2009, 2010] | 3 anios mas lluviosos (mm): 2010=604, 1989=594, 1999=548 de 7278
+   candidato                  frecuencia media_mont desviacion  p95_monto  p99_monto racha_medi max_diario   KS_p  KS_p(0,1mm)  n_fallos
+   observado                      0.3111     6.7081    11.4432    30.0000    53.1640     2.3471    41.8310   P(Amax>U) U=30/50/80: 0.655/0.517/0.241 (n=29 temporadas)
+   gamma_thom (actual)             +0.3%      -0.3%     -21.7%     -17.6%     -21.1%      -0.8%     -10.2% 5.4e-12   1.0e-18      5   P(Amax>U): 0.649/0.247/0.044
+   gamma_mle                       +0.3%      -0.3%     -20.4%     -16.6%     -19.7%      -0.8%      -8.6% 2.2e-11   1.2e-18      4   P(Amax>U): 0.662/0.262/0.047
+   exp_mixta                       +0.3%      -0.2%     -10.0%      -6.1%     -10.8%      -0.8%      +1.9% 6.8e-03   2.4e-02      3   P(Amax>U): 0.764/0.357/0.084
+   gamma+gpd_q90                   +0.3%     +13.1%      -0.5%      +0.6%      +5.4%      -0.8%     +17.6% 4.2e-11   1.1e-16      3   P(Amax>U): 0.818/0.489/0.166
+   gamma_por_mes(k=4)              +0.3%      -0.4%     -20.1%     -17.3%     -19.3%      -0.8%      -7.7% 3.9e-10   8.3e-17      4   P(Amax>U): 0.658/0.266/0.052
+   gamma_por_anio(k=28)            +0.3%      -0.4%     -17.2%     -16.4%     -14.8%      -0.8%      -3.0% 1.7e-08   1.6e-13      4   P(Amax>U): 0.676/0.297/0.069
+
+=== tumbes_puertopizarro/el_nino anios=17 n_lluvia=547 D=120 ===
+H1 n_dias_lluvia y Thom reproducen parametros.csv: OK | resolucion 0,1 mm: 100.0% | fraccion = 0,1 mm: 0.0% | P_gamma(X<0,1)=2.6%
+H2 alfa Thom=0.6883 MLE=0.6734 momentos(1/CV^2)=0.4263 | theta Thom=22.5584 MLE=23.0569
+H3 exp_mixta w=0.584 b1=4.710 b2=30.718 | AIC gamma=4031.9 mixexp=3942.7 | GPD u=42.32 xi=-0.213 sigma=40.252
+H4 anios con dias >= p99: [1983, 1998, 2002] | 3 anios mas lluviosos (mm): 1998=2251, 1983=2009, 2002=646 de 8493
+   candidato                  frecuencia media_mont desviacion  p95_monto  p99_monto racha_medi max_diario   KS_p  KS_p(0,1mm)  n_fallos
+   observado                      0.2677    15.5261    23.7792    66.2100   117.7220     1.6465    64.4765   P(Amax>U) U=30/50/80: 0.647/0.529/0.471 (n=17 temporadas)
+   gamma_thom (actual)             -0.1%      -0.3%     -21.7%     -20.0%     -26.5%      -0.5%     +16.2% 1.4e-07   1.7e-08      5   P(Amax>U): 0.992/0.918/0.666
+   gamma_mle                       -0.1%      -0.3%     -20.8%     -19.4%     -25.7%      -0.5%     +17.5% 5.6e-07   4.0e-08      5   P(Amax>U): 0.992/0.920/0.672
+   exp_mixta                       -0.1%      -0.3%      -0.0%      -2.1%      -3.3%      -0.5%     +50.4% 3.7e-02   1.3e-01      2   P(Amax>U): 0.989/0.940/0.766
+   gamma+gpd_q90                   -0.1%     +12.8%      -1.3%      +2.9%      -1.6%      -0.5%     +49.9% 3.0e-08   3.2e-09      3   P(Amax>U): 0.995/0.957/0.828
+   gamma_por_mes(k=4)              -0.1%      -0.2%     -19.9%     -19.6%     -24.6%      -0.5%     +19.8% 4.4e-07   3.7e-08      5   P(Amax>U): 0.992/0.916/0.672
+   gamma_por_anio(k=17)            -0.1%      -0.0%      -3.2%     -12.2%      -3.1%      -0.5%     +49.2% 1.3e-04   4.3e-05      3   P(Amax>U): 0.987/0.917/0.716
+
+=== tumbes_puertopizarro/normal anios=30 n_lluvia=697 D=120 ===
+H1 n_dias_lluvia y Thom reproducen parametros.csv: OK | resolucion 0,1 mm: 100.0% | fraccion = 0,1 mm: 0.1% | P_gamma(X<0,1)=3.9%
+H2 alfa Thom=0.7355 MLE=0.7217 momentos(1/CV^2)=0.3376 | theta Thom=9.3739 MLE=9.5532
+H3 exp_mixta w=0.747 b1=3.221 b2=17.765 | AIC gamma=4033.8 mixexp=3914.2 | GPD u=16.34 xi=0.181 sigma=14.677
+H4 anios con dias >= p99: [1989, 1990, 1999, 2001, 2006, 2013] | 3 anios mas lluviosos (mm): 1989=472, 1999=377, 2001=373 de 4806
+   candidato                  frecuencia media_mont desviacion  p95_monto  p99_monto racha_medi max_diario   KS_p  KS_p(0,1mm)  n_fallos
+   observado                      0.1937     6.8947    11.8660    27.0200    64.2320     1.7086    39.4000   P(Amax>U) U=30/50/80: 0.500/0.333/0.167 (n=30 temporadas)
+   gamma_thom (actual)             +0.9%      -0.2%     -32.5%     -14.8%     -42.2%      -0.3%     -25.1% 1.8e-08   2.3e-09      5   P(Amax>U): 0.354/0.071/0.006
+   gamma_mle                       +0.9%      -0.3%     -31.9%     -14.3%     -41.7%      -0.3%     -24.7% 8.2e-09   8.4e-10      5   P(Amax>U): 0.360/0.077/0.006
+   exp_mixta                       +0.9%      -0.3%      -5.2%      +6.2%     -11.0%      -0.3%      +6.1% 3.0e-02   2.1e-01      2   P(Amax>U): 0.583/0.279/0.077
+   gamma+gpd_q90                   +0.9%     +10.3%      +0.5%      +0.5%     -10.0%      -0.3%      +9.5% 8.4e-07   1.4e-07      2   P(Amax>U): 0.562/0.283/0.099
+   gamma_por_mes(k=4)              +0.9%      -0.3%     -31.7%     -15.0%     -41.4%      -0.3%     -24.5% 3.8e-06   6.7e-07      5   P(Amax>U): 0.355/0.079/0.007
+   gamma_por_anio(k=30)            +0.9%      -0.1%     -23.5%     -11.9%     -32.3%      -0.3%     -14.7% 3.7e-05   6.7e-06      5   P(Amax>U): 0.425/0.143/0.028
+
+=== Resumen por candidato (16 grupos): grupos que pasan V6 completo | fallos por estadistico ===
+   gamma_thom (actual)    pasan= 0/16 | frecuenc=0 media_mo=0 desviaci=16 p95_mont=11 p99_mont=15 racha_me=0 max_diar=11 KS=15
+   gamma_mle              pasan= 0/16 | frecuenc=0 media_mo=0 desviaci=16 p95_mont=11 p99_mont=14 racha_me=0 max_diar=10 KS=15
+   exp_mixta              pasan= 0/16 | frecuenc=0 media_mo=0 desviaci=7 p95_mont=2 p99_mont=11 racha_me=0 max_diar=10 KS=9
+   gamma+gpd_q90          pasan= 0/16 | frecuenc=0 media_mo=11 desviaci=5 p95_mont=5 p99_mont=4 racha_me=0 max_diar=14 KS=15
+   gamma_por_mes          pasan= 0/16 | frecuenc=0 media_mo=0 desviaci=15 p95_mont=9 p99_mont=14 racha_me=0 max_diar=10 KS=14
+   gamma_por_anio         pasan= 0/16 | frecuenc=0 media_mo=0 desviaci=8 p95_mont=8 p99_mont=10 racha_me=0 max_diar=11 KS=13
+
+results/validacion/diagnostico_v6.csv: 96 filas
