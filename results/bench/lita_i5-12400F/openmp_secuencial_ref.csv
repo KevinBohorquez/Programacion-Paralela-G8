@@ -1,0 +1,7 @@
+modelo,hilos,repeticion,tiempo_s,n,semilla,cpu,nucleos_fisicos,afinidad,schedule,commit,calentamiento,hilos_efectivos,nucleos_logicos,sobresuscrito,excede_logicos,k,config_id
+secuencial,1,0,70.821354279999994,20000000,20261015,12th Gen Intel(R) Core(TM) i5-12400F,6,OMP_PROC_BIND=close;OMP_PLACES=cores,none,5fff53b8b0e5,1,1,12,0,0,2122915,0
+secuencial,1,1,71.909420284000007,20000000,20261015,12th Gen Intel(R) Core(TM) i5-12400F,6,OMP_PROC_BIND=close;OMP_PLACES=cores,none,5fff53b8b0e5,0,1,12,0,0,2122915,0
+secuencial,1,2,71.105510562999996,20000000,20261015,12th Gen Intel(R) Core(TM) i5-12400F,6,OMP_PROC_BIND=close;OMP_PLACES=cores,none,5fff53b8b0e5,0,1,12,0,0,2122915,0
+secuencial,1,3,70.385443027999997,20000000,20261015,12th Gen Intel(R) Core(TM) i5-12400F,6,OMP_PROC_BIND=close;OMP_PLACES=cores,none,5fff53b8b0e5,0,1,12,0,0,2122915,0
+secuencial,1,4,70.916725540000002,20000000,20261015,12th Gen Intel(R) Core(TM) i5-12400F,6,OMP_PROC_BIND=close;OMP_PLACES=cores,none,5fff53b8b0e5,0,1,12,0,0,2122915,0
+secuencial,1,5,70.741573674999998,20000000,20261015,12th Gen Intel(R) Core(TM) i5-12400F,6,OMP_PROC_BIND=close;OMP_PLACES=cores,none,5fff53b8b0e5,0,1,12,0,0,2122915,0

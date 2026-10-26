@@ -1,0 +1,33 @@
+# T17 V1: equivalencia serial vs OpenMP (1/2/4/8 hilos x 4 schedules) | commit 5fff53b8b0e5 | 2026-10-15T19:17:26-05:00 | 12th Gen Intel(R) Core(TM) i5-12400F | g++ (Ubuntu 15.2.0-16ubuntu1) 15.2.0 | Python 3.14.4
+# comando: PP_BIN_DIR=build/src/backends python3 -m pytest -v tests/integration/test_openmp_equivalencia.py
+============================= test session starts ==============================
+platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.7.0 -- /home/litaht/.venvs/pp-g8/bin/python
+rootdir: /mnt/d/PROGRAMACIÓN_PARALELA/Programacion-Paralela-G8
+collecting ... collected 24 items
+
+tests/integration/test_openmp_equivalencia.py::test_referencia_valida PASSED [  4%]
+tests/integration/test_openmp_equivalencia.py::test_v1_openmp_igual_a_serial[static-1] PASSED [  8%]
+tests/integration/test_openmp_equivalencia.py::test_v1_openmp_igual_a_serial[static-2] PASSED [ 12%]
+tests/integration/test_openmp_equivalencia.py::test_v1_openmp_igual_a_serial[static-4] PASSED [ 16%]
+tests/integration/test_openmp_equivalencia.py::test_v1_openmp_igual_a_serial[static-8] PASSED [ 20%]
+tests/integration/test_openmp_equivalencia.py::test_v1_openmp_igual_a_serial[dynamic-1] PASSED [ 25%]
+tests/integration/test_openmp_equivalencia.py::test_v1_openmp_igual_a_serial[dynamic-2] PASSED [ 29%]
+tests/integration/test_openmp_equivalencia.py::test_v1_openmp_igual_a_serial[dynamic-4] PASSED [ 33%]
+tests/integration/test_openmp_equivalencia.py::test_v1_openmp_igual_a_serial[dynamic-8] PASSED [ 37%]
+tests/integration/test_openmp_equivalencia.py::test_v1_openmp_igual_a_serial[dynamic:7-1] PASSED [ 41%]
+tests/integration/test_openmp_equivalencia.py::test_v1_openmp_igual_a_serial[dynamic:7-2] PASSED [ 45%]
+tests/integration/test_openmp_equivalencia.py::test_v1_openmp_igual_a_serial[dynamic:7-4] PASSED [ 50%]
+tests/integration/test_openmp_equivalencia.py::test_v1_openmp_igual_a_serial[dynamic:7-8] PASSED [ 54%]
+tests/integration/test_openmp_equivalencia.py::test_v1_openmp_igual_a_serial[guided-1] PASSED [ 58%]
+tests/integration/test_openmp_equivalencia.py::test_v1_openmp_igual_a_serial[guided-2] PASSED [ 62%]
+tests/integration/test_openmp_equivalencia.py::test_v1_openmp_igual_a_serial[guided-4] PASSED [ 66%]
+tests/integration/test_openmp_equivalencia.py::test_v1_openmp_igual_a_serial[guided-8] PASSED [ 70%]
+tests/integration/test_openmp_equivalencia.py::test_v1_indice_global_estable[0] PASSED [ 75%]
+tests/integration/test_openmp_equivalencia.py::test_v1_indice_global_estable[1] PASSED [ 79%]
+tests/integration/test_openmp_equivalencia.py::test_v1_indice_global_estable[12999] PASSED [ 83%]
+tests/integration/test_openmp_equivalencia.py::test_v3_conservacion_n PASSED [ 87%]
+tests/integration/test_openmp_equivalencia.py::test_v4_reproducibilidad PASSED [ 91%]
+tests/integration/test_openmp_equivalencia.py::test_semilla_distinta_cambia_resultado PASSED [ 95%]
+tests/integration/test_openmp_equivalencia.py::test_entrada_invalida_falla_con_codigo_distinto_de_cero PASSED [100%]
+
+============================== 24 passed in 0.63s ==============================

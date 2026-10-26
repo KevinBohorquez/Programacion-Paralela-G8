@@ -6,9 +6,15 @@ Por cada punto (schedule x hilos): una corrida de calentamiento (no cuenta) y N 
 (5 por defecto). Antes mide la referencia secuencial con el mismo protocolo (backend=serial).
 Cada corrida se compara con el secuencial (k, n, histograma idénticos = V1).
 
-Salida (por defecto results/bench/openmp.csv): UNA fila por punto con los cinco tiempos, media,
-desviación estándar muestral, afinidad, hardware (CPU, núcleos físicos/lógicos, RAM), compilador,
-commit y la marca de sobresuscripción (hilos > núcleos físicos) y de exceso sobre los lógicos.
+Salidas (con --salida results/bench/openmp.csv, el valor por defecto):
+  openmp.csv                 UNA fila por corrida OpenMP (calentamiento = repetición 0, luego 1..5) con la
+                             cabecera de docs/protocolo-graficos-openmp.md, que lee T18 (graficar_openmp.py).
+  openmp_secuencial_ref.csv  igual, para la referencia secuencial medida con el mismo binario, N, semilla y
+                             commit (sirve de T1 a T18 mientras no llegue el CSV de T14).
+  openmp_resumen.csv         UNA fila por punto: cinco tiempos, media, desviación estándar muestral,
+                             afinidad, hardware, compilador, commit y las marcas `sobresuscrito`
+                             (hilos > núcleos físicos) y `excede_logicos`.
+El commit se toma de PP_COMMIT si está definida (también la leen los ejecutables); si no, de git.
 
 IMPORTANTE: los tiempos solo valen en la máquina de referencia con el binario en Release. El script
 se niega a medir un build Debug (use --permitir-debug solo para probar el script).
@@ -84,6 +90,8 @@ def version_compilador(build_dir):
 
 
 def commit_git():
+    if os.environ.get("PP_COMMIT"):
+        return os.environ["PP_COMMIT"]
     try:
         r = subprocess.run(["git", "-C", str(RAIZ), "rev-parse", "--short=12", "HEAD"], capture_output=True, text=True)
         c = r.stdout.strip() if r.returncode == 0 else ""
@@ -150,14 +158,23 @@ def main():
                 commit=commit_git(), fecha=datetime.datetime.now().astimezone().isoformat(timespec="seconds"),
                 so=platform.platform())
 
+    entorno["PP_COMMIT"] = meta["commit"]  # los ejecutables escriben el mismo commit que el script
     puntos = [("serial", 1, "-")] + [("openmp", h, s) for s in schedules for h in hilos]
-    filas, ref = [], None
+    filas, corridas, ref = [], [], None
     for backend, h, sched in puntos:
         exe = serial if backend == "serial" else openmp
         extra = [] if backend == "serial" else ["--hilos", str(h), "--schedule", sched]
-        cal = correr(exe, comunes, extra, entorno)  # calentamiento: no cuenta
-        reps = [correr(exe, comunes, extra, entorno) for _ in range(a.repeticiones)]
+        cal = correr(exe, comunes, extra + ["--calentamiento"], entorno)  # calentamiento: no cuenta
+        reps = [correr(exe, comunes, extra + ["--repeticion", str(i)], entorno) for i in range(1, a.repeticiones + 1)]
         tiempos = [float(r["tiempo_s"]) for r in reps]
+        for i, r in enumerate([cal] + reps):
+            corridas.append(dict(
+                modelo="secuencial" if backend == "serial" else "openmp", hilos=h, repeticion=i,
+                tiempo_s=r["tiempo_s"], n=a.n, semilla=a.semilla, cpu=cpu, nucleos_fisicos=fisicos,
+                afinidad=afinidad, schedule=r["schedule"] or "none", commit=meta["commit"],
+                calentamiento=int(i == 0), hilos_efectivos=r["hilos"], nucleos_logicos=logicos,
+                sobresuscrito=int(backend == "openmp" and h > fisicos),
+                excede_logicos=int(backend == "openmp" and h > logicos), k=r["k"], config_id=a.config_id))
         k, n, hist = reps[0]["k"], reps[0]["n"], reps[0]["hist512"]
         if ref is None:
             ref = (k, n, hist)
@@ -180,12 +197,19 @@ def main():
         print(f"{backend:6s} hilos={h:2d} {fila['schedule']:10s} media={fila['media']:.4f}s "
               f"sd={fila['desviacion']:.4f}s V1={'ok' if equivalente else 'FALLA'}{marca}", flush=True)
 
-    Path(a.salida).parent.mkdir(parents=True, exist_ok=True)
-    with open(a.salida, "w", newline="") as f:
-        w = csv.DictWriter(f, fieldnames=list(filas[0].keys()))
-        w.writeheader()
-        w.writerows(filas)
-    print(f"escrito {a.salida}")
+    salida = Path(a.salida)
+    salida.parent.mkdir(parents=True, exist_ok=True)
+    archivos = {
+        salida: [c for c in corridas if c["modelo"] == "openmp"],
+        salida.with_name(salida.stem + "_secuencial_ref.csv"): [c for c in corridas if c["modelo"] == "secuencial"],
+        salida.with_name(salida.stem + "_resumen.csv"): filas,
+    }
+    for ruta, contenido in archivos.items():
+        with open(ruta, "w", newline="", encoding="utf-8") as f:
+            w = csv.DictWriter(f, fieldnames=list(contenido[0].keys()))
+            w.writeheader()
+            w.writerows(contenido)
+        print(f"escrito {ruta}")
     if not all(f["equivalente_serial"] for f in filas):
         sys.exit("V1 FALLÓ: hay corridas OpenMP distintas del secuencial; no use este CSV.")
     if any(f["sobresuscrito"] for f in filas):
