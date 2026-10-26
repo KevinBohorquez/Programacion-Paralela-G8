@@ -4,6 +4,8 @@
 #include <cmath>
 #include <cstdio>
 #include <cstdlib>
+#include <fstream>
+#include <stdexcept>
 #include <string>
 
 #include "resultados.hpp"
@@ -87,6 +89,28 @@ int main() {
     const FilaResultado g = leer_primera_fila_csv(ruta);
     VERIFICAR(g.acc == f.acc && g.cfg.semilla == f.cfg.semilla && g.cfg.params.alfa == p.alfa);
     VERIFICAR(g.meta.tiempo_s == f.meta.tiempo_s && g.meta.commit == f.meta.commit);
+    // Columnas de S15: CPU sin bloques CUDA (columnas vacías → 0), un nodo con un proceso.
+    VERIFICAR(g.meta.hardware == f.meta.hardware && g.meta.hardware.rfind("host=", 0) == 0);
+    VERIFICAR(g.meta.nodos == 1 && g.meta.distribucion == nombre_nodo() + ":1");
+    VERIFICAR(g.meta.bloques == 0 && g.meta.hilos_por_bloque == 0);
+    {  // fila CUDA: bloques e hilos por bloque viajan en el CSV
+        const std::string ruta_cuda = "smoke_resultado_cuda.csv";
+        std::remove(ruta_cuda.c_str());
+        FilaResultado c = f;
+        c.cfg.backend = "cuda"; c.meta.bloques = 160; c.meta.hilos_por_bloque = 256;
+        escribir_csv(ruta_cuda, c);
+        const FilaResultado d = leer_primera_fila_csv(ruta_cuda);
+        VERIFICAR(d.meta.bloques == 160 && d.meta.hilos_por_bloque == 256);
+        std::remove(ruta_cuda.c_str());
+    }
+    {  // un CSV con la cabecera anterior no se mezcla con la nueva
+        const std::string ruta_vieja = "smoke_resultado_viejo.csv";
+        { std::ofstream v(ruta_vieja); v << "backend,estacion\nserial,x\n"; }
+        bool rechazado = false;
+        try { escribir_csv(ruta_vieja, f); } catch (const std::runtime_error&) { rechazado = true; }
+        VERIFICAR(rechazado);
+        std::remove(ruta_vieja.c_str());
+    }
     std::remove(ruta.c_str());
 
     if (fallos) {

@@ -6,6 +6,8 @@
 #include <exception>
 #include <iostream>
 #include <stdexcept>
+#include <string>
+#include <utility>
 #include <vector>
 
 #include "simulacion.hpp"
@@ -26,6 +28,27 @@ const char* nombre_nivel(int nivel) {
 const char* entorno_o(const char* nombre, const char* defecto) {
     const char* e = std::getenv(nombre);
     return (e && *e) ? e : defecto;
+}
+
+// Nodos distintos y procesos por nodo ("host:p;host:p", en orden de primer rango). Colectiva: la
+// llaman todos los rangos; el resultado solo es válido en el rango 0.
+std::pair<int, std::string> distribucion_por_nodo(MPI_Comm comm, int rango, int procesos) {
+    char nombre[MPI_MAX_PROCESSOR_NAME] = {};
+    int largo = 0;
+    MPI_Get_processor_name(nombre, &largo);
+    std::vector<char> todos(rango == 0 ? static_cast<size_t>(procesos) * MPI_MAX_PROCESSOR_NAME : 0);
+    MPI_Gather(nombre, MPI_MAX_PROCESSOR_NAME, MPI_CHAR, todos.data(), MPI_MAX_PROCESSOR_NAME, MPI_CHAR, 0, comm);
+    if (rango != 0) return {0, ""};
+    std::vector<std::pair<std::string, int>> cuenta;
+    for (int r = 0; r < procesos; ++r) {
+        const std::string host(&todos[static_cast<size_t>(r) * MPI_MAX_PROCESSOR_NAME]);
+        auto it = std::find_if(cuenta.begin(), cuenta.end(), [&](const auto& c) { return c.first == host; });
+        if (it == cuenta.end()) cuenta.emplace_back(host, 1);
+        else ++it->second;
+    }
+    std::string s;
+    for (const auto& [host, p] : cuenta) s += (s.empty() ? "" : ";") + host + ":" + std::to_string(p);
+    return {static_cast<int>(cuenta.size()), s};
 }
 }  // namespace
 
@@ -68,6 +91,7 @@ int ejecutar_mpi(int argc, char** argv, const char* backend, const Esquema& esqu
     int codigo = 0;
     try {
         const FuncionEscenario escenario = escenario_del_modelo(cfg);
+        const auto [nodos, distribucion] = distribucion_por_nodo(MPI_COMM_WORLD, rango, procesos);
 
         MPI_Barrier(MPI_COMM_WORLD);
         const double t0 = MPI_Wtime();
@@ -145,6 +169,8 @@ int ejecutar_mpi(int argc, char** argv, const char* backend, const Esquema& esqu
                 fila.meta.hilos_usados = static_cast<int>(res.hilos);
                 fila.meta.schedule_usado = res.schedule;
                 fila.meta.procesos = procesos;
+                fila.meta.nodos = nodos;
+                fila.meta.distribucion = distribucion;
                 if (!cfg.silencioso) pp::imprimir_resumen(fila);
                 if (!cfg.salida.empty()) pp::escribir_csv(cfg.salida, fila);
             }

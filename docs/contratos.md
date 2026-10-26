@@ -72,8 +72,10 @@ Todos los ejecutables aceptan las mismas opciones (`--ayuda` las lista). Cada cl
 UTF-8, separador coma, `\n`, punto decimal, sin comillas. Una fila por corrida y configuración; el archivo se crea con la cabecera y las corridas siguientes se agregan. Cabecera exacta (`pp::encabezado_csv`):
 
 ```csv
-backend,estacion,regimen,config_id,semilla,n,k,p_hat,wilson_inf,wilson_sup,dias,capacidad,umbral,p01,p11,alfa,theta,hilos,procesos,repeticion,calentamiento,schedule,afinidad,tiempo_s,commit,cpu,nucleos_fisicos,nucleos_logicos,hist512
+backend,estacion,regimen,config_id,semilla,n,k,p_hat,wilson_inf,wilson_sup,dias,capacidad,umbral,p01,p11,alfa,theta,hilos,procesos,repeticion,calentamiento,schedule,afinidad,tiempo_s,commit,cpu,nucleos_fisicos,nucleos_logicos,hist512,hardware,nodos,distribucion,bloques,hilos_por_bloque
 ```
+
+Las cinco últimas columnas (`hardware` … `hilos_por_bloque`) se agregaron para la entrega final (S15) **al final** de la cabecera: las columnas anteriores conservan su posición y los lectores por nombre (`csv.DictReader`) siguen funcionando. Un archivo con la cabecera anterior no se mezcla: `pp::escribir_csv` se niega a agregar filas a un CSV cuya cabecera no coincide.
 
 | Columna | Tipo / unidad | Regla |
 | --- | --- | --- |
@@ -91,6 +93,10 @@ backend,estacion,regimen,config_id,semilla,n,k,p_hat,wilson_inf,wilson_sup,dias,
 | `commit`, `cpu` | texto | Hash corto de Git y modelo de CPU del nodo del rango 0. |
 | `nucleos_fisicos`, `nucleos_logicos` | entero | Del nodo del rango 0. |
 | `hist512` | 512 enteros separados por `;` | `hist[0] … hist[511]`; su suma es `n`. |
+| `hardware` | texto | `host=<nombre>;ram_gb=<GiB>` del nodo del rango 0 (`gethostname`, `MemTotal` de `/proc/meminfo`). |
+| `nodos` | entero | Nodos distintos según `MPI_Get_processor_name`; 1 sin MPI. |
+| `distribucion` | texto | Procesos por nodo, `host:p;host:p` en orden del primer rango de cada nodo (p. ej. `pc1:8;pc2:8`); `host:1` sin MPI. |
+| `bloques`, `hilos_por_bloque` | entero o vacío | Grilla CUDA (bloques e hilos por bloque); **vacías** en los backends de CPU. |
 
 El generador de gráficos de T18 usa su propio CSV de medición ([`protocolo-graficos-openmp.md`](protocolo-graficos-openmp.md)); falta unificarlo con este.
 
