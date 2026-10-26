@@ -81,7 +81,7 @@ class Opciones:
     hostfile: str = ""
     red_tcp: str = ""
     bind_mpi: str = ""
-    omp_bind: str = "close"
+    omp_bind: str = "auto"
     omp_places: str = "cores"
     mpirun_extra: list = field(default_factory=list)
     nucleos: int = 1  # núcleos físicos totales (para la marca de sobresuscripción)
@@ -186,14 +186,21 @@ def afinidad(punto, o):
         return "-"
     partes = []
     if punto.backend in CON_HILOS:
-        partes.append(f"OMP_PROC_BIND={o.omp_bind};OMP_PLACES={o.omp_places}")
+        partes.append(f"OMP_PROC_BIND={bind_omp(punto, o)};OMP_PLACES={o.omp_places}")
     if punto.backend in CON_MPI:
         partes.append(f"mpirun_bind={o.bind_mpi or ('none' if punto.backend == 'hibrido' else 'por_defecto')}")
     return ";".join(partes)
 
 
-def entorno_omp(o):
-    e = dict(os.environ, OMP_PROC_BIND=o.omp_bind, OMP_PLACES=o.omp_places)
+def bind_omp(punto, o):
+    """Con --bind-to none, close/spread apilan los hilos de todos los rangos: el híbrido usa false."""
+    if o.omp_bind != "auto":
+        return o.omp_bind
+    return "false" if punto.backend == "hibrido" else "close"
+
+
+def entorno_omp(o, punto):
+    e = dict(os.environ, OMP_PROC_BIND=bind_omp(punto, o), OMP_PLACES=o.omp_places)
     e.pop("OMP_NUM_THREADS", None)
     e.pop("OMP_SCHEDULE", None)
     return e
@@ -201,9 +208,8 @@ def entorno_omp(o):
 
 def crear_ejecutor(o, timeout=None, log=print):
     """Ejecutor real: punto -> (fila del CSV del simulador, lista [verif] por rango)."""
-    entorno = entorno_omp(o)
-
     def correr(punto):
+        entorno = entorno_omp(o, punto)
         with tempfile.TemporaryDirectory() as d:
             salida = Path(d) / "r.csv"
             cmd = comando(punto, o) + ["--salida", str(salida)]
@@ -333,7 +339,7 @@ def construir_parser():
     ap.add_argument("--hostfile", default="")
     ap.add_argument("--red-tcp", default="", help="interfaz o CIDR para btl/oob tcp entre contenedores (eth0)")
     ap.add_argument("--bind-mpi", default="", help="mpirun --bind-to (híbrido: none por defecto)")
-    ap.add_argument("--omp-bind", default="close")
+    ap.add_argument("--omp-bind", default="auto", help="auto: close para openmp, false para hibrido (--bind-to none)")
     ap.add_argument("--omp-places", default="cores")
     ap.add_argument("--mpirun-extra", default="", help="opciones extra de mpirun (una cadena)")
     ap.add_argument("--nucleos", type=int, default=0,

@@ -265,3 +265,11 @@ def test_hosts_y_asignacion(cb, tmp_path):
 def test_desbalance_ignora_maestro(cb):
     assert cb.desbalance([0, 150, 50]) == pytest.approx(1.5)
     assert cb.desbalance([]) == ""
+
+
+def test_bind_omp_auto_usa_false_en_hibrido_y_close_en_openmp(eb):
+    from types import SimpleNamespace
+    o = SimpleNamespace(omp_bind="auto")
+    assert eb.bind_omp(SimpleNamespace(backend="hibrido"), o) == "false"
+    assert eb.bind_omp(SimpleNamespace(backend="openmp"), o) == "close"
+    assert eb.bind_omp(SimpleNamespace(backend="hibrido"), SimpleNamespace(omp_bind="spread")) == "spread"
