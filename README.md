@@ -20,6 +20,10 @@ Los [contratos de CLI, configuración y CSV (T02)](docs/contratos.md) fijan el �
 | Datos SENAMHI y calibración (T06–T10) | `data/raw/`, `data/processed/`, `scripts/run/` | [auditoria-datos.md](docs/auditoria-datos.md), [criterio-seleccion-estaciones.md](docs/criterio-seleccion-estaciones.md) |
 | Configuraciones por estación y régimen | `config/<estacion>_<regimen>.yaml` (5 estaciones × 2 regímenes) | `generar_configs.py` |
 | Línea base y barrido OpenMP (T14, T16, T18) | `results/bench/`, `results/figures/` | [protocolo-graficos-openmp.md](docs/protocolo-graficos-openmp.md) |
+| Mediciones MPI, híbrido y barridos X1–X3 (T21, T26, T27, T30, T31) | `scripts/bench/medir_mpi.py`, `medir_hibrido.py`, `ejecutar_barridos.py` | [guia-reproduccion.md §6](docs/guia-reproduccion.md) |
+| Corridas científicas X6, bootstrap y X7 (T34, T35, T42) | `scripts/run/corrida-oficial.py`, `analizar-riesgo.py`, `sensibilidad.py` | [guia-reproduccion.md §7](docs/guia-reproduccion.md) |
+| Análisis de rendimiento y figuras finales (T33, T45) | `scripts/bench/analizar-rendimiento.py`, `graficar-final.py` | `tests/unit/test_analizar_rendimiento.py`, `test_graficar_final.py` |
+| Compose y Swarm (T22, T25) | `docker/compose.yaml`, `docker/swarm-stack.yaml`, `scripts/deploy/desplegar_swarm.ps1` | [docker/README.md](docker/README.md) |
 | Validación V1, V5, V6, V7 | `tests/`, `results/validacion/` | ver la sección «Pruebas» |
 | Demo web de la exposición | `scripts/demo/servidor_demo.py` | — |
 
@@ -124,4 +128,4 @@ Las rutas reservadas para programar y los formatos de cada entrega están en las
 
 ## Criterio de comparación de recursos
 
-Se fija el mismo problema y la misma semilla por comparación. Se ejecuta una corrida de calentamiento y cinco repeticiones por punto; se guardan tiempos, resultados, commit y hardware. OpenMP se compara con 2, 4, 8 y 16 hilos; MPI con 2, 4, 8 y 16 procesos; el híbrido con esos presupuestos de núcleos CPU distribuidos entre procesos e hilos. Si se activa CUDA, se comparan 2, 4, 8 y 16 bloques y 128/256/512 hilos por bloque, con ocupación observada. Los bloques CUDA no equivalen a núcleos físicos de GPU. Se reportarán tiempo, speedup, eficiencia cuando corresponda y throughput tras comprobar la equivalencia de resultados.
+Se fija el mismo problema y la misma semilla por comparación. Se ejecuta una corrida de calentamiento y cinco repeticiones por punto; se guardan tiempos, resultados, commit y hardware. OpenMP se compara con 2, 4, 8 y 16 hilos; MPI con 2, 4, 8 y 16 procesos; el híbrido con esos presupuestos de núcleos CPU distribuidos entre procesos e hilos. La comparación CUDA por bloques no se realiza, porque la extensión no se activó (NO-GO de T29). Se reportan tiempo, speedup, eficiencia cuando corresponda y throughput tras comprobar la equivalencia de resultados.

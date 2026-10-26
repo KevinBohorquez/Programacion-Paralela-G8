@@ -11,7 +11,7 @@ endif()
 
 option(PP_BUILD_OPENMP "Compilar el backend OpenMP (T15)" ON)
 option(PP_BUILD_MPI    "Compilar los backends MPI estático/dinámico e híbrido (T19, T20, T24)" OFF)
-option(PP_BUILD_CUDA   "Compilar la extensión CUDA (EXT1; solo si la activa T29)" OFF)
+option(PP_BUILD_CUDA   "Extensión CUDA (EXT1): no activada por T29 (NO-GO); el directorio solo tiene marcadores" OFF)
 set(PP_SANITIZE "none" CACHE STRING "Instrumentación para V5: none | thread | address")
 set_property(CACHE PP_SANITIZE PROPERTY STRINGS none thread address)
 
