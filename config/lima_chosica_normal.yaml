@@ -1,0 +1,16 @@
+# T10 | Configuración calibrada: lima_chosica / normal.
+# Generado por scripts/run/generar_configs.py desde data/processed/parametros.csv (commit 1f9e7a2).
+# Calibración: scripts/run/calibrar.py (temporada por zona, Thom); años del grupo = 16.
+# Claves no calibradas copiadas de config/sintetico.yaml.
+estacion: lima_chosica
+regimen: normal
+config_id: 3
+semilla: 20261015
+n: 1000000
+dias: 120
+p01: 0.074231
+p11: 0.229814
+alfa: 1.168574
+theta: 1.699263
+capacidad: 6
+umbral: 50
