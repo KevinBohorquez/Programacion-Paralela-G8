@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# T18 | Borrador de Ashley (compatible con medir_openmp.py: CSV agregado con t1..t5). Rhamses mantiene graficar_openmp.py (CSV por corrida, protocolo-graficos-openmp.md); falta unificar ambos formatos.
+# T18 | Responsable: Ashley | Generador aceptado de la tabla y los gráficos OpenMP (entrada de medir_openmp.py; ver docs/protocolo-graficos-openmp.md).
 """Tiempo, speedup y eficiencia de OpenMP (2/4/8/16 hilos) a partir de results/bench/openmp.csv (T16).
 
   speedup = T1 / Tp         (T1 = media secuencial; Tp = media con p hilos)
