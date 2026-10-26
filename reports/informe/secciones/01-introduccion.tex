@@ -1,0 +1,18 @@
+\section{Introducción}
+\label{sec:introduccion}
+
+\IEEEPARstart{L}{as} lluvias asociadas a El Niño costero producen inundaciones recurrentes en Piura y Tumbes, mientras que en Lima una llovizna moderada puede colapsar los desagües de distritos cuyo drenaje pluvial es casi inexistente. En ambos casos la variable decisiva no es solo la cantidad de lluvia, sino la relación entre el agua que cae, el agua que el sistema puede evacuar por día y la persistencia de los días lluviosos. Esa relación puede cuantificarse: conocida la estadística de la lluvia diaria y una capacidad de drenaje, se puede estimar con qué frecuencia la primera supera a la segunda.
+
+Este trabajo construye un simulador que responde tres preguntas para cada zona estudiada: (i) cuál es la probabilidad de que ocurra al menos un evento de inundación en una temporada de lluvias; (ii) cuánto disminuye esa probabilidad al aumentar la capacidad de drenaje y cuál es la capacidad mínima que la mantiene por debajo de un umbral de diseño; y (iii) cuánto cambia el riesgo en un año El Niño frente a un año normal. El sistema no pronostica el clima ni modela la hidráulica de la red: estima probabilidades por temporada a partir de un modelo estocástico calibrado con datos públicos.
+
+La estimación es de tipo Monte Carlo y su precisión crece con el número de temporadas simuladas. Cubrir 5 estaciones, 2 regímenes climáticos, 13 capacidades de drenaje y 100 conjuntos de parámetros obtenidos por remuestreo, con $10^{6}$ temporadas por combinación, exige del orden de $1{,}3\times10^{10}$ temporadas de 120 días. Las temporadas son independientes entre sí, por lo que el problema es \emph{embarazosamente paralelo}; el interés técnico está en repartir el trabajo entre hilos, procesos y equipos sin alterar el resultado y en medir con rigor la ganancia obtenida.
+
+Las contribuciones del trabajo son:
+\begin{itemize}
+  \item un núcleo de simulación determinista cuyo resultado depende solo de los parámetros, la semilla y el índice global del escenario, gracias al generador Philox4x32-10 basado en contador~\cite{salmon2011};
+  \item cinco implementaciones (secuencial, OpenMP, MPI estático, MPI dinámico e híbrida MPI + OpenMP) con conteos idénticos bit a bit, verificados de forma automática;
+  \item un despliegue reproducible en contenedores Docker, con Compose para las pruebas en un equipo y Swarm para el clúster de tres equipos físicos;
+  \item una campaña de rendimiento con calentamiento y cinco repeticiones por punto, que informa tiempo, speedup, eficiencia, throughput y fracción serial de Karp--Flatt~\cite{karp1990}.
+\end{itemize}
+
+La Sección~\ref{sec:problema} plantea el problema y su dimensionamiento; la Sección~\ref{sec:modelo}, el modelo de simulación; la Sección~\ref{sec:metodologia}, la metodología de verificación y medición; las Secciones~\ref{sec:entorno} y~\ref{sec:implementacion}, el entorno y las implementaciones; la Sección~\ref{sec:rendimiento}, los resultados de rendimiento; las Secciones~\ref{sec:resultados} y~\ref{sec:sensibilidad}, los resultados científicos y la sensibilidad; y la Sección~\ref{sec:conclusiones}, las conclusiones.

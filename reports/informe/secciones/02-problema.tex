@@ -1,0 +1,43 @@
+\section{Planteamiento del problema}
+\label{sec:problema}
+
+\subsection{Contexto}
+
+La costa del Perú presenta dos mecanismos de inundación por lluvia. En la costa norte (Piura, Tumbes), el calentamiento anómalo del mar durante El Niño costero dispara convección sobre la llanura costera y produce lluvias extremas entre enero y abril; el riesgo está dominado por la \emph{cantidad} de lluvia. En Lima la lluvia es casi nula en un año normal, pero la capacidad de drenaje urbano es tan baja que lluvias moderadas bastan para causar daños; el riesgo está dominado por la \emph{capacidad de evacuación}. Un modelo útil debe capturar ambos casos con los mismos parámetros físicos: lluvia diaria, capacidad de drenaje y umbral crítico de acumulación.
+
+\subsection{Zonas y regímenes climáticos}
+
+Las series diarias de precipitación provienen del portal de datos hidrometeorológicos del SENAMHI~\cite{senamhi}. Se auditaron 8 estaciones de la costa norte y de Lima. Una combinación estación--año es elegible si tiene menos del 10\,\% de días faltantes en la temporada de su zona y no presenta valores negativos sin corregir. Con ese criterio se eligieron 5 estaciones de trabajo: Miraflores y Bernal (Piura), Puerto Pizarro y El Tigre (Tumbes) y Chosica (Lima), todas con al menos 20 años elegibles. La temporada es enero--abril en la costa norte y en Chosica, cuyo régimen de lluvias es convectivo de verano y no de garúa costera.
+
+Cada año se clasifica como \emph{normal} o \emph{El Niño} con la definición operacional del ENFEN~\cite{enfen2012}: un mes es cálido si el Índice Costero El Niño (ICEN)~\cite{icen} supera \num{0.4}, y hay un evento El Niño cuando se encadenan al menos tres meses cálidos consecutivos. Un año se clasifica como El Niño si alguno de los meses de su temporada pertenece a un evento. Cada régimen se calibra y se simula por separado, lo que permite responder la pregunta (iii) de la Sección~\ref{sec:introduccion}.
+
+\subsection{Qué es un dato y cuánto cómputo exige}
+
+El dato elemental es un \emph{día-escenario}: un día de lluvia sintética generado y procesado por la recursión del balance hídrico. Una temporada contiene $D = 120$ días-escenario. La Tabla~\ref{tab:dimensionamiento} resume la carga oficial, que combina incertidumbre de muestreo (temporadas por conjunto) e incertidumbre de calibración (conjuntos bootstrap).
+
+\begin{table}[!t]
+\centering
+\caption{Dimensionamiento de la carga oficial}
+\label{tab:dimensionamiento}
+\begin{tabular}{@{}lr@{}}
+\toprule
+Factor & Cantidad \\
+\midrule
+Estaciones SENAMHI & 5 \\
+Capacidades de drenaje $C$ (5--65~mm/día, paso 5) & 13 \\
+Regímenes (normal, El Niño) & 2 \\
+Conjuntos de parámetros bootstrap $K$ & 100 \\
+Temporadas por conjunto $N$ & $10^{6}$ \\
+\midrule
+Total de temporadas & $1{,}3\times10^{10}$ \\
+Total de días-escenario ($\times 120$) & $1{,}56\times10^{12}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+El costo secuencial medido en el equipo de referencia es de \qty{2.985}{\micro\second} por temporada (Sección~\ref{sec:rendimiento}). Extrapolado linealmente, la carga oficial requiere cerca de \qty{3.9e4}{\second} (\num{10.8}~horas) en un núcleo. Guardar la lluvia simulada en precisión simple ocuparía $1{,}56\times10^{12}\times\qty{4}{\byte} \approx \qty{6.2}{\tera\byte}$; por eso el diseño nunca la almacena: cada temporada se reduce en el momento a un indicador de inundación y a una entrada de un histograma.
+% TODO-T34: confirmar la carga efectivamente ejecutada en la corrida oficial X6 y su tiempo real en el clúster.
+
+\subsection{Alcance}
+
+El sistema no es un pronóstico meteorológico ni un modelo hidráulico: no simula topografía, escorrentía ni flujo en tuberías. La capacidad de drenaje y el umbral crítico se tratan como escenarios de diseño barridos en un rango; el rango de $C$ toma como referencia la norma peruana de drenaje pluvial urbano OS.060~\cite{os060}. La simplicidad del modelo físico es deliberada, para aislar el efecto de la paralelización.
