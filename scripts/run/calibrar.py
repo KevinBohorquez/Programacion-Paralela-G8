@@ -17,7 +17,7 @@ bootstrap remuestrea ANIOS con reemplazo (6.2/7.6: "remuestreo bootstrap de
 los anios de la serie historica"), no bloques de dias.
 
 Entradas:
-    data/raw/<id_estacion>.csv        (T06/generar_datos_sinteticos.py)
+    data/raw/<id_estacion>.csv        (T06: series SENAMHI versionadas; importar_senamhi.py)
     data/processed/auditoria_calidad.csv  (T08, para excluir anios no elegibles)
     data/processed/regimenes.csv      (T09)
 
