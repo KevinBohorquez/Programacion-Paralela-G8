@@ -33,3 +33,7 @@ __pycache__/
 .venv/
 ~$*.docx
 ~$*.xlsx
+
+# Salidas de humo de Compose y de la simulación de Swarm
+/results/compose/
+/results/swarm-sim/
