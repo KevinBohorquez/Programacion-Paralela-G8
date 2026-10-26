@@ -11,7 +11,10 @@
 #   PP_N=2000000  PP_REPS=5  PP_LOTE=0  PP_CONFIG=config/sintetico.yaml
 #   PP_RED_TCP=eth0             interfaz o CIDR para btl/oob tcp (Swarm: la subred overlay)
 #   PP_RESULTADOS=/resultados   dónde quedan e1_estatico.csv, e2_dinamico.csv y la comparación
-#   GIT_COMMIT                  commit del anfitrión (dentro del contenedor git no ve el worktree)
+#   GIT_COMMIT                  commit del anfitrión (dentro del contenedor git no ve el worktree);
+#                               lo leen los scripts de medición para su propio CSV
+#   PP_COMMIT                   commit que escriben los simuladores pp_* (columna `commit`); si falta,
+#                               se toma de GIT_COMMIT. Se reenvía a todos los rangos con `mpirun -x`
 set -euo pipefail
 
 ROL=${1:?uso: nodo_mpi.sh trabajador|lanzador}
@@ -44,6 +47,18 @@ fi
 RES=${PP_RESULTADOS:-/resultados}
 mkdir -p "$RES"
 
+# Commit de los simuladores: PP_COMMIT o, si falta, GIT_COMMIT. Con `desconocido` no se exporta y
+# cada binario conserva el commit que CMake leyó al configurar.
+if [ -z "${PP_COMMIT:-}" ] && [ -n "${GIT_COMMIT:-}" ] && [ "$GIT_COMMIT" != "desconocido" ]; then
+  PP_COMMIT=$GIT_COMMIT
+fi
+MPIRUN_EXTRA=()
+if [ -n "${PP_COMMIT:-}" ]; then
+  export PP_COMMIT
+  # Los rangos remotos (lanzados por ssh) solo heredan las variables pasadas con -x.
+  MPIRUN_EXTRA=("--mpirun-extra=-x PP_COMMIT")
+fi
+
 # Espera a que cada trabajador acepte ssh (en Swarm, además, a que termine de compilar: sshd arranca después).
 for h in ${NODOS//,/ }; do
   [ "$h" = "$(hostname)" ] && continue
@@ -57,7 +72,7 @@ done
 
 COMUNES=(--experimento x3 --recursos "${PP_PROCESOS:-4}" --cargas "${PP_N:-2000000}" --reps "${PP_REPS:-5}"
          --hosts "$HOSTS" --red-tcp "${PP_RED_TCP:-eth0}" --build-dir "$BUILD" --config "${PP_CONFIG:-config/sintetico.yaml}"
-         --lote "${PP_LOTE:-0}")
+         --lote "${PP_LOTE:-0}" "${MPIRUN_EXTRA[@]}")
 if [ -n "${PP_NUCLEOS:-}" ]; then  # núcleos físicos totales del clúster (marca de sobresuscripción)
   COMUNES+=(--nucleos "$PP_NUCLEOS")
 fi
