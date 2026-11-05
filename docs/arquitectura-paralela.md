@@ -1,6 +1,6 @@
 # Arquitectura paralela del simulador (T37)
 
-**Responsable:** Ashley (R3) · **Alcance:** secuencial, OpenMP, MPI E1 (estático), MPI E2 (dinámico) e híbrido MPI + OpenMP. CUDA no se activó (`docs/decision-cuda.md`).
+**Responsable:** Ashley (R3) · **Alcance:** secuencial, OpenMP, MPI E1 (estático), MPI E2 (dinámico) e híbrido MPI + OpenMP. CUDA es una extensión en desarrollo (`docs/decision-cuda.md`).
 
 Este documento explica cómo se reparte el trabajo y por qué todos los backends dan el mismo resultado. Cada afirmación remite al código con la forma `ruta:línea`, de modo que pueda comprobarse con `rg -n` sobre el repositorio.
 

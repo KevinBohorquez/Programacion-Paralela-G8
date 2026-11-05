@@ -41,7 +41,7 @@ docker run --rm --shm-size=1g -v "$PWD:/work" -w /work -e PP_COMMIT=<commit> pp-
 | Paso | Comando |
 | --- | --- |
 | Compilar (Release, con MPI) | `cmake -S . -B build/docker-mpi -DCMAKE_BUILD_TYPE=Release -DPP_BUILD_MPI=ON && cmake --build build/docker-mpi --parallel` |
-| Opciones CMake | `PP_BUILD_OPENMP=ON`, `PP_BUILD_MPI=OFF`, `PP_BUILD_CUDA=OFF` (no activada en T29), `PP_V6_OBSERVADO=OFF` |
+| Opciones CMake | `PP_BUILD_OPENMP=ON`, `PP_BUILD_MPI=OFF`, `PP_BUILD_CUDA=OFF` (extensión CUDA en desarrollo), `PP_V6_OBSERVADO=OFF` |
 | Pruebas CTest | `ctest --test-dir build/docker-mpi --output-on-failure` (20 pruebas; `v6_observado` deshabilitada) |
 | V6 frente a lo observado | `-DPP_V6_OBSERVADO=ON` y `ctest -L v6_observado` (hoy no cumple el 10 % en las colas) |
 | Pruebas de scripts | `PP_BIN_DIR=build/docker-mpi/src/backends PP_V6_GENERADOR=build/docker-mpi/pp_v6_generador python3 -m pytest -q tests/unit -k "not observado"` y `python3 -m pytest -q tests/integration` |

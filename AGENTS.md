@@ -4,7 +4,7 @@ Esta guía es para quien clone la rama y quiera ejecutar las pruebas, las medici
 
 ## 1. Requisitos
 
-- Docker (Docker Desktop en Windows o macOS, Docker Engine en Linux). No hace falta GPU: CUDA quedó descartado ([decisión](docs/decision-cuda.md)).
+- Docker (Docker Desktop en Windows o macOS, Docker Engine en Linux). CUDA está en desarrollo; para las campañas actuales no hace falta GPU ([decisión](docs/decision-cuda.md)).
 - No hace falta Python, CMake ni compilador en el anfitrión: todo corre dentro de la imagen `pp-g8`.
 - Al menos 16 núcleos físicos para reproducir la matriz completa 2/4/8/16. Con menos, ver §4.
 

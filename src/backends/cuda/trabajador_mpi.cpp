@@ -1,1 +1,1 @@
-// T41 | Responsable: Lita | No activado (NO-GO de T29): integración CPU más GPU no implementada; ver docs/decision-cuda.md.
+// T41 | Responsable: Lita | Extensión CUDA EXT2 en desarrollo: marcador de la GPU como trabajador MPI, aún sin implementar; ver docs/inventario-gpu.md y docs/decision-cuda.md.

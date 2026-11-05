@@ -60,7 +60,7 @@ En PowerShell: sin `MSYS_NO_PATHCONV`, con `"${PWD}:/work"` y `$(git rev-parse -
 | Oficial: núcleo, secuencial, OpenMP, MPI estático, dinámico e híbrido | `cmake -S . -B build/docker -DCMAKE_BUILD_TYPE=Release -DPP_BUILD_MPI=ON && cmake --build build/docker --parallel` | `PP_BUILD_MPI=OFF` por defecto: sin la opción solo se compilan secuencial y OpenMP |
 | Copia para la demo web (binarios MPI) | `cmake -S . -B build/docker-mpi -DCMAKE_BUILD_TYPE=Release -DPP_BUILD_MPI=ON && cmake --build build/docker-mpi --parallel` | igual que el oficial |
 | V6 frente a lo observado en CTest | añadir `-DPP_V6_OBSERVADO=ON` | `OFF` por defecto |
-| CUDA | No se compila: T29 no activó la extensión ([decision-cuda.md](decision-cuda.md)). | `PP_BUILD_CUDA=OFF` |
+| CUDA | No se compila todavía: la extensión está en desarrollo ([decision-cuda.md](decision-cuda.md)). | `PP_BUILD_CUDA=OFF` |
 
 Ejecutables: `build/docker/src/backends/{serial/pp_serial, openmp/pp_openmp, mpi/pp_mpi_estatico, mpi/pp_mpi_dinamico, hybrid/pp_hibrido}` y `build/docker/pp_v6_generador`. Todos aceptan `--ayuda` y la CLI de [contratos.md §4](contratos.md#4-línea-de-comandos).
 

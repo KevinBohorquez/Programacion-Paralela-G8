@@ -25,13 +25,13 @@ La Tabla~\ref{tab:validaciones} lista las pruebas V1--V8. V1, V3, V4 y V7 forman
 Id & Prueba & Criterio de aceptación & Estado \\
 \midrule
 V1 & Equivalencia CPU & $k$, $n$ e histograma idénticos bit a bit entre secuencial, OpenMP, MPI E1/E2 e híbrido, para cualquier número de hilos y procesos & Aprobada \\
-V2 & Equivalencia GPU & Diferencia relativa del conteo $\le 10^{-6}$ frente a la CPU & No activada (CUDA NO-GO) \\
+V2 & Equivalencia GPU & Diferencia relativa del conteo $\le 10^{-6}$ frente a la CPU & Pendiente (CUDA en desarrollo) \\
 V3 & Conservación & $\sum$ escenarios procesados $= N$ y $\sum$ histograma $= n$ & Aprobada \\
 V4 & Reproducibilidad & Dos corridas con la misma configuración dan resultados idénticos & Aprobada \\
 V5 & Ausencia de carreras & Cero reportes de ThreadSanitizer + Archer; el control negativo sí se detecta & Aprobada \\
 V6 & Validación estadística & Error relativo $\le 10$\,\% en frecuencia de lluvia, media, desviación, P95, P99, racha media y máximo diario; prueba K--S no rechazada al 5\,\% & Parcial (ver texto) \\
 V7 & Caso analítico & Con $D=1$, $P = p_{01}\,Q\!\left(\alpha, (C+U)/\theta\right)$ dentro del IC de Wilson & Aprobada \\
-V8 & Memoria y carreras GPU & Cero errores de \codigo{compute-sanitizer} & No activada (CUDA NO-GO) \\
+V8 & Memoria y carreras GPU & Cero errores de \codigo{compute-sanitizer} & Pendiente (CUDA en desarrollo) \\
 \bottomrule
 \end{tabular}
 \end{table*}

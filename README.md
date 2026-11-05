@@ -1,6 +1,6 @@
 # Simulación paralela del riesgo de inundación urbana
 
-Proyecto 8 del curso Programación Concurrente y Paralela, UNMSM 2026-II. El simulador estima con Monte Carlo la probabilidad de que el agua acumulada supere un umbral durante una temporada de lluvias, con backends **secuencial, OpenMP, MPI estático, MPI dinámico (maestro–trabajador) e híbrido MPI + OpenMP**, todos sobre el mismo núcleo y con resultados idénticos bit a bit (V1). La extensión CUDA no se activó (NO-GO de T29, ver [docs/decision-cuda.md](docs/decision-cuda.md)).
+Proyecto 8 del curso Programación Concurrente y Paralela, UNMSM 2026-II. El simulador estima con Monte Carlo la probabilidad de que el agua acumulada supere un umbral durante una temporada de lluvias, con backends **secuencial, OpenMP, MPI estático, MPI dinámico (maestro–trabajador) e híbrido MPI + OpenMP**, todos sobre el mismo núcleo y con resultados idénticos bit a bit (V1). La extensión CUDA (EXT1: kernel en GPU validado con V2/V8; EXT2: GPU como trabajador MPI) está diseñada y en desarrollo; todavía no tiene kernels implementados (ver [docs/decision-cuda.md](docs/decision-cuda.md)).
 
 ## Propósito
 
@@ -80,7 +80,7 @@ python3 scripts/run/generar_configs.py
 | R1 | David | Integración, MPI, coordinación y entregas |
 | R2 | Angela | Series SENAMHI, calibración y análisis de riesgo |
 | R3 | Ashley | Núcleo secuencial, OpenMP, pruebas y CI |
-| R4 | Lita | Pruebas de correctitud, barridos de recursos y CUDA si se activa |
+| R4 | Lita | Pruebas de correctitud, barridos de recursos y extensión CUDA |
 | R5 | Miguel | Docker, clúster, automatización y mediciones |
 | R6 | Rhamses | Documentación, gráficos, informe y exposición |
 
@@ -93,7 +93,7 @@ Cada integrante trabaja en su rama (`angela`, `ashley`, `lita`, `miguel`, `sevan
 ## Plan de trabajo
 
 - [Plan de desarrollo hasta la semana 8](docs/plan-desarrollo-semana-8.md): definición, datos, entorno, referencia secuencial y OpenMP.
-- [Plan de desarrollo hasta la semana 15](docs/plan-desarrollo-semana-15.md): MPI, híbrido, campañas de rendimiento y científicas, informe y exposición. CUDA se ejecuta solo si se activa la extensión.
+- [Plan de desarrollo hasta la semana 15](docs/plan-desarrollo-semana-15.md): MPI, híbrido, campañas de rendimiento y científicas, informe y exposición. La extensión CUDA está en desarrollo.
 
 Las rutas reservadas para programar y los formatos de cada entrega están en las columnas **V–W** de la hoja `Tareas` del [cronograma interno](cronograma/cronograma-interno.xlsx).
 
@@ -109,7 +109,7 @@ Las rutas reservadas para programar y los formatos de cada entrega están en las
 | `src/backends/openmp/` | Paralelización por hilos y reducciones. |
 | `src/backends/mpi/` | Reparto estático y maestro–trabajador dinámico. |
 | `src/backends/hybrid/` | Integración MPI + OpenMP. |
-| `src/backends/cuda/` | Marcadores de la extensión CUDA, no activada (NO-GO de T29). |
+| `src/backends/cuda/` | Marcadores de la extensión CUDA, en desarrollo. |
 | `src/io/` | Lectura de configuración y escritura de resultados CSV con metadatos. |
 | `src/stats/` | Intervalo de Wilson e histogramas. |
 | `tests/unit/` | Pruebas del RNG, estimadores, V6, V7 y scripts. |
@@ -130,4 +130,4 @@ Las rutas reservadas para programar y los formatos de cada entrega están en las
 
 ## Criterio de comparación de recursos
 
-Se fija el mismo problema y la misma semilla por comparación. Se ejecuta una corrida de calentamiento y cinco repeticiones por punto; se guardan tiempos, resultados, commit y hardware. OpenMP se compara con 2, 4, 8 y 16 hilos; MPI con 2, 4, 8 y 16 procesos; el híbrido con esos presupuestos de núcleos CPU distribuidos entre procesos e hilos. La comparación CUDA por bloques no se realiza, porque la extensión no se activó (NO-GO de T29). Se reportan tiempo, speedup, eficiencia cuando corresponda y throughput tras comprobar la equivalencia de resultados.
+Se fija el mismo problema y la misma semilla por comparación. Se ejecuta una corrida de calentamiento y cinco repeticiones por punto; se guardan tiempos, resultados, commit y hardware. OpenMP se compara con 2, 4, 8 y 16 hilos; MPI con 2, 4, 8 y 16 procesos; el híbrido con esos presupuestos de núcleos CPU distribuidos entre procesos e hilos. La comparación CUDA por bloques (X5) se realizará cuando la extensión pase V2 y V8; todavía no hay cifras de GPU. Se reportan tiempo, speedup, eficiencia cuando corresponda y throughput tras comprobar la equivalencia de resultados.

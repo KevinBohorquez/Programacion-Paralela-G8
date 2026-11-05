@@ -1,1 +1,1 @@
-// T38 | Responsable: Lita | No activado (NO-GO de T29): kernel CUDA no implementado; ver docs/decision-cuda.md.
+// T38 | Responsable: Lita | Extensión CUDA EXT1 en desarrollo: marcador del kernel, aún sin implementar; ver docs/inventario-gpu.md y docs/decision-cuda.md.

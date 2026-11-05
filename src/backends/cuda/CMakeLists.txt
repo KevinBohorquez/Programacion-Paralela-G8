@@ -1,1 +1,1 @@
-# T38 | Responsable: Lita | No activado (NO-GO de T29): marcador sin objetivos; ver docs/decision-cuda.md.
+# T38 | Responsable: Lita | Extensión CUDA EXT1 en desarrollo: marcador sin objetivos todavía; ver docs/inventario-gpu.md y docs/decision-cuda.md.

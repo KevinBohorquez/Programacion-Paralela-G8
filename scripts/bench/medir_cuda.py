@@ -1,1 +1,1 @@
-# T40 | Responsable: Lita | No activado (NO-GO de T29): barrido X5 no implementado; ver docs/decision-cuda.md.
+# T40 | Responsable: Lita | Extensión CUDA EXT1 en desarrollo: marcador del barrido X5, aún sin implementar; ver docs/inventario-gpu.md y docs/decision-cuda.md.

@@ -2,7 +2,7 @@
 
 **Responsable:** Lita (R4) · **Revisor:** David (R1) · **Fecha de consulta:** 15/10/2026 · **Alimenta a:** T29 (decisión CUDA, S10)
 
-Este inventario registra lo que se comprobó con comandos en los equipos disponibles. La decisión final de activar EXT1/EXT2 la toma T29; aquí solo hay una propuesta preliminar con su alternativa CPU.
+Este inventario registra lo que se comprobó con comandos en los equipos disponibles. La decisión sobre EXT1/EXT2 está en T29 (`docs/decision-cuda.md`).
 
 ## 1. Equipos revisados
 
@@ -44,11 +44,13 @@ Docker no está instalado en este equipo (ni Docker Desktop ni dentro de WSL), d
 4. **Docker con GPU no preparado.** Para EXT2 dentro de Swarm haría falta Docker Engine y NVIDIA Container Toolkit en este equipo, además de declarar la GPU como recurso del nodo.
 5. **Precisión.** El contrato fija `-fmad=false` y una diferencia relativa ≤ 10⁻⁶ en el conteo (V2). La capacidad 8.9 soporta doble precisión, aunque con un rendimiento FP64 bajo frente a FP32 en GPU de consumo; hay que medirlo en T40 antes de concluir.
 
-## 4. Decisión preliminar (a confirmar en T29)
+## 4. Estado de la extensión y requisitos previos
 
-| Extensión | Propuesta | Condición para mantenerla | Alternativa si no se cumple |
-| --- | --- | --- | --- |
-| **EXT1** (kernel CUDA, reducción, V2/V8, barrido de bloques) | **Go condicionado** | Toolkit instalado y `nvcc` compilando un caso de prueba antes del inicio de S11 (03/11/2026); E4 y E5 cerrados sin retraso. | Descartar EXT1 y dedicar S11–S12 a reforzar X1–X3 y la comparación MPI heterogénea (T32) solo con CPU. |
-| **EXT2** (GPU como trabajador MPI en E2) | **No-go provisional** | Reconsiderar solo si EXT1 pasa V2/V8 y el Swarm de T25 funciona con este equipo como nodo. | Comparar E1/E2 en CPU heterogéneas (T32) y documentar el reparto que tendría la GPU como trabajo futuro. |
+CUDA está incluido en el proyecto como extensión en desarrollo (`docs/decision-cuda.md`).
 
-Las tareas T38–T41 permanecen «No iniciado» hasta el acta de T29 (`docs/decision-cuda.md`).
+| Extensión | Estado | Requisito previo |
+| --- | --- | --- |
+| **EXT1** (kernel CUDA, reducción, V2/V8, barrido de bloques) | En desarrollo | CUDA Toolkit 12.x instalado en WSL en este equipo y `nvcc` compilando un caso de prueba. |
+| **EXT2** (GPU como trabajador MPI en E2) | En desarrollo, después de EXT1 | EXT1 validada con V2/V8 y este equipo participando como nodo del Swarm de T25. |
+
+Las tareas T38–T41 siguen el plan de `docs/decision-cuda.md`.
