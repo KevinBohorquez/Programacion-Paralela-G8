@@ -1,0 +1,166 @@
+/* Core heat map. Colour blends by stacking --heat-* layers; only opacity transitions (180 ms). */
+.mapa {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: calc(0.75rem * var(--viz-escala, 1));
+  font-variant-numeric: tabular-nums;
+}
+
+.cabecera {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  min-block-size: 1.5rem;
+}
+
+.etiqueta {
+  color: var(--text);
+  font-size: calc(1rem * var(--viz-escala, 1));
+  font-weight: 600;
+}
+
+.media {
+  margin-inline-start: auto;
+  color: var(--text-muted);
+  font-size: calc(0.875rem * var(--viz-escala, 1));
+}
+
+.media strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.rejilla {
+  display: grid;
+  gap: calc(0.5rem * var(--viz-escala, 1));
+}
+
+.celda {
+  position: relative;
+  container-type: inline-size;
+  aspect-ratio: 1.25;
+  border-radius: 10px;
+  isolation: isolate;
+  color: var(--heat-ink-0, var(--text));
+}
+
+.celda[data-nivel="1"] { color: var(--heat-ink-1, var(--text)); }
+.celda[data-nivel="2"] { color: var(--heat-ink-2, var(--text)); }
+.celda[data-nivel="3"] { color: var(--heat-ink-3, var(--surface-sunken)); }
+.celda[data-nivel="4"] { color: var(--heat-ink-4, var(--surface-sunken)); }
+
+.capa {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  transition: opacity 180ms ease-out;
+}
+
+.capa:first-of-type {
+  box-shadow: inset 0 0 0 1px var(--border);
+}
+
+/* Glow: a static shadow whose opacity follows the heat; no filter blur. */
+.brillo {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  box-shadow: 0 0 18px 2px var(--heat-4);
+  transition: opacity 180ms ease-out;
+}
+
+.cpu {
+  position: absolute;
+  inset-block-start: 8%;
+  inset-inline-start: 9%;
+  font-size: clamp(0.6875rem, 12cqi, 0.875rem);
+  font-weight: 500;
+  opacity: 0.8;
+}
+
+.valor {
+  position: absolute;
+  inset-block-end: 8%;
+  inset-inline-end: 9%;
+  font-size: clamp(1rem, 30cqi, 2.25rem);
+  font-weight: 650;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.unidad {
+  margin-inline-start: 0.08em;
+  font-size: 0.5em;
+  font-weight: 500;
+  opacity: 0.8;
+}
+
+.pie {
+  display: grid;
+  grid-template-columns: minmax(10rem, 1fr) 2fr;
+  align-items: end;
+  gap: 1.5rem;
+}
+
+.leyenda {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-subtle);
+  font-size: calc(0.8125rem * var(--viz-escala, 1));
+}
+
+.gradiente {
+  flex: 1;
+  block-size: 10px;
+  border-radius: 5px;
+  background: linear-gradient(to right, var(--heat-0), var(--heat-1), var(--heat-2), var(--heat-3), var(--heat-4));
+  box-shadow: inset 0 0 0 1px var(--border);
+}
+
+.spark {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.sparkTitulo {
+  color: var(--text-subtle);
+  font-size: calc(0.8125rem * var(--viz-escala, 1));
+}
+
+.sparkSvg {
+  display: block;
+  inline-size: 100%;
+  block-size: 3.5rem;
+  border-radius: 6px;
+  background: var(--surface-sunken);
+}
+
+.sparkGuia {
+  stroke: var(--border);
+  stroke-dasharray: 4 4;
+  vector-effect: non-scaling-stroke;
+}
+
+.sparkArea {
+  fill: var(--heat-2);
+  opacity: 0.22;
+}
+
+.sparkLinea {
+  fill: none;
+  stroke: var(--heat-3);
+  stroke-width: 2;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .capa,
+  .brillo {
+    transition: none;
+  }
+}

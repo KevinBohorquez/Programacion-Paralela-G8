@@ -1,0 +1,57 @@
+/* Exceedance curve: Wilson band at low opacity, the line, and a threshold marker that glides on transform. */
+.banda {
+  fill: var(--action-surface);
+  opacity: 0.22;
+}
+
+.linea {
+  fill: none;
+  stroke: var(--action-surface);
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.marcador {
+  transition: transform 180ms ease-out;
+}
+
+.guia {
+  stroke: var(--text-muted);
+  stroke-width: 1.5;
+  stroke-dasharray: 6 5;
+}
+
+.textoU {
+  fill: var(--text-muted);
+  font-size: calc(0.875rem * var(--viz-escala, 1));
+  font-weight: 500;
+}
+
+.halo {
+  fill: var(--action-surface);
+  opacity: 0.2;
+}
+
+.punto {
+  fill: var(--action-surface);
+  stroke: var(--surface-raised);
+  stroke-width: 2;
+}
+
+.valor {
+  fill: var(--text);
+  font-size: calc(1.125rem * var(--viz-escala, 1));
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+  paint-order: stroke;
+  stroke: var(--surface-raised);
+  stroke-width: 4px;
+  stroke-linejoin: round;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marcador {
+    transition: none;
+  }
+}

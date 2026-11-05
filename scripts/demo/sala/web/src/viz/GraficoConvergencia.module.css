@@ -1,0 +1,42 @@
+/* Convergence: p̂ with Wilson error bars over log N, and a dashed 1/√N envelope around the latest p̂. */
+.centro {
+  stroke: var(--text-subtle);
+  stroke-width: 1;
+  opacity: 0.6;
+}
+
+.guia {
+  fill: none;
+  stroke: var(--text-muted);
+  stroke-width: 1.5;
+  stroke-dasharray: 6 5;
+}
+
+.textoGuia {
+  fill: var(--text-muted);
+  font-size: calc(0.875rem * var(--viz-escala, 1));
+  font-weight: 500;
+}
+
+.barraError {
+  stroke: var(--action-surface);
+  stroke-width: 1.75;
+  opacity: 0.75;
+}
+
+.punto {
+  fill: var(--action-surface);
+  stroke: var(--surface-raised);
+  stroke-width: 2;
+}
+
+.valor {
+  fill: var(--text);
+  font-size: calc(1.125rem * var(--viz-escala, 1));
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+  paint-order: stroke;
+  stroke: var(--surface-raised);
+  stroke-width: 4px;
+  stroke-linejoin: round;
+}
