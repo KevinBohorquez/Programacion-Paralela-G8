@@ -127,7 +127,7 @@ def comando_paralelo(p: dict, comunes: str, salida: str) -> str:
         return (f"{afin} {BIN}/openmp/pp_openmp {comunes} --hilos {p['hilos']} "
                 f"--schedule {p['schedule']} --salida {salida}")
     if p["modo"] == "hibrido":
-        return (f"{afin} {mpirun} --bind-to none {BIN_MPI}/hybrid/pp_hibrido {comunes} --hilos {p['hilos']} "
+        return (f"OMP_PROC_BIND=false OMP_PLACES=cores {mpirun} --bind-to none {BIN_MPI}/hybrid/pp_hibrido {comunes} --hilos {p['hilos']} "
                 f"--schedule {p['schedule']} --salida {salida}")
     return f"{mpirun} {BIN_MPI}/mpi/pp_{p['modo']} {comunes} --salida {salida}"
 

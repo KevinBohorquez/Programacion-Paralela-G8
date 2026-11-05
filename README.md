@@ -28,6 +28,7 @@ Los [contratos de CLI, configuración y CSV (T02)](docs/contratos.md) fijan el �
 | Compose y Swarm (T22, T25) | `docker/compose.yaml`, `docker/swarm-stack.yaml`, `scripts/deploy/desplegar_swarm.ps1` | [docker/README.md](docker/README.md) |
 | Validación V1, V5, V6, V7 | `tests/`, `results/validacion/` | ver la sección «Pruebas» |
 | Demo web de la exposición | `scripts/demo/servidor_demo.py` | — |
+| Sala de control de la demo en vivo | `scripts/demo/sala_control.py`, `scripts/run/demo-sala.ps1` | [demo-sala-control.md](docs/demo-sala-control.md) |
 
 ## Compilar y probar (Docker)
 

@@ -76,6 +76,10 @@ Escribe `results/evidencia/t05_hello_hibrido.log` y `results/evidencia/t05_hello
 > `compose-hello.yaml` es solo para T05. Las corridas E1/E2 con Compose son T22 (`compose.yaml`).
 > La clave SSH se genera dentro de la imagen y solo sirve para la red interna de compose; no publiques la imagen.
 
+## Sala de control de la demo
+
+El servidor de la sala de control corre en un contenedor `pp-g8` en el puerto 8765: ver [docs/demo-sala-control.md](../docs/demo-sala-control.md) y `scripts/run/demo-sala.ps1` (o `demo-sala.sh`).
+
 ## Advertencia de hardware
 
 El equipo de medición es un Intel Core Ultra 9 275HX: 8 núcleos P + 16 núcleos E, sin SMT.
