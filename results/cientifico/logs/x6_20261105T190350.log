@@ -1,0 +1,850 @@
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/lima_chosica_normal.yaml --capacidad 2 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=3
+n=10000000 k=0 p_hat=0 wilson=[0, 3.8414573450141057e-07]
+tiempo_s=1.232772733 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/lima_chosica_normal.yaml --capacidad 4 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=3
+n=10000000 k=0 p_hat=0 wilson=[0, 3.8414573450141057e-07]
+tiempo_s=1.2190536240000001 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/lima_chosica_normal.yaml --capacidad 5 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=3
+n=10000000 k=0 p_hat=0 wilson=[0, 3.8414573450141057e-07]
+tiempo_s=1.293154044 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/lima_chosica_normal.yaml --capacidad 6 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=3
+n=10000000 k=0 p_hat=0 wilson=[0, 3.8414573450141057e-07]
+tiempo_s=1.393480552 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/lima_chosica_normal.yaml --capacidad 8 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=3
+n=10000000 k=0 p_hat=0 wilson=[0, 3.8414573450141057e-07]
+tiempo_s=1.3935474189999999 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/lima_chosica_normal.yaml --capacidad 10 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=3
+n=10000000 k=0 p_hat=0 wilson=[0, 3.8414573450141057e-07]
+tiempo_s=1.388065186 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/lima_chosica_normal.yaml --capacidad 15 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=3
+n=10000000 k=0 p_hat=0 wilson=[0, 3.8414573450141057e-07]
+tiempo_s=1.3905058939999999 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/lima_chosica_normal.yaml --capacidad 20 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=3
+n=10000000 k=0 p_hat=0 wilson=[0, 3.8414573450141057e-07]
+tiempo_s=1.552902354 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/lima_chosica_normal.yaml --capacidad 25 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=3
+n=10000000 k=0 p_hat=0 wilson=[0, 3.8414573450141057e-07]
+tiempo_s=1.6871772650000001 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/lima_chosica_normal.yaml --capacidad 30 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=3
+n=10000000 k=0 p_hat=0 wilson=[0, 3.8414573450141057e-07]
+tiempo_s=1.6855616499999999 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/lima_chosica_normal.yaml --capacidad 35 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=3
+n=10000000 k=0 p_hat=0 wilson=[0, 3.8414573450141057e-07]
+tiempo_s=1.6694793569999999 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/lima_chosica_normal.yaml --capacidad 40 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=3
+n=10000000 k=0 p_hat=0 wilson=[0, 3.8414573450141057e-07]
+tiempo_s=1.6754571490000001 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/lima_chosica_normal.yaml --capacidad 45 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=3
+n=10000000 k=0 p_hat=0 wilson=[0, 3.8414573450141057e-07]
+tiempo_s=1.675204946 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/lima_chosica_normal.yaml --capacidad 50 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=3
+n=10000000 k=0 p_hat=0 wilson=[0, 3.8414573450141057e-07]
+tiempo_s=1.6956521360000001 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/lima_chosica_normal.yaml --capacidad 55 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=3
+n=10000000 k=0 p_hat=0 wilson=[0, 3.8414573450141057e-07]
+tiempo_s=1.681173166 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/lima_chosica_normal.yaml --capacidad 60 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=3
+n=10000000 k=0 p_hat=0 wilson=[0, 3.8414573450141057e-07]
+tiempo_s=1.6589390239999999 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/lima_chosica_normal.yaml --capacidad 65 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=3
+n=10000000 k=0 p_hat=0 wilson=[0, 3.8414573450141057e-07]
+tiempo_s=1.66835494 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_bernal_normal.yaml --capacidad 2 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=9
+n=10000000 k=139 p_hat=1.3900000000000001e-05 wilson=[1.1773352059107953e-05, 1.6410782996142045e-05]
+tiempo_s=1.6042216680000001 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_bernal_normal.yaml --capacidad 4 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=9
+n=10000000 k=39 p_hat=3.8999999999999999e-06 wilson=[2.8530984345433961e-06, 5.3310443036212857e-06]
+tiempo_s=1.6041845990000001 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_bernal_normal.yaml --capacidad 5 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=9
+n=10000000 k=22 p_hat=2.2000000000000001e-06 wilson=[1.4529179249112731e-06, 3.3312261193489055e-06]
+tiempo_s=1.6145622719999999 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_bernal_normal.yaml --capacidad 6 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=9
+n=10000000 k=14 p_hat=1.3999999999999999e-06 wilson=[8.339858864103913e-07, 2.3501587724829628e-06]
+tiempo_s=1.574976463 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_bernal_normal.yaml --capacidad 8 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=9
+n=10000000 k=11 p_hat=1.1000000000000001e-06 wilson=[6.1424380325912946e-07, 1.9699010861216656e-06]
+tiempo_s=1.572727668 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_bernal_normal.yaml --capacidad 10 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=9
+n=10000000 k=6 p_hat=5.9999999999999997e-07 wilson=[2.749854098841094e-07, 1.3091598636424197e-06]
+tiempo_s=1.572141013 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_bernal_normal.yaml --capacidad 15 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=9
+n=10000000 k=2 p_hat=1.9999999999999999e-07 wilson=[5.4847215539141395e-08, 7.2929836530397529e-07]
+tiempo_s=1.5541620270000001 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_bernal_normal.yaml --capacidad 20 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=9
+n=10000000 k=1 p_hat=9.9999999999999995e-08 wilson=[1.7652455711617434e-08, 5.6649320196064622e-07]
+tiempo_s=1.5577140860000001 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_bernal_normal.yaml --capacidad 25 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=9
+n=10000000 k=0 p_hat=0 wilson=[0, 3.8414573450141057e-07]
+tiempo_s=1.5896172690000001 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_bernal_normal.yaml --capacidad 30 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=9
+n=10000000 k=0 p_hat=0 wilson=[0, 3.8414573450141057e-07]
+tiempo_s=1.5693187470000001 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_bernal_normal.yaml --capacidad 35 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=9
+n=10000000 k=0 p_hat=0 wilson=[0, 3.8414573450141057e-07]
+tiempo_s=1.4431534159999999 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_bernal_normal.yaml --capacidad 40 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=9
+n=10000000 k=0 p_hat=0 wilson=[0, 3.8414573450141057e-07]
+tiempo_s=1.5672581999999999 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_bernal_normal.yaml --capacidad 45 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=9
+n=10000000 k=0 p_hat=0 wilson=[0, 3.8414573450141057e-07]
+tiempo_s=1.551375559 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_bernal_normal.yaml --capacidad 50 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=9
+n=10000000 k=0 p_hat=0 wilson=[0, 3.8414573450141057e-07]
+tiempo_s=1.554635024 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_bernal_normal.yaml --capacidad 55 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=9
+n=10000000 k=0 p_hat=0 wilson=[0, 3.8414573450141057e-07]
+tiempo_s=1.5778234179999999 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_bernal_normal.yaml --capacidad 60 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=9
+n=10000000 k=0 p_hat=0 wilson=[0, 3.8414573450141057e-07]
+tiempo_s=1.5693340170000001 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_bernal_normal.yaml --capacidad 65 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=9
+n=10000000 k=0 p_hat=0 wilson=[0, 3.8414573450141057e-07]
+tiempo_s=1.558937671 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_miraflores_normal.yaml --capacidad 2 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=1
+n=10000000 k=17899 p_hat=0.0017899000000000001 wilson=[0.0017638923705192847, 0.0018162904000503168]
+tiempo_s=1.603912467 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_miraflores_normal.yaml --capacidad 4 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=1
+n=10000000 k=5884 p_hat=0.00058839999999999999 wilson=[0.00057356070720702913, 0.0006036229864647719]
+tiempo_s=1.588033912 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_miraflores_normal.yaml --capacidad 5 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=1
+n=10000000 k=3920 p_hat=0.00039199999999999999 wilson=[0.00037992151345776895, 0.00040446233110647667]
+tiempo_s=1.5922979859999999 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_miraflores_normal.yaml --capacidad 6 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=1
+n=10000000 k=2787 p_hat=0.0002787 wilson=[0.00026854457825827179, 0.00028923935335339727]
+tiempo_s=1.589855128 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_miraflores_normal.yaml --capacidad 8 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=1
+n=10000000 k=1533 p_hat=0.00015330000000000001 wilson=[0.00014581624804198366, 0.00016116777991343563]
+tiempo_s=1.6063038430000001 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_miraflores_normal.yaml --capacidad 10 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=1
+n=10000000 k=919 p_hat=9.1899999999999998e-05 wilson=[8.6147575680982756e-05, 9.8036499447532683e-05]
+tiempo_s=1.565717332 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_miraflores_normal.yaml --capacidad 15 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=1
+n=10000000 k=316 p_hat=3.1600000000000002e-05 wilson=[2.830271853507869e-05, 3.5281402921412296e-05]
+tiempo_s=1.5978619430000001 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_miraflores_normal.yaml --capacidad 20 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=1
+n=10000000 k=132 p_hat=1.3200000000000001e-05 wilson=[1.1132079566396468e-05, 1.5652056026657555e-05]
+tiempo_s=1.6019342809999999 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_miraflores_normal.yaml --capacidad 25 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=1
+n=10000000 k=43 p_hat=4.3000000000000003e-06 wilson=[3.1925671148934237e-06, 5.7915753159546714e-06]
+tiempo_s=1.569402588 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_miraflores_normal.yaml --capacidad 30 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=1
+n=10000000 k=18 p_hat=1.7999999999999999e-06 wilson=[1.1386362975980868e-06, 2.8455080539786801e-06]
+tiempo_s=1.5398604920000001 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_miraflores_normal.yaml --capacidad 35 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=1
+n=10000000 k=12 p_hat=1.1999999999999999e-06 wilson=[6.8647610704770305e-07, 2.0976687055039449e-06]
+tiempo_s=1.566661426 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_miraflores_normal.yaml --capacidad 40 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=1
+n=10000000 k=3 p_hat=2.9999999999999999e-07 wilson=[1.0202707796246512e-07, 8.8211842605150471e-07]
+tiempo_s=1.5420525709999999 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_miraflores_normal.yaml --capacidad 45 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=1
+n=10000000 k=1 p_hat=9.9999999999999995e-08 wilson=[1.7652455711617434e-08, 5.6649320196064622e-07]
+tiempo_s=1.517228429 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_miraflores_normal.yaml --capacidad 50 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=1
+n=10000000 k=0 p_hat=0 wilson=[0, 3.8414573450141057e-07]
+tiempo_s=1.5208557899999999 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_miraflores_normal.yaml --capacidad 55 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=1
+n=10000000 k=0 p_hat=0 wilson=[0, 3.8414573450141057e-07]
+tiempo_s=1.520727334 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_miraflores_normal.yaml --capacidad 60 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=1
+n=10000000 k=0 p_hat=0 wilson=[0, 3.8414573450141057e-07]
+tiempo_s=1.527409867 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_miraflores_normal.yaml --capacidad 65 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=1
+n=10000000 k=0 p_hat=0 wilson=[0, 3.8414573450141057e-07]
+tiempo_s=1.5600398959999999 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_eltigre_normal.yaml --capacidad 2 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=7
+n=10000000 k=7519865 p_hat=0.7519865 wilson=[0.75171873873526363, 0.75225406766565805]
+tiempo_s=3.3082321750000001 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_eltigre_normal.yaml --capacidad 4 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=7
+n=10000000 k=4133267 p_hat=0.41332669999999999 wilson=[0.41302152741099529, 0.41363193917936181]
+tiempo_s=3.0359243550000001 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_eltigre_normal.yaml --capacidad 5 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=7
+n=10000000 k=3180539 p_hat=0.3180539 wilson=[0.31776531866678037, 0.31834262112085621]
+tiempo_s=3.06631557 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_eltigre_normal.yaml --capacidad 6 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=7
+n=10000000 k=2518951 p_hat=0.25189509999999998 wilson=[0.25162614149974849, 0.25216424911712965]
+tiempo_s=3.1070621420000002 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_eltigre_normal.yaml --capacidad 8 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=7
+n=10000000 k=1690353 p_hat=0.1690353 wilson=[0.16880313844880843, 0.16926771582854713]
+tiempo_s=3.1036045159999999 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_eltigre_normal.yaml --capacidad 10 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=7
+n=10000000 k=1207924 p_hat=0.12079239999999999 wilson=[0.12059056321788288, 0.12099452812408119]
+tiempo_s=3.1401223819999999 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_eltigre_normal.yaml --capacidad 15 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=7
+n=10000000 k=614341 p_hat=0.061434099999999998 wilson=[0.061285440207259824, 0.061583096739179742]
+tiempo_s=3.025451823 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_eltigre_normal.yaml --capacidad 20 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=7
+n=10000000 k=352093 p_hat=0.035209299999999999 wilson=[0.03509524496728899, 0.035323712127440683]
+tiempo_s=2.8170135150000002 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_eltigre_normal.yaml --capacidad 25 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=7
+n=10000000 k=213069 p_hat=0.0213069 wilson=[0.021217581974229942, 0.02139658580159506]
+tiempo_s=2.7878644100000001 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_eltigre_normal.yaml --capacidad 30 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=7
+n=10000000 k=132670 p_hat=0.013266999999999999 wilson=[0.013196272368139077, 0.013338101584672506]
+tiempo_s=2.7894598940000002 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_eltigre_normal.yaml --capacidad 35 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=7
+n=10000000 k=83808 p_hat=0.0083808000000000007 wilson=[0.0083244866173325452, 0.0084374910895048151]
+tiempo_s=2.7766793939999999 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_eltigre_normal.yaml --capacidad 40 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=7
+n=10000000 k=53482 p_hat=0.0053482 wilson=[0.0053031845263414373, 0.005393595510416631]
+tiempo_s=2.7769416800000002 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_eltigre_normal.yaml --capacidad 45 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=7
+n=10000000 k=34278 p_hat=0.0034277999999999999 wilson=[0.0033917651091538055, 0.0034642164030311987]
+tiempo_s=2.7598818089999999 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_eltigre_normal.yaml --capacidad 50 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=7
+n=10000000 k=22285 p_hat=0.0022285 wilson=[0.0021994645580098353, 0.0022579178755871279]
+tiempo_s=2.7791826940000002 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_eltigre_normal.yaml --capacidad 55 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=7
+n=10000000 k=14413 p_hat=0.0014413 wilson=[0.0014179775249976516, 0.0014650055133983556]
+tiempo_s=2.765568166 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_eltigre_normal.yaml --capacidad 60 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=7
+n=10000000 k=9243 p_hat=0.00092429999999999997 wilson=[0.00090565625999694608, 0.00094332717560575063]
+tiempo_s=2.7560043240000001 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_eltigre_normal.yaml --capacidad 65 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=7
+n=10000000 k=5998 p_hat=0.00059980000000000005 wilson=[0.00058481590048266926, 0.00061516778443060935]
+tiempo_s=2.774752254 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_puertopizarro_normal.yaml --capacidad 2 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=5
+n=10000000 k=3481891 p_hat=0.34818909999999997 wilson=[0.3478938902979154, 0.34848442633710397]
+tiempo_s=2.1633713139999999 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_puertopizarro_normal.yaml --capacidad 4 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=5
+n=10000000 k=1354974 p_hat=0.13549739999999999 wilson=[0.13528541263869848, 0.13570966740553952]
+tiempo_s=2.2027708509999999 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_puertopizarro_normal.yaml --capacidad 5 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=5
+n=10000000 k=969409 p_hat=0.096940899999999997 wilson=[0.096757671538028056, 0.097124438128840002]
+tiempo_s=2.1919313730000001 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_puertopizarro_normal.yaml --capacidad 6 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=5
+n=10000000 k=729795 p_hat=0.072979500000000003 wilson=[0.07281845353128992, 0.073140874544917342]
+tiempo_s=2.188328485 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_puertopizarro_normal.yaml --capacidad 8 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=5
+n=10000000 k=453840 p_hat=0.045384000000000001 wilson=[0.045255167380552679, 0.045513181897041795]
+tiempo_s=2.2052274239999998 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_puertopizarro_normal.yaml --capacidad 10 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=5
+n=10000000 k=305710 p_hat=0.030571000000000001 wilson=[0.030464481057703118, 0.03067787960059289]
+tiempo_s=2.1775214809999999 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_puertopizarro_normal.yaml --capacidad 15 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=5
+n=10000000 k=136355 p_hat=0.0136355 wilson=[0.013563807553690303, 0.013707566116005876]
+tiempo_s=2.144888361 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_puertopizarro_normal.yaml --capacidad 20 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=5
+n=10000000 k=69732 p_hat=0.0069731999999999997 wilson=[0.0069218134150381156, 0.0070249653732463151]
+tiempo_s=2.1275954349999999 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_puertopizarro_normal.yaml --capacidad 25 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=5
+n=10000000 k=37886 p_hat=0.0037886 wilson=[0.0037507131040127521, 0.0038268681309726904]
+tiempo_s=2.1184417949999998 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_puertopizarro_normal.yaml --capacidad 30 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=5
+n=10000000 k=21103 p_hat=0.0021102999999999998 wilson=[0.0020820485375958914, 0.0021389339868131229]
+tiempo_s=2.1381407320000001 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_puertopizarro_normal.yaml --capacidad 35 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=5
+n=10000000 k=12025 p_hat=0.0012025 wilson=[0.0011812110037861582, 0.0012241722180778522]
+tiempo_s=2.105080364 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_puertopizarro_normal.yaml --capacidad 40 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=5
+n=10000000 k=6935 p_hat=0.0006935 wilson=[0.00067737441988584193, 0.00071000919303852586]
+tiempo_s=2.1107738559999998 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_puertopizarro_normal.yaml --capacidad 45 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=5
+n=10000000 k=4007 p_hat=0.00040069999999999998 wilson=[0.0003884861803458839, 0.00041329765753422593]
+tiempo_s=2.1007777249999999 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_puertopizarro_normal.yaml --capacidad 50 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=5
+n=10000000 k=2279 p_hat=0.00022790000000000001 wilson=[0.00021873443653149335, 0.00023744953410938236]
+tiempo_s=2.1212896099999998 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_puertopizarro_normal.yaml --capacidad 55 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=5
+n=10000000 k=1307 p_hat=0.00013070000000000001 wilson=[0.00012380413453702218, 0.00013797991078178429]
+tiempo_s=2.1038592290000002 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_puertopizarro_normal.yaml --capacidad 60 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=5
+n=10000000 k=756 p_hat=7.5599999999999994e-05 wilson=[7.0399817678110687e-05, 8.1184269973555664e-05]
+tiempo_s=2.0991027870000001 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_puertopizarro_normal.yaml --capacidad 65 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=5
+n=10000000 k=436 p_hat=4.3600000000000003e-05 wilson=[3.9695117098784769e-05, 4.7888995138208606e-05]
+tiempo_s=2.0919364900000001 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/lima_chosica_el_nino.yaml --capacidad 2 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=2
+n=10000000 k=91 p_hat=9.0999999999999993e-06 wilson=[7.412552141932734e-06, 1.1171586601116308e-05]
+tiempo_s=1.336045814 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/lima_chosica_el_nino.yaml --capacidad 4 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=2
+n=10000000 k=29 p_hat=2.9000000000000002e-06 wilson=[2.0192665715773854e-06, 4.1648769348787655e-06]
+tiempo_s=1.320889231 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/lima_chosica_el_nino.yaml --capacidad 5 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=2
+n=10000000 k=21 p_hat=2.0999999999999998e-06 wilson=[1.373597224301369e-06, 3.2105468967879565e-06]
+tiempo_s=1.3349181990000001 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/lima_chosica_el_nino.yaml --capacidad 6 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=2
+n=10000000 k=16 p_hat=1.5999999999999999e-06 wilson=[9.8490192238062831e-07, 2.5992425828544319e-06]
+tiempo_s=1.3383074720000001 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/lima_chosica_el_nino.yaml --capacidad 8 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=2
+n=10000000 k=7 p_hat=6.9999999999999997e-07 wilson=[3.3908642405859631e-07, 1.445058772638786e-06]
+tiempo_s=1.3140915289999999 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/lima_chosica_el_nino.yaml --capacidad 10 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=2
+n=10000000 k=4 p_hat=3.9999999999999998e-07 wilson=[1.555521990183548e-07, 1.0285932281664682e-06]
+tiempo_s=1.3013654990000001 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/lima_chosica_el_nino.yaml --capacidad 15 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=2
+n=10000000 k=0 p_hat=0 wilson=[0, 3.8414573450141057e-07]
+tiempo_s=1.2966224740000001 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/lima_chosica_el_nino.yaml --capacidad 20 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=2
+n=10000000 k=0 p_hat=0 wilson=[0, 3.8414573450141057e-07]
+tiempo_s=1.2998766610000001 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/lima_chosica_el_nino.yaml --capacidad 25 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=2
+n=10000000 k=0 p_hat=0 wilson=[0, 3.8414573450141057e-07]
+tiempo_s=1.2948312259999999 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/lima_chosica_el_nino.yaml --capacidad 30 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=2
+n=10000000 k=0 p_hat=0 wilson=[0, 3.8414573450141057e-07]
+tiempo_s=1.320217151 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/lima_chosica_el_nino.yaml --capacidad 35 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=2
+n=10000000 k=0 p_hat=0 wilson=[0, 3.8414573450141057e-07]
+tiempo_s=1.298586942 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/lima_chosica_el_nino.yaml --capacidad 40 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=2
+n=10000000 k=0 p_hat=0 wilson=[0, 3.8414573450141057e-07]
+tiempo_s=1.2964221629999999 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/lima_chosica_el_nino.yaml --capacidad 45 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=2
+n=10000000 k=0 p_hat=0 wilson=[0, 3.8414573450141057e-07]
+tiempo_s=1.294826775 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/lima_chosica_el_nino.yaml --capacidad 50 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=2
+n=10000000 k=0 p_hat=0 wilson=[0, 3.8414573450141057e-07]
+tiempo_s=1.292961161 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/lima_chosica_el_nino.yaml --capacidad 55 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=2
+n=10000000 k=0 p_hat=0 wilson=[0, 3.8414573450141057e-07]
+tiempo_s=1.2957173820000001 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/lima_chosica_el_nino.yaml --capacidad 60 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=2
+n=10000000 k=0 p_hat=0 wilson=[0, 3.8414573450141057e-07]
+tiempo_s=1.2949898289999999 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/lima_chosica_el_nino.yaml --capacidad 65 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=2
+n=10000000 k=0 p_hat=0 wilson=[0, 3.8414573450141057e-07]
+tiempo_s=1.2992205960000001 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_bernal_el_nino.yaml --capacidad 2 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=8
+n=10000000 k=3427781 p_hat=0.34277809999999997 wilson=[0.34248398214373194, 0.34307233864851266]
+tiempo_s=1.6556218970000001 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_bernal_el_nino.yaml --capacidad 4 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=8
+n=10000000 k=2393526 p_hat=0.2393526 wilson=[0.2390882408497608, 0.23961715940341308]
+tiempo_s=1.6517404499999999 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_bernal_el_nino.yaml --capacidad 5 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=8
+n=10000000 k=2101870 p_hat=0.21018700000000001 wilson=[0.20993458125150366, 0.2104396414093519]
+tiempo_s=1.6480814109999999 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_bernal_el_nino.yaml --capacidad 6 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=8
+n=10000000 k=1873438 p_hat=0.1873438 wilson=[0.1871020839945822, 0.187585756216509]
+tiempo_s=1.646465611 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_bernal_el_nino.yaml --capacidad 8 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=8
+n=10000000 k=1528731 p_hat=0.15287310000000001 wilson=[0.15265019072740396, 0.15309627596723199]
+tiempo_s=1.6442063520000001 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_bernal_el_nino.yaml --capacidad 10 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=8
+n=10000000 k=1272417 p_hat=0.12724170000000001 wilson=[0.12703530049957373, 0.12744838588744817]
+tiempo_s=1.636405756 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_bernal_el_nino.yaml --capacidad 15 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=8
+n=10000000 k=845686 p_hat=0.084568599999999994 wilson=[0.084396308606247125, 0.084741210566153455]
+tiempo_s=1.6450986190000001 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_bernal_el_nino.yaml --capacidad 20 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=8
+n=10000000 k=584393 p_hat=0.0584393 wilson=[0.058294082827134615, 0.058584856420184246]
+tiempo_s=1.627394247 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_bernal_el_nino.yaml --capacidad 25 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=8
+n=10000000 k=412589 p_hat=0.041258900000000001 wilson=[0.041135806067137223, 0.041382346379736396]
+tiempo_s=1.6057148590000001 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_bernal_el_nino.yaml --capacidad 30 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=8
+n=10000000 k=294622 p_hat=0.029462200000000001 wilson=[0.029357574436200504, 0.029567187073977083]
+tiempo_s=1.5977652149999999 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_bernal_el_nino.yaml --capacidad 35 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=8
+n=10000000 k=212148 p_hat=0.021214799999999999 wilson=[0.021125671454096311, 0.021304296392488337]
+tiempo_s=1.594332606 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_bernal_el_nino.yaml --capacidad 40 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=8
+n=10000000 k=153286 p_hat=0.0153286 wilson=[0.015252640338915279, 0.015404932029986614]
+tiempo_s=1.5880510699999999 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_bernal_el_nino.yaml --capacidad 45 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=8
+n=10000000 k=111047 p_hat=0.0111047 wilson=[0.011039937920799379, 0.01116983769328885]
+tiempo_s=1.602628889 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_bernal_el_nino.yaml --capacidad 50 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=8
+n=10000000 k=80879 p_hat=0.0080879000000000003 wilson=[0.0080325746485333978, 0.008143603283336534]
+tiempo_s=1.5885755239999999 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_bernal_el_nino.yaml --capacidad 55 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=8
+n=10000000 k=58959 p_hat=0.0058958999999999999 wilson=[0.0058486391248618085, 0.0059435404911030209]
+tiempo_s=1.584974495 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_bernal_el_nino.yaml --capacidad 60 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=8
+n=10000000 k=43173 p_hat=0.0043172999999999996 wilson=[0.0042768536266970178, 0.0043581272020927243]
+tiempo_s=1.585592986 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_bernal_el_nino.yaml --capacidad 65 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=8
+n=10000000 k=31585 p_hat=0.0031584999999999998 wilson=[0.0031239125840684711, 0.0031934691350174261]
+tiempo_s=1.5826750629999999 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_miraflores_el_nino.yaml --capacidad 2 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=0
+n=10000000 k=8350532 p_hat=0.83505320000000005 wilson=[0.834823045201876, 0.83528309737960893]
+tiempo_s=1.982602357 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_miraflores_el_nino.yaml --capacidad 4 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=0
+n=10000000 k=6970252 p_hat=0.69702520000000001 wilson=[0.6967403010119062, 0.69730994761531351]
+tiempo_s=2.0343335599999999 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_miraflores_el_nino.yaml --capacidad 5 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=0
+n=10000000 k=6421262 p_hat=0.64212619999999998 wilson=[0.64182903137116998, 0.64242325943448308]
+tiempo_s=2.0225629569999999 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_miraflores_el_nino.yaml --capacidad 6 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=0
+n=10000000 k=5932147 p_hat=0.59321469999999998 wilson=[0.59291019974381665, 0.59351912864012446]
+tiempo_s=2.0285448970000002 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_miraflores_el_nino.yaml --capacidad 8 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=0
+n=10000000 k=5090273 p_hat=0.50902729999999996 wilson=[0.50871744958808618, 0.50933714347631609]
+tiempo_s=2.0331255079999999 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_miraflores_el_nino.yaml --capacidad 10 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=0
+n=10000000 k=4388321 p_hat=0.4388321 wilson=[0.43852455375195482, 0.43913969324282104]
+tiempo_s=2.0370471499999998 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_miraflores_el_nino.yaml --capacidad 15 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=0
+n=10000000 k=3083534 p_hat=0.3083534 wilson=[0.3080672440385252, 0.30863970320192274]
+tiempo_s=2.0486336679999999 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_miraflores_el_nino.yaml --capacidad 20 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=0
+n=10000000 k=2213832 p_hat=0.2213832 wilson=[0.22112598186406202, 0.22164063219484859]
+tiempo_s=2.0145815200000001 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_miraflores_el_nino.yaml --capacidad 25 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=0
+n=10000000 k=1613557 p_hat=0.16135569999999999 wilson=[0.16112783308803061, 0.16158382708949612]
+tiempo_s=2.0010925209999999 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_miraflores_el_nino.yaml --capacidad 30 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=0
+n=10000000 k=1187656 p_hat=0.1187656 wilson=[0.11856523499938343, 0.11896625789975379]
+tiempo_s=2.1154632919999998 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_miraflores_el_nino.yaml --capacidad 35 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=0
+n=10000000 k=882220 p_hat=0.088221999999999995 wilson=[0.088046373436072994, 0.088397942929451551]
+tiempo_s=1.9830430480000001 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_miraflores_el_nino.yaml --capacidad 40 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=0
+n=10000000 k=657448 p_hat=0.065744800000000006 wilson=[0.065591359561715995, 0.065898574072849575]
+tiempo_s=1.9816662350000001 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_miraflores_el_nino.yaml --capacidad 45 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=0
+n=10000000 k=491998 p_hat=0.049199800000000002 wilson=[0.049065920749174853, 0.04933402559677303]
+tiempo_s=1.9763669669999999 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_miraflores_el_nino.yaml --capacidad 50 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=0
+n=10000000 k=369218 p_hat=0.036921799999999998 wilson=[0.036805103132875286, 0.037038852646155251]
+tiempo_s=1.968564298 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_miraflores_el_nino.yaml --capacidad 55 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=0
+n=10000000 k=277727 p_hat=0.027772700000000001 wilson=[0.027671035948831749, 0.027874726859374279]
+tiempo_s=1.958609008 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_miraflores_el_nino.yaml --capacidad 60 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=0
+n=10000000 k=209214 p_hat=0.0209214 wilson=[0.020832878016256846, 0.021010290055744518]
+tiempo_s=1.9632677890000001 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_miraflores_el_nino.yaml --capacidad 65 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=0
+n=10000000 k=157588 p_hat=0.0157588 wilson=[0.015681795917897375, 0.015836176120485525]
+tiempo_s=1.9674292229999999 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_eltigre_el_nino.yaml --capacidad 2 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=6
+n=10000000 k=9993956 p_hat=0.99939560000000005 wilson=[0.99938017417898384, 0.99941064213963715]
+tiempo_s=3.596149584 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_eltigre_el_nino.yaml --capacidad 4 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=6
+n=10000000 k=9779384 p_hat=0.97793839999999999 wilson=[0.97784717831072865, 0.97802925449327593]
+tiempo_s=3.624121165 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_eltigre_el_nino.yaml --capacidad 5 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=6
+n=10000000 k=9485006 p_hat=0.94850060000000003 wilson=[0.94836344421600483, 0.94863741120481049]
+tiempo_s=3.689444291 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_eltigre_el_nino.yaml --capacidad 6 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=6
+n=10000000 k=9081361 p_hat=0.9081361 wilson=[0.90795692547065865, 0.9083149609618576]
+tiempo_s=3.6895661030000002 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_eltigre_el_nino.yaml --capacidad 8 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=6
+n=10000000 k=8101097 p_hat=0.81010970000000004 wilson=[0.80986648848115061, 0.81035267326421256]
+tiempo_s=3.7636397100000001 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_eltigre_el_nino.yaml --capacidad 10 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=6
+n=10000000 k=7087304 p_hat=0.70873039999999998 wilson=[0.70844871755723882, 0.70901192207697561]
+tiempo_s=3.7756508910000002 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_eltigre_el_nino.yaml --capacidad 15 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=6
+n=10000000 k=4978987 p_hat=0.49789870000000003 wilson=[0.49758880608726785, 0.49820859552714314]
+tiempo_s=3.7661534350000001 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_eltigre_el_nino.yaml --capacidad 20 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=6
+n=10000000 k=3529604 p_hat=0.35296040000000001 wilson=[0.3526642623613675, 0.3532566506079029]
+tiempo_s=3.7421119109999998 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_eltigre_el_nino.yaml --capacidad 25 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=6
+n=10000000 k=2535388 p_hat=0.25353880000000001 wilson=[0.25326926116473242, 0.25380852818930505]
+tiempo_s=3.6778671630000002 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_eltigre_el_nino.yaml --capacidad 30 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=6
+n=10000000 k=1837822 p_hat=0.18378220000000001 wilson=[0.18354227086199834, 0.18402237208543978]
+tiempo_s=3.643986237 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_eltigre_el_nino.yaml --capacidad 35 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=6
+n=10000000 k=1341400 p_hat=0.13414000000000001 wilson=[0.13392891273503743, 0.13435136835207945]
+tiempo_s=3.643683958 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_eltigre_el_nino.yaml --capacidad 40 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=6
+n=10000000 k=981434 p_hat=0.098143400000000006 wilson=[0.097959160087903008, 0.09832794865509456]
+tiempo_s=3.6213490849999999 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_eltigre_el_nino.yaml --capacidad 45 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=6
+n=10000000 k=720918 p_hat=0.072091799999999998 wilson=[0.071931660630997707, 0.07225226812722188]
+tiempo_s=3.6222688920000001 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_eltigre_el_nino.yaml --capacidad 50 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=6
+n=10000000 k=530496 p_hat=0.053049600000000002 wilson=[0.052910855456601139, 0.053188687931578257]
+tiempo_s=3.5959521560000001 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_eltigre_el_nino.yaml --capacidad 55 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=6
+n=10000000 k=390293 p_hat=0.039029300000000003 wilson=[0.038909444557025996, 0.039149509602830285]
+tiempo_s=3.5867441590000002 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_eltigre_el_nino.yaml --capacidad 60 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=6
+n=10000000 k=287459 p_hat=0.028745900000000001 wilson=[0.028642518403119901, 0.028849643657384866]
+tiempo_s=3.9514554550000001 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_eltigre_el_nino.yaml --capacidad 65 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=6
+n=10000000 k=212100 p_hat=0.02121 wilson=[0.021120881341287208, 0.021299486508985235]
+tiempo_s=4.5962024980000002 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_puertopizarro_el_nino.yaml --capacidad 2 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=4
+n=10000000 k=9951875 p_hat=0.9951875 wilson=[0.99514441641204332, 0.99523020313962496]
+tiempo_s=3.216314632 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_puertopizarro_el_nino.yaml --capacidad 4 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=4
+n=10000000 k=9655924 p_hat=0.96559240000000002 wilson=[0.96547924866490631, 0.96570519362442486]
+tiempo_s=3.2943268780000001 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_puertopizarro_el_nino.yaml --capacidad 5 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=4
+n=10000000 k=9439102 p_hat=0.94391020000000003 wilson=[0.9437674176271823, 0.94405264132039812]
+tiempo_s=3.2719100220000001 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_puertopizarro_el_nino.yaml --capacidad 6 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=4
+n=10000000 k=9201396 p_hat=0.92013959999999995 wilson=[0.91997142640871499, 0.92030745080161458]
+tiempo_s=3.3149263040000001 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_puertopizarro_el_nino.yaml --capacidad 8 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=4
+n=10000000 k=8694407 p_hat=0.86944069999999996 wilson=[0.86923173812606336, 0.86964937803579845]
+tiempo_s=3.389705422 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_puertopizarro_el_nino.yaml --capacidad 10 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=4
+n=10000000 k=8173337 p_hat=0.81733370000000005 wilson=[0.81709409383321363, 0.81757306236201188]
+tiempo_s=3.3684280879999999 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_puertopizarro_el_nino.yaml --capacidad 15 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=4
+n=10000000 k=6900904 p_hat=0.69009039999999999 wilson=[0.68980369903297856, 0.69037695492218876]
+tiempo_s=3.3659281810000001 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_puertopizarro_el_nino.yaml --capacidad 20 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=4
+n=10000000 k=5739820 p_hat=0.57398199999999999 wilson=[0.5736754852417224, 0.57428845791853822]
+tiempo_s=3.3956191640000002 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_puertopizarro_el_nino.yaml --capacidad 25 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=4
+n=10000000 k=4723980 p_hat=0.47239799999999998 wilson=[0.47208858571008755, 0.47270743549629363]
+tiempo_s=3.3478107050000001 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_puertopizarro_el_nino.yaml --capacidad 30 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=4
+n=10000000 k=3856339 p_hat=0.38563389999999997 wilson=[0.38533226204590559, 0.38593562582059343]
+tiempo_s=3.3208676220000002 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_puertopizarro_el_nino.yaml --capacidad 35 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=4
+n=10000000 k=3128007 p_hat=0.31280069999999999 wilson=[0.31251341395069643, 0.31308812987292878]
+tiempo_s=3.3239218990000001 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_puertopizarro_el_nino.yaml --capacidad 40 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=4
+n=10000000 k=2525557 p_hat=0.25255569999999999 wilson=[0.25228650765096772, 0.25282508245837709]
+tiempo_s=3.2483676180000001 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_puertopizarro_el_nino.yaml --capacidad 45 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=4
+n=10000000 k=2029932 p_hat=0.20299320000000001 wilson=[0.20274401551008686, 0.20324261267770383]
+tiempo_s=3.265994295 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_puertopizarro_el_nino.yaml --capacidad 50 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=4
+n=10000000 k=1626987 p_hat=0.1626987 wilson=[0.16247006909164555, 0.16292759005406574]
+tiempo_s=3.2571825159999999 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_puertopizarro_el_nino.yaml --capacidad 55 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=4
+n=10000000 k=1300226 p_hat=0.13002259999999999 wilson=[0.12981428750900731, 0.13023119674147282]
+tiempo_s=3.2287653010000001 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_puertopizarro_el_nino.yaml --capacidad 60 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=4
+n=10000000 k=1037379 p_hat=0.10373789999999999 wilson=[0.10354906415212337, 0.10392704029266756]
+tiempo_s=3.2611022639999998 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_puertopizarro_el_nino.yaml --capacidad 65 --umbral 50 --n 10000000 --hilos 16 --salida results/cientifico/x6.csv
+backend=openmp hilos=16 schedule=dynamic:1 semilla=20261015 config_id=4
+n=10000000 k=828006 p_hat=0.082800600000000002 wilson=[0.082629956743369204, 0.082971563787370722]
+tiempo_s=3.1835719629999999 cpu="Intel(R) Core(TM) Ultra 9 275HX" fisicos=24 logicos=24 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
