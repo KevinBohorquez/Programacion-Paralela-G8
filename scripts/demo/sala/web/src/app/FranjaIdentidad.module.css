@@ -1,6 +1,6 @@
 .franja {
   display: grid;
-  grid-template-columns: 280px 1fr 300px;
+  grid-template-columns: 264px minmax(0, 1fr) 300px;
   align-items: stretch;
   gap: var(--space-5);
   min-block-size: 144px;
@@ -42,7 +42,10 @@
 
 .celda {
   display: flex;
-  flex: 0 0 196px;
+  /* Seven runs (race + con error + corregido) must fit without hiding the last card. */
+  flex: 1 1 0;
+  min-inline-size: 150px;
+  max-inline-size: 196px;
   flex-direction: column;
   gap: 2px;
   padding: var(--space-2) var(--space-3);

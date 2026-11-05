@@ -31,15 +31,19 @@
   font-weight: 600;
 }
 
+/* The grid takes the height the card leaves after header and footer, so the map fills the centre card. */
 .rejilla {
   display: grid;
+  flex: 1 1 auto;
+  grid-auto-rows: minmax(0, 1fr);
   gap: calc(0.5rem * var(--viz-escala, 1));
+  min-block-size: 0;
 }
 
 .celda {
   position: relative;
   container-type: inline-size;
-  aspect-ratio: 1.25;
+  min-block-size: 4.5rem;
   border-radius: 10px;
   isolation: isolate;
   color: var(--heat-ink-0, var(--text));

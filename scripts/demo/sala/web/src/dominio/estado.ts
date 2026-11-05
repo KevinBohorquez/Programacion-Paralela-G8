@@ -49,15 +49,19 @@ export const estadoInicial: EstadoSala = {
   corridas: [],
 };
 
-/** Lanes are keyed by backend + affinity, so "híbrido con error" and "corregido" are separate lanes. */
-export function claveCarril(c: { backend: string; afinidad: string }): string {
-  return c.backend === "hibrido" ? `hibrido:${c.afinidad}` : c.backend;
-}
-
 /** Race ids are `c<n>-<backend>`; standalone hybrids are `h<n>-<afinidad>`. */
 export function carreraDe(id: string): string | null {
   const m = /^(c\d+)-/.exec(id);
   return m ? m[1] : null;
+}
+
+/**
+ * Lanes are keyed by backend; standalone hybrids also by affinity, so "híbrido con error" and
+ * "corregido" are separate lanes and never collide with the hybrid that ran inside the race.
+ */
+export function claveCarril(c: { id?: string; backend: string; afinidad: string }): string {
+  if (c.backend !== "hibrido") return c.backend;
+  return c.id !== undefined && carreraDe(c.id) !== null ? "hibrido:carrera" : `hibrido:${c.afinidad}`;
 }
 
 export const terminada = (c: Corrida) => c.fin !== null || c.error !== null;
@@ -181,7 +185,9 @@ export function tasa(c: Corrida): number | null {
   return null;
 }
 
-export function nombreCorrida(c: { backend: string; afinidad: string }): string {
+export function nombreCorrida(c: { id?: string; backend: string; afinidad: string }): string {
+  // Inside a race the hybrid is just "Híbrido"; the error/corrected names belong to the standalone runs.
+  if (c.backend === "hibrido" && c.id !== undefined && carreraDe(c.id) !== null) return "Híbrido";
   if (c.backend === "hibrido" && c.afinidad === "close") return "Híbrido con error";
   if (c.backend === "hibrido" && c.afinidad === "false") return "Híbrido corregido";
   const nombres: Record<string, string> = {

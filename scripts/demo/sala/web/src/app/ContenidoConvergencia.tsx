@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { fmtCompacto, fmtDecimal, fmtEntero, fmtP, fmtSegundos } from "../dominio/formato";
 import { accion } from "../sala/api";
+import { useSala } from "../sala/instancia";
 import { useAvisar } from "../ui/Avisos";
 import { GraficoConvergencia } from "../viz/GraficoConvergencia";
 import { useControles } from "./controles";
@@ -25,10 +26,18 @@ export default function ContenidoConvergencia() {
   const [puntos, setPuntos] = useState<Punto[] | null>(null);
   const [fallo, setFallo] = useState(false);
   const config = configs.find((x) => x.id === configRiesgo);
+  // The server answers 409 while a run or a replay holds the cores: ask once it is free. It is a
+  // latch, because the convergence request itself marks the server busy and must not cancel itself.
+  const ocupado = useSala((e) => e.ocupado);
+  const [libre, setLibre] = useState(!ocupado);
+  useEffect(() => {
+    if (!ocupado) setLibre(true);
+  }, [ocupado]);
 
   useEffect(() => {
-    if (!configRiesgo) return;
+    if (!configRiesgo || !libre) return;
     let vigente = true;
+    setFallo(false);
     const q = new URLSearchParams({ config: configRiesgo, c: String(c), u: String(u), ns: NS });
     void accion<Punto[]>(avisar, "GET", `/api/convergencia?${q}`).then((d) => {
       if (!vigente) return;
@@ -38,7 +47,7 @@ export default function ContenidoConvergencia() {
     return () => {
       vigente = false;
     };
-  }, [avisar, configRiesgo, c, u]);
+  }, [avisar, configRiesgo, c, u, libre]);
 
   const contexto = config
     ? `${config.estacion} · ${config.regimen.replace("_", " ")}, C = ${fmtDecimal(c)}, U = ${fmtDecimal(u)} mm`
@@ -50,9 +59,11 @@ export default function ContenidoConvergencia() {
         {contexto}.{" "}
         {puntos
           ? "La banda de Wilson se estrecha como 1/√N: cada ×100 en N la reduce unas 10 veces."
-          : fallo
-            ? "No se pudo calcular la convergencia."
-            : "Calculando con N = 10³ … 10⁷…"}
+          : !libre
+            ? "Hay una corrida en curso: la convergencia se calcula al terminar."
+            : fallo
+              ? "No se pudo calcular la convergencia."
+              : "Calculando con N = 10³ … 10⁷…"}
       </p>
       <div className={s.grafico}>
         <GraficoConvergencia puntos={puntos ?? []} />

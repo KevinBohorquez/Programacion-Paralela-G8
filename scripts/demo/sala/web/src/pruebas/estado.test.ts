@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   estadoInicial,
   insertarCorrida,
+  nombreCorrida,
   reducir,
   reducirLote,
   speedupDe,
@@ -100,12 +101,18 @@ describe("lane keying", () => {
     let s = correr(estadoInicial, ...carrera(1));
     s = correr(s, inicio("h2-close", "hibrido", "close"), fin("h2-close"));
     expect(ids(s)).toEqual(["c1-serial", "c1-openmp", "c1-hibrido", "h2-close"]);
-    // Corregido replaces the lane with the same key (the race's hybrid uses afinidad false)...
+    // Corregido never wipes the race's hybrid, even though it also uses afinidad false...
     s = correr(s, inicio("h3-false", "hibrido", "false"), fin("h3-false"));
-    expect(ids(s)).toEqual(["c1-serial", "c1-openmp", "h2-close", "h3-false"]);
+    expect(ids(s)).toEqual(["c1-serial", "c1-openmp", "c1-hibrido", "h2-close", "h3-false"]);
     // ...and a second "con error" only replaces the previous "con error".
     s = correr(s, inicio("h4-close", "hibrido", "close"));
-    expect(ids(s)).toEqual(["c1-serial", "c1-openmp", "h3-false", "h4-close"]);
+    expect(ids(s)).toEqual(["c1-serial", "c1-openmp", "c1-hibrido", "h3-false", "h4-close"]);
+  });
+
+  it("names the race hybrid apart from the standalone con error / corregido runs", () => {
+    expect(nombreCorrida({ id: "c1-hibrido", backend: "hibrido", afinidad: "false" })).toBe("Híbrido");
+    expect(nombreCorrida({ id: "h2-false", backend: "hibrido", afinidad: "false" })).toBe("Híbrido corregido");
+    expect(nombreCorrida({ id: "h3-close", backend: "hibrido", afinidad: "close" })).toBe("Híbrido con error");
   });
 
   it("a new race replaces the previous lanes, its own lanes accumulate", () => {

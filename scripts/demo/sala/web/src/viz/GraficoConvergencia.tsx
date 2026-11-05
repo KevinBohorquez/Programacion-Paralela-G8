@@ -7,7 +7,7 @@ import ejes from "./ejes.module.css";
 import styles from "./GraficoConvergencia.module.css";
 
 const M = { izq: 76, der: 32, sup: 40, inf: 52 } as const;
-const ALTO = 320;
+const ALTO = 380;
 const Z = 1.96;
 const MUESTRAS_GUIA = 48;
 

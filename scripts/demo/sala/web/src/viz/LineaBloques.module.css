@@ -31,6 +31,24 @@
   font-weight: 600;
 }
 
+/* 24 ranks in a race lane: 13px rows, so labels and counts drop to 11px. */
+.rangoDenso {
+  fill: var(--text);
+  font-size: calc(0.6875rem * var(--viz-escala, 1));
+  font-weight: 600;
+}
+
+.rangoDenso .rol {
+  font-size: calc(0.6875rem * var(--viz-escala, 1));
+}
+
+.conteoDenso {
+  fill: var(--text);
+  font-size: calc(0.6875rem * var(--viz-escala, 1));
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
 .rol {
   fill: var(--text-muted);
   font-size: calc(0.8125rem * var(--viz-escala, 1));

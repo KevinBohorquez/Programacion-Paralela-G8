@@ -150,7 +150,7 @@ export function ExploradorRiesgo() {
           </span>
         </div>
         <div className={f.grafico}>
-          <CurvaRiesgo u={curva?.u ?? []} p={curva?.p ?? []} lo={curva?.lo ?? []} hi={curva?.hi ?? []} umbral={u} />
+          <CurvaRiesgo u={curva?.u ?? []} p={curva?.p ?? []} lo={curva?.lo ?? []} hi={curva?.hi ?? []} umbral={u} alto={220} />
         </div>
         <p className={f.nota}>
           {estado.tipo === "cargando"

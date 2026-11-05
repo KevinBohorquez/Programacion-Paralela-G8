@@ -7,18 +7,32 @@ import { useAncho } from "./useAncho";
 import ejes from "./ejes.module.css";
 import styles from "./LineaBloques.module.css";
 
-const M = { izq: 200, der: 200, sup: 64, inf: 44 } as const;
+const ANCHO = { izq: 200, der: 200, sup: 64, inf: 44 } as const;
+/** A race lane is ~500px wide: short rank labels and counts so the plot keeps most of the width. */
+const ESTRECHO = { izq: 92, der: 96, sup: 56, inf: 40 } as const;
+const UMBRAL_ESTRECHO = 760;
 const COBERTURA_Y = 30;
 const COBERTURA_ALTO = 10;
 
+/** Row height per rank: 24 ranks must fit in a lane without a nested scroll. */
+function altoFila(filas: number): number {
+  if (filas > 16) return 13;
+  if (filas > 12) return 20;
+  return 36;
+}
+
 /** Gantt-style timeline of the E2 dynamic master–worker scheduling, one row per MPI rank. */
 export const LineaBloques = memo(function LineaBloques({ rangos, bloques, total, t0, t1 }: LineaBloquesProps) {
-  const { ref, ancho } = useAncho<HTMLDivElement>(1200, 640);
+  const { ref, ancho } = useAncho<HTMLDivElement>(1200, 320);
   const trama = idSeguro(useId());
   const filas = Math.max(1, rangos);
-  const fila = filas > 12 ? 24 : 36;
+  const fila = altoFila(filas);
+  const estrecho = ancho < UMBRAL_ESTRECHO;
+  const denso = fila < 24;
+  const M = estrecho ? ESTRECHO : ANCHO;
   const alto = M.sup + filas * fila + M.inf;
   const plotW = ancho - M.izq - M.der;
+  const hueco = denso ? 2 : 5;
 
   const disposicion = useMemo(() => disponerBloques(bloques, rangos, total, t0, t1), [bloques, rangos, total, t0, t1]);
   const escala = useMemo(() => escalaLineal(0, Math.max(t1 - t0, 1e-3), plotW > 700 ? 8 : 5), [t0, t1, plotW]);
@@ -37,16 +51,16 @@ export const LineaBloques = memo(function LineaBloques({ rangos, bloques, total,
             key={`${b.rango}-${b.i0}`}
             className={b.sombra ? styles.bloqueB : styles.bloqueA}
             x={redondear(x)}
-            y={M.sup + b.rango * fila + 5}
+            y={M.sup + b.rango * fila + hueco}
             width={redondear(w)}
-            height={fila - 10}
+            height={fila - 2 * hueco}
             rx={2}
           />
         );
       }),
-    // sx depends only on escala.max and plotW.
+    // sx depends only on escala.max, plotW and the left margin.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [disposicion, escala.max, plotW, fila],
+    [disposicion, escala.max, plotW, fila, M.izq],
   );
 
   const esclavos = Math.max(0, rangos - 1);
@@ -101,18 +115,20 @@ export const LineaBloques = memo(function LineaBloques({ rangos, bloques, total,
           return (
             <g key={r}>
               {r > 0 ? <line className={ejes.rejilla} x1={M.izq} x2={M.izq + plotW} y1={y} y2={y} /> : null}
-              <text className={styles.rango} x={16} y={y + fila / 2 + 5}>
+              <text className={denso ? styles.rangoDenso : styles.rango} x={estrecho ? 4 : 16} y={y + fila / 2 + (denso ? 4 : 5)}>
                 R{r}
-                <tspan className={styles.rol} dx={10}>
-                  {r === 0 ? "maestro (no simula)" : "trabajador"}
-                </tspan>
+                {r === 0 || !estrecho ? (
+                  <tspan className={styles.rol} dx={denso ? 6 : 10}>
+                    {r === 0 ? (estrecho ? "maestro" : "maestro (no simula)") : "trabajador"}
+                  </tspan>
+                ) : null}
               </text>
               {r === 0 ? (
-                <rect className={styles.maestro} x={M.izq} y={y + 5} width={plotW} height={fila - 10} rx={3} fill={`url(#${trama})`} />
+                <rect className={styles.maestro} x={M.izq} y={y + hueco} width={plotW} height={fila - 2 * hueco} rx={3} fill={`url(#${trama})`} />
               ) : (
-                <text className={styles.conteo} x={M.izq + plotW + 16} y={y + fila / 2 + 5}>
+                <text className={denso ? styles.conteoDenso : styles.conteo} x={M.izq + plotW + (estrecho ? 10 : 16)} y={y + fila / 2 + (denso ? 4 : 5)}>
                   {resumenRango?.bloques ?? 0}
-                  <tspan className={styles.conteoMuted}> bl · {formatearCompacto(resumenRango?.escenarios ?? 0)} esc.</tspan>
+                  <tspan className={styles.conteoMuted}> bl · {formatearCompacto(resumenRango?.escenarios ?? 0)}</tspan>
                 </text>
               )}
             </g>

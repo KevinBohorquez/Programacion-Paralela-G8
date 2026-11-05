@@ -189,13 +189,9 @@
   border-block-start: 1px solid var(--border);
 }
 
+/* The chart draws at its natural height (compact rows); 190px is the floor so the card does not jump. */
 .speedupGrafico {
-  block-size: 190px;
-}
-
-.speedupGrafico > svg {
-  inline-size: 100%;
-  block-size: 100%;
+  min-block-size: 190px;
 }
 
 .pestanas {

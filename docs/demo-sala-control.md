@@ -68,6 +68,8 @@ En la interfaz moderna:
 - El tema es oscuro por defecto, pensado para el proyector. El botón del sol lo cambia y se puede forzar con `?tema=claro`.
 - **Parámetros** aparece plegado con un resumen; al hacer clic se despliega.
 - Cada carril de la carrera también se despliega con un clic. Muestra el trabajo por rango de E1, la línea de bloques de E2 y un botón con las métricas completas y la línea de comando.
+- «Híbrido con error» y «Híbrido corregido» se añaden como carriles propios junto a la carrera. El híbrido de la carrera se llama solo «Híbrido» y no se borra. Una carrera nueva sí reemplaza todos los carriles.
+- Convergencia espera a que termine la corrida o el replay en curso antes de calcular.
 - Si la página se abre con una corrida ya en marcha, lo indica y sus carriles aparecen con la corrida siguiente. El uso de núcleos se ve en vivo desde el primer momento.
 
 Para cambiar la interfaz moderna, edite `scripts/demo/sala/web/` y vuelva a compilarla (necesita Node 20 o posterior):

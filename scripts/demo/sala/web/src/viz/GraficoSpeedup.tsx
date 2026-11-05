@@ -6,18 +6,20 @@ import { useAncho } from "./useAncho";
 import ejes from "./ejes.module.css";
 import styles from "./GraficoSpeedup.module.css";
 
-const BARRA = 26;
-/** Wide boxes put the run label beside its bar; narrow ones stack it above so the bars keep their length. */
-const LADO = { izq: 200, der: 150, sup: 36, inf: 40, fila: 52, barra: 13 } as const;
-const APILADO = { izq: 8, der: 130, sup: 36, inf: 40, fila: 68, barra: 32 } as const;
+/**
+ * Wide boxes put the run label beside a tall bar; narrow ones (the race column) use compact rows so
+ * seven runs still fit under the lanes without overflowing the card.
+ */
+const LADO = { izq: 200, der: 150, sup: 36, inf: 40, fila: 52, barra: 13, alto: 26 } as const;
+const COMPACTO = { izq: 168, der: 116, sup: 30, inf: 36, fila: 30, barra: 6, alto: 18 } as const;
 const UMBRAL_APILADO = 900;
 
 /** Horizontal speedup bars per run, in insertion order, with an "ideal" reference line. */
 export const GraficoSpeedup = memo(function GraficoSpeedup({ barras, ideal }: GraficoSpeedupProps) {
   const { ref, ancho } = useAncho<HTMLDivElement>(720, 320);
   const gradiente = idSeguro(useId());
-  const apilado = ancho < UMBRAL_APILADO;
-  const M = apilado ? APILADO : LADO;
+  const M = ancho < UMBRAL_APILADO ? COMPACTO : LADO;
+  const BARRA = M.alto;
   const alto = M.sup + Math.max(1, barras.length) * M.fila + M.inf;
   const plotW = ancho - M.izq - M.der;
 
@@ -64,11 +66,11 @@ export const GraficoSpeedup = memo(function GraficoSpeedup({ barras, ideal }: Gr
           const y = yBarra(i);
           const fraccion = b.speedup === null ? 0 : Math.max(0, Math.min(1, b.speedup / escala.max));
           const color = colorBackend[b.backend];
-          const yEtiqueta = apilado ? y - 10 : y + BARRA / 2 + 5;
+          const yEtiqueta = y + BARRA / 2 + 5;
           return (
             <g key={b.id}>
-              <circle cx={apilado ? M.izq + 6 : 18} cy={yEtiqueta - 5} r={6} style={{ fill: color }} />
-              <text className={styles.etiqueta} x={apilado ? M.izq + 20 : 32} y={yEtiqueta}>
+              <circle cx={10} cy={yEtiqueta - 5} r={6} style={{ fill: color }} />
+              <text className={styles.etiqueta} x={24} y={yEtiqueta}>
                 {b.etiqueta}
               </text>
               <rect className={styles.pista} x={M.izq} y={y} width={plotW} height={BARRA} rx={5} />
