@@ -1,1 +1,1 @@
-# T39 | Responsable: Lita | No activado (NO-GO de T29): V2 y V8 no se ejecutan; ver docs/decision-cuda.md.
+# T39 | Responsable: Lita | Extensión CUDA EXT1 en desarrollo: V2 y V8 se activarán con el kernel; ver docs/decision-cuda.md.

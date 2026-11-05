@@ -1,1 +1,1 @@
-// T38 | Responsable: Lita | No activado (NO-GO de T29): interfaz CUDA no implementada; ver docs/decision-cuda.md.
+// T38 | Responsable: Lita | Extensión CUDA EXT1 en desarrollo: interfaz todavía no implementada; ver docs/decision-cuda.md.
