@@ -8,6 +8,8 @@ La precipitación diaria se genera con una cadena de Markov (ocurrencia) y monto
 
 La definición y los criterios de aceptación están en [docs/definicion-proyecto.docx](docs/definicion-proyecto.docx). El estado de las tareas se registra en [cronograma/cronograma-interno.xlsx](cronograma/cronograma-interno.xlsx) y el resumen de entregables en [cronograma/cronograma-presentacion.xlsx](cronograma/cronograma-presentacion.xlsx). La [revisión interna de la definición](docs/acta-revision-definicion.md) registra las decisiones vigentes y las aprobaciones individuales que faltan para acreditar T01.
 
+Para ejecutar las pruebas, las mediciones y las corridas científicas en otro equipo (a mano o con un agente de código), seguir [AGENTS.md](AGENTS.md): orden de pasos, reglas de medición y qué entregar.
+
 Los [contratos de CLI, configuración y CSV (T02)](docs/contratos.md) fijan el índice global, la semilla, el acumulador y el formato de salida que comparten todos los backends.
 
 ## Qué hay implementado
