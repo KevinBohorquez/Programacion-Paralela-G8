@@ -89,6 +89,23 @@ if(PP_BUILD_OPENMP AND Python3_FOUND)
   set_tests_properties(v1_equivalencia_openmp PROPERTIES ENVIRONMENT "PP_BIN_DIR=${CMAKE_BINARY_DIR}/src/backends")
 endif()
 
+# Sala de control: --progreso no cambia k ni hist512 y solo con la opción aparecen líneas [prog]
+# (docs/contrato-sala-control.md §1). Con PP_BUILD_MPI=ON cubre también E1, E2 e híbrido.
+if(Python3_FOUND)
+  set(PROGRESO_ENTORNO "PP_BIN_DIR=${CMAKE_BINARY_DIR}/src/backends")
+  if(PP_BUILD_MPI AND MPIEXEC_EXECUTABLE)
+    execute_process(COMMAND ${MPIEXEC_EXECUTABLE} --version OUTPUT_VARIABLE PROGRESO_MPI_VERSION ERROR_QUIET)
+    set(PROGRESO_MPI_EXTRA "")
+    if(PROGRESO_MPI_VERSION MATCHES "Open MPI|OpenRTE")
+      set(PROGRESO_MPI_EXTRA "--oversubscribe --bind-to none")
+    endif()
+    list(APPEND PROGRESO_ENTORNO "PP_MPIEXEC=${MPIEXEC_EXECUTABLE}" "PP_MPI_EXTRA=${PROGRESO_MPI_EXTRA}")
+  endif()
+  add_test(NAME progreso_sala_control
+           COMMAND ${Python3_EXECUTABLE} -m pytest -q ${PROJECT_SOURCE_DIR}/tests/integration/test_progreso.py)
+  set_tests_properties(progreso_sala_control PROPERTIES ENVIRONMENT "${PROGRESO_ENTORNO}" TIMEOUT 300)
+endif()
+
 # V7 (caso analítico con D = 1 frente al IC de Wilson): pytest sobre pp_serial (T13)
 if(Python3_FOUND)
   add_test(NAME v7_analitico

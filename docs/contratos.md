@@ -64,6 +64,7 @@ Todos los ejecutables aceptan las mismas opciones (`--ayuda` las lista). Cada cl
 - `--calentamiento`: marca la fila como calentamiento (repetición 0, indicador 1). Después van las repeticiones 1–5 con indicador 0.
 - `--verificar` (solo MPI): el rango 0 recalcula la referencia secuencial y compara `k` e histograma bit a bit (V1); es para cargas pequeñas.
 - `--silencioso`: no imprime el resumen.
+- `--progreso`: escribe líneas de avance `[prog]` en `stderr` (formato en `docs/contrato-sala-control.md` §1); sin la opción la salida no cambia.
 - Los ejecutables MPI se lanzan con `mpirun -np P`; el número de procesos lo fija `mpirun`.
 - **Códigos de salida:** `0` correcto; `2` error de argumentos, configuración, E/S o MPI; `3` falló una verificación (suma ≠ N en `pp_openmp` y MPI, o V1 en MPI).
 

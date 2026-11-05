@@ -1,6 +1,10 @@
 // T19 | Responsable: David | Reparto MPI estático (E1) y reducción.
 #include "mpi_estatico.hpp"
 
+#include <algorithm>
+
+#include "progreso.hpp"
+
 namespace mpi_pi {
 
 std::pair<std::uint64_t, std::uint64_t> intervalo_estatico(std::uint64_t n, int rango, int procesos) {
@@ -19,7 +23,17 @@ ResumenRango esquema_estatico(MPI_Comm comm, const pp::Configuracion& cfg, const
     MPI_Comm_size(comm, &procesos);
 
     const auto [inicio, fin] = intervalo_estatico(cfg.n, rango, procesos);
-    for (std::uint64_t i = inicio; i < fin; ++i) escenario(i, local);
+    if (!pp::progreso_activo()) {
+        for (std::uint64_t i = inicio; i < fin; ++i) escenario(i, local);
+    } else {  // mismo tramo, recorrido por bloques de PASO_PROGRESO para informar el avance del rango
+        pp::Progreso prog(fin - inicio, rango);
+        for (std::uint64_t b0 = inicio; b0 < fin; b0 += pp::PASO_PROGRESO) {
+            const std::uint64_t b1 = std::min(fin, b0 + pp::PASO_PROGRESO);
+            for (std::uint64_t i = b0; i < b1; ++i) escenario(i, local);
+            prog.sumar(b1 - b0);
+        }
+        prog.terminar();
+    }
 
     ResumenRango res;
     res.inicio = inicio;
