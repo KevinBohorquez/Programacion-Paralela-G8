@@ -309,6 +309,62 @@ def test_http_configs_y_placeholder(servidor):
     assert codigo == 400
 
 
+# --- --interfaz moderna|clasica ---
+def test_interfaz_por_defecto_es_moderna():
+    assert sala_control.analizar_argumentos([]).interfaz == "moderna"
+    assert sala_control.analizar_argumentos(["--interfaz", "clasica"]).interfaz == "clasica"
+    assert sala_control.INTERFACES["moderna"] == sala_control.ESTATICOS
+    assert (sala_control.INTERFACES["clasica"] / "index.html").is_file()
+    with pytest.raises(SystemExit):
+        sala_control.analizar_argumentos(["--interfaz", "otra"])
+
+
+@pytest.fixture
+def servidor_con(tmp_path):
+    servidores = []
+
+    def arrancar(estaticos):
+        sala = sala_control.Sala(tmp_path / "bin", dir_grabaciones=tmp_path / "grab")
+        srv = sala_control.crear_servidor(sala, "127.0.0.1", 0, estaticos)
+        threading.Thread(target=srv.serve_forever, daemon=True).start()
+        servidores.append(srv)
+        return f"http://127.0.0.1:{srv.server_address[1]}"
+
+    yield arrancar
+    for srv in servidores:
+        srv.shutdown()
+        srv.server_close()
+
+
+def leer(url):
+    with urllib.request.urlopen(url, timeout=5) as r:
+        return r.status, r.headers.get("Content-Type", ""), r.read()
+
+
+def test_interfaz_clasica_sirve_su_carpeta(servidor_con):
+    url = servidor_con(sala_control.INTERFACES["clasica"])
+    _, tipo, cuerpo = leer(url + "/")
+    assert tipo.startswith("text/html") and b"sala.js" in cuerpo
+    codigo, tipo, _ = leer(url + "/static/sala.css")
+    assert codigo == 200 and tipo.startswith("text/css")
+
+
+def test_interfaz_moderna_sirve_assets_bajo_static(servidor_con, tmp_path):
+    web = tmp_path / "moderna"
+    (web / "assets").mkdir(parents=True)
+    (web / "index.html").write_text('<!doctype html><html><script src="/static/assets/app.js"></script></html>')
+    (web / "assets" / "app.js").write_text("console.log(1)")
+    (web / "assets" / "inter.woff2").write_bytes(b"wOF2")
+    url = servidor_con(web)
+    assert b"/static/assets/app.js" in leer(url + "/")[2]
+    codigo, tipo, cuerpo = leer(url + "/static/assets/app.js")
+    assert codigo == 200 and "javascript" in tipo and cuerpo == b"console.log(1)"
+    assert leer(url + "/static/assets/inter.woff2")[1] == "font/woff2"
+    with pytest.raises(urllib.error.HTTPError) as e:
+        urllib.request.urlopen(url + "/static/../../secreto", timeout=5)
+    assert e.value.code == 404
+
+
 # --- corrida completa con un binario falso ---
 FALSO = """#!/usr/bin/env python3
 import sys, time
