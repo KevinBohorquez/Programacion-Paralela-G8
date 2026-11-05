@@ -1,0 +1,84 @@
+.barra {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  block-size: 64px;
+  padding: 0 var(--space-6);
+  border-block-end: 1px solid var(--border);
+  background: var(--surface-raised);
+}
+
+.titulo {
+  font-size: var(--font-size-16);
+  font-weight: var(--font-weight-semibold);
+  white-space: nowrap;
+}
+
+.distintivos {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.acciones {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-inline-start: auto;
+}
+
+.separador {
+  inline-size: 1px;
+  block-size: 24px;
+  margin: 0 var(--space-1);
+  background: var(--border);
+}
+
+.conexion {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--text-muted);
+  font-size: var(--font-size-12);
+}
+
+.punto {
+  inline-size: 10px;
+  block-size: 10px;
+  border-radius: 50%;
+  background: var(--warning-text);
+}
+
+.conexion[data-estado="abierta"] .punto {
+  background: var(--success-text);
+}
+
+.conexion[data-estado="caida"] .punto {
+  background: var(--danger-text);
+}
+
+.conexionTexto {
+  white-space: nowrap;
+}
+
+.rec {
+  inline-size: 8px;
+  block-size: 8px;
+  border-radius: 50%;
+  background: currentColor;
+  animation: latir 1.2s ease-in-out infinite;
+}
+
+.grabando {
+  color: var(--danger-text);
+}
+
+.cargando {
+  color: var(--text-subtle);
+}
+
+@keyframes latir {
+  50% {
+    opacity: 0.3;
+  }
+}

@@ -1,0 +1,85 @@
+.boton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  block-size: var(--control-height);
+  padding: 0 var(--space-3);
+  border: 1px solid transparent;
+  border-radius: var(--radius-control);
+  font-size: var(--font-size-13);
+  font-weight: var(--font-weight-medium);
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background-color var(--motion-duration) var(--motion-ease),
+    border-color var(--motion-duration) var(--motion-ease),
+    color var(--motion-duration) var(--motion-ease);
+}
+
+.boton:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.boton:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.boton svg {
+  flex: none;
+  inline-size: 1.15em;
+  block-size: 1.15em;
+}
+
+.soloIcono {
+  inline-size: var(--control-height);
+  padding: 0;
+}
+
+.primario {
+  background: var(--action-surface);
+  border-color: var(--action-surface);
+  color: var(--text-inverse);
+}
+
+.primario:hover:not(:disabled) {
+  background: var(--action-surface-hover);
+  border-color: var(--action-surface-hover);
+}
+
+.secundario {
+  background: var(--surface-raised);
+  border-color: var(--border-strong);
+  color: var(--text);
+}
+
+.secundario:hover:not(:disabled) {
+  background: var(--surface-sunken);
+}
+
+.fantasma {
+  background: transparent;
+  color: var(--text-muted);
+}
+
+.fantasma:hover:not(:disabled) {
+  background: var(--state-hover);
+  color: var(--text);
+}
+
+.peligro {
+  background: var(--surface-raised);
+  border-color: var(--border-strong);
+  color: var(--danger-text);
+}
+
+.peligro:hover:not(:disabled) {
+  background: var(--danger-surface);
+}
+
+.activo {
+  color: var(--danger-text);
+  border-color: var(--danger-text);
+}

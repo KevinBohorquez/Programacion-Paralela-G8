@@ -1,0 +1,29 @@
+/* Full-screen 16:9 for the projector: topbar, three columns, and the V1 strip at the bottom. */
+.app {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  block-size: 100vh;
+  min-block-size: 0;
+}
+
+.rejilla {
+  display: grid;
+  grid-template-columns: minmax(360px, 22%) 1fr minmax(460px, 30%);
+  grid-template-rows: 1fr auto;
+  gap: var(--space-4);
+  min-block-size: 0;
+  padding: var(--space-4) var(--space-6) var(--space-5);
+}
+
+.izquierda {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  min-block-size: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.abajo {
+  grid-column: 1 / -1;
+}

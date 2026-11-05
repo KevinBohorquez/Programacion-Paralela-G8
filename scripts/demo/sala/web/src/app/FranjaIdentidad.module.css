@@ -1,0 +1,125 @@
+.franja {
+  display: grid;
+  grid-template-columns: 280px 1fr 300px;
+  align-items: stretch;
+  gap: var(--space-5);
+  padding: var(--space-4) var(--space-5);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  background: var(--surface-raised);
+}
+
+.titulo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--space-1);
+}
+
+.titulo h2 {
+  font-size: var(--font-size-16);
+  font-weight: var(--font-weight-semibold);
+}
+
+.nota {
+  color: var(--text-subtle);
+  font-size: var(--font-size-12);
+}
+
+.celdas {
+  display: flex;
+  gap: var(--space-3);
+  min-inline-size: 0;
+  overflow-x: auto;
+}
+
+.vacio {
+  align-self: center;
+  color: var(--text-subtle);
+  font-size: var(--font-size-13);
+}
+
+.celda {
+  display: flex;
+  flex: 0 0 196px;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--border);
+  border-block-start: 3px solid var(--color);
+  border-radius: var(--radius-control);
+  background: var(--surface);
+}
+
+.celda[data-distinta="true"] {
+  border-color: var(--danger-text);
+  background: var(--danger-surface);
+}
+
+.nombre {
+  overflow: hidden;
+  font-size: var(--font-size-13);
+  font-weight: var(--font-weight-semibold);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fila {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-2);
+  color: var(--text-subtle);
+  font-size: var(--font-size-12);
+}
+
+.fila b {
+  color: var(--text);
+  font-weight: var(--font-weight-medium);
+}
+
+.huella {
+  font-family: var(--font-mono);
+}
+
+.veredicto {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-control);
+  background: var(--surface-sunken);
+  color: var(--text-muted);
+}
+
+.veredicto span {
+  display: flex;
+  flex-direction: column;
+}
+
+.veredicto b {
+  font-size: var(--font-size-16);
+  font-weight: var(--font-weight-semibold);
+}
+
+.veredicto small {
+  font-size: var(--font-size-12);
+}
+
+.veredicto[data-tipo="identicos"] {
+  border-color: transparent;
+  background: var(--success-surface);
+  color: var(--success-text);
+}
+
+.veredicto[data-tipo="distintos"] {
+  border-color: transparent;
+  background: var(--danger-surface);
+  color: var(--danger-text);
+}
+
+.icono {
+  flex: none;
+  inline-size: 32px;
+  block-size: 32px;
+}

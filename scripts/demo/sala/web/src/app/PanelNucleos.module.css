@@ -1,0 +1,37 @@
+.panel {
+  min-block-size: 0;
+}
+
+.enCurso {
+  color: var(--text-muted);
+  font-size: var(--font-size-13);
+}
+
+.total {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  margin-inline-start: auto;
+}
+
+.totalValor {
+  font-size: var(--font-size-24);
+  font-weight: var(--font-weight-semibold);
+  line-height: 1;
+}
+
+.totalSub {
+  color: var(--text-subtle);
+  font-size: var(--font-size-12);
+}
+
+.mapa {
+  flex: 1;
+  min-block-size: 0;
+  padding: var(--space-5);
+}
+
+.mapa > * {
+  inline-size: 100%;
+  block-size: 100%;
+}

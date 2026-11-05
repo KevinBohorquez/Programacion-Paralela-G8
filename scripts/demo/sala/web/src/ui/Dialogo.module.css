@@ -1,0 +1,64 @@
+.velo {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-dialog);
+  display: grid;
+  place-items: center;
+  padding: var(--space-8);
+  background: var(--scrim);
+  overscroll-behavior: contain;
+  animation: aparecer var(--motion-duration) var(--motion-ease);
+}
+
+.caja {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  max-block-size: calc(100vh - 2 * var(--space-8));
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: var(--space-6);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  background: var(--surface-raised);
+  box-shadow: var(--shadow-dialog);
+  animation: subir var(--motion-duration) var(--motion-ease);
+}
+
+.caja:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.medio {
+  inline-size: min(640px, 100%);
+}
+
+.ancho {
+  inline-size: min(1120px, 100%);
+}
+
+.cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.titulo {
+  font-size: var(--font-size-16);
+  font-weight: var(--font-weight-semibold);
+}
+
+@keyframes aparecer {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes subir {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.99);
+  }
+}
