@@ -1,0 +1,78 @@
+/* Dynamic-scheduling timeline: blocks in two shades of the MPI-dynamic colour; new blocks fade in. */
+.bloqueA,
+.bloqueB {
+  fill: var(--backend-mpi-dinamico);
+  animation: aparecer 180ms ease-out;
+}
+
+.bloqueB {
+  opacity: 0.55;
+}
+
+@keyframes aparecer {
+  from {
+    opacity: 0;
+  }
+}
+
+.maestro {
+  stroke: var(--border);
+  stroke-width: 1;
+}
+
+.trama {
+  stroke: var(--border);
+  stroke-width: 2;
+}
+
+.rango {
+  fill: var(--text);
+  font-size: calc(0.9375rem * var(--viz-escala, 1));
+  font-weight: 600;
+}
+
+.rol {
+  fill: var(--text-muted);
+  font-size: calc(0.8125rem * var(--viz-escala, 1));
+  font-weight: 400;
+}
+
+.conteo {
+  fill: var(--text);
+  font-size: calc(0.9375rem * var(--viz-escala, 1));
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.conteoMuted {
+  fill: var(--text-muted);
+  font-weight: 400;
+}
+
+.pista {
+  fill: var(--surface-sunken);
+}
+
+.cubierto {
+  fill: var(--backend-mpi-dinamico);
+}
+
+.cobertura {
+  fill: var(--text);
+  font-size: calc(1rem * var(--viz-escala, 1));
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+}
+
+.coberturaN {
+  fill: var(--text-muted);
+  font-size: calc(0.8125rem * var(--viz-escala, 1));
+  font-weight: 400;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bloqueA,
+  .bloqueB {
+    animation: none;
+  }
+}
