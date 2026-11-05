@@ -7,5 +7,5 @@ export default defineConfig({
   base: "/static/",
   build: { outDir: "../static", emptyOutDir: true },
   server: { proxy: { "/api": "http://localhost:8765" } },
-  test: { environment: "jsdom" },
+  test: { environment: "jsdom", setupFiles: ["./src/pruebas/preparar.ts"] },
 });

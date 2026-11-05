@@ -1,0 +1,247 @@
+.panel {
+  min-block-size: 0;
+}
+
+.sub {
+  color: var(--text-subtle);
+  font-size: var(--font-size-12);
+}
+
+.carriles {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-block-size: 0;
+  padding: var(--space-4) var(--space-5);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.vacio {
+  display: grid;
+  flex: 1;
+  place-items: center;
+  padding: var(--space-6);
+  color: var(--text-subtle);
+  font-size: var(--font-size-14);
+  text-align: center;
+}
+
+.carril {
+  flex: none;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--border);
+  border-inline-start: 3px solid var(--color);
+  border-radius: var(--radius-control);
+  background: var(--surface);
+}
+
+.carril[data-estado="error"] {
+  border-color: var(--danger-text);
+  border-inline-start-color: var(--danger-text);
+}
+
+.carrilCabecera {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  min-inline-size: 0;
+}
+
+.carrilNombre {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-14);
+  font-weight: var(--font-weight-semibold);
+  white-space: nowrap;
+}
+
+.muestra {
+  inline-size: 10px;
+  block-size: 10px;
+  border-radius: 2px;
+  background: var(--color);
+}
+
+.carrilConf {
+  overflow: hidden;
+  color: var(--text-subtle);
+  font-size: var(--font-size-12);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.carrilCabecera > svg {
+  margin-inline-start: 0;
+}
+
+.carrilEstado {
+  margin-inline-start: auto;
+  color: var(--text-muted);
+  font-size: var(--font-size-12);
+  white-space: nowrap;
+}
+
+.carril[data-estado="hecho"] .carrilEstado {
+  color: var(--success-text);
+}
+
+.carril[data-estado="error"] .carrilEstado {
+  color: var(--danger-text);
+}
+
+.pista {
+  block-size: 6px;
+  margin-block: 6px;
+  overflow: hidden;
+  border-radius: var(--radius-pill);
+  background: var(--surface-strong);
+}
+
+.relleno {
+  block-size: 100%;
+  background: var(--color);
+  transform-origin: left center;
+  transition: transform var(--motion-duration) var(--motion-ease);
+}
+
+.carril[data-estado="estimado"] .relleno {
+  opacity: 0.55;
+}
+
+.datos {
+  display: flex;
+  gap: var(--space-5);
+  color: var(--text-subtle);
+  font-size: var(--font-size-12);
+}
+
+.dato b {
+  margin-inline-end: var(--space-1);
+  color: var(--text);
+  font-size: var(--font-size-14);
+  font-weight: var(--font-weight-semibold);
+}
+
+.detalle {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-block-start: var(--space-3);
+  padding-block-start: var(--space-3);
+  border-block-start: 1px solid var(--border);
+}
+
+.linea {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.linea > svg {
+  inline-size: 100%;
+  block-size: 120px;
+}
+
+.trabajo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0;
+}
+
+.trabajoBarras {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  block-size: 48px;
+}
+
+.trabajoBarra {
+  flex: 1;
+  block-size: 100%;
+  border-radius: 2px 2px 0 0;
+  background: var(--color);
+  transform-origin: bottom;
+}
+
+.verDetalle {
+  align-self: flex-start;
+}
+
+.error {
+  color: var(--danger-text);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-12);
+  white-space: pre-wrap;
+}
+
+.nota {
+  color: var(--text-subtle);
+  font-size: var(--font-size-12);
+}
+
+.speedup {
+  flex: none;
+  padding: var(--space-4) var(--space-5) var(--space-5);
+  border-block-start: 1px solid var(--border);
+}
+
+.speedupGrafico {
+  block-size: 190px;
+}
+
+.speedupGrafico > svg {
+  inline-size: 100%;
+  block-size: 100%;
+}
+
+.pestanas {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.metricas {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-2) var(--space-6);
+  margin: 0;
+}
+
+.metrica {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding-block: var(--space-1);
+  border-block-end: 1px solid var(--border);
+  font-size: var(--font-size-13);
+}
+
+.metrica dt {
+  color: var(--text-muted);
+}
+
+.metrica dd {
+  margin: 0;
+  font-weight: var(--font-weight-medium);
+  text-align: end;
+}
+
+.mono {
+  font-family: var(--font-mono);
+}
+
+.comando {
+  margin: 0;
+  padding: var(--space-4);
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-control);
+  background: var(--surface-sunken);
+  font-size: var(--font-size-13);
+  white-space: pre-wrap;
+  word-break: break-all;
+}

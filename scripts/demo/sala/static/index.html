@@ -1,156 +1,30 @@
 <!doctype html>
-<html lang="es">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sala de control</title>
-<link rel="icon" href="data:,">
-<script>
-  // Served by the demo server at "/", static files live under "/static/".
-  // Opened from the folder itself (file:// or a local http.server), paths are relative.
-  (function () {
-    var p = location.pathname;
-    if (location.protocol !== 'file:' && !/\/static\//.test(p) && !/index\.html$/.test(p)) {
-      var b = document.createElement('base');
-      b.href = '/static/';
-      document.head.appendChild(b);
-    }
-  })();
-</script>
-<link rel="stylesheet" href="sala.css">
-</head>
-<body>
-<div id="app">
-
-  <header class="barra">
-    <h1 class="titulo">Sala de control · Riesgo de inundación urbana</h1>
-    <div class="distintivos">
-      <span id="badge-mock" class="badge badge-mock" hidden>MOCK · datos sintéticos</span>
-      <span id="badge-modo" class="badge badge-modo">VIVO</span>
-      <span id="badge-rec" class="badge badge-rec" hidden><i class="punto"></i>Grabando</span>
-      <span id="badge-conexion" class="badge badge-conexion" hidden>Sin conexión, reintentando…</span>
-    </div>
-    <nav class="acciones">
-      <button id="btn-carrera" class="btn btn-primario">Carrera</button>
-      <button id="btn-hib-error" class="btn">Híbrido con error</button>
-      <button id="btn-hib-ok" class="btn">Híbrido corregido</button>
-      <button id="btn-detener" class="btn btn-peligro">Detener</button>
-      <button id="btn-grabar" class="btn">Grabar</button>
-      <div class="menu">
-        <button id="btn-replay" class="btn" aria-haspopup="true" aria-expanded="false">Replay ▾</button>
-        <div id="menu-replay" class="menu-panel" hidden>
-          <label class="campo">Nombre para «Grabar»
-            <input id="p-grabacion" type="text" value="ensayo" maxlength="40">
-          </label>
-          <label class="campo-linea">Velocidad
-            <select id="replay-velocidad">
-              <option value="0.5">0,5×</option>
-              <option value="1" selected>1×</option>
-              <option value="2">2×</option>
-              <option value="4">4×</option>
-            </select>
-          </label>
-          <ul id="lista-grabaciones" class="lista-grabaciones"><li class="vacio">Cargando…</li></ul>
-        </div>
-      </div>
-      <button id="btn-convergencia" class="btn">Convergencia</button>
-    </nav>
-  </header>
-
-  <aside class="panel panel-izq">
-    <section class="bloque">
-      <h2>Parámetros</h2>
-      <div class="rejilla-campos">
-        <label class="campo">N escenarios
-          <input id="p-n" type="number" min="1000" step="1000000" value="20000000">
-        </label>
-        <label class="campo">Núcleos
-          <input id="p-nucleos" type="number" min="1" max="256" value="24">
-        </label>
-      </div>
-      <label class="campo">Configuración de la carrera
-        <select id="p-config-carrera"><option value="sintetico">sintetico</option></select>
-      </label>
-      <fieldset class="backends">
-        <legend>Backends</legend>
-        <label><input type="checkbox" value="serial" checked><i class="muestra" data-b="serial"></i>Serial</label>
-        <label><input type="checkbox" value="openmp" checked><i class="muestra" data-b="openmp"></i>OpenMP</label>
-        <label><input type="checkbox" value="mpi_estatico" checked><i class="muestra" data-b="mpi_estatico"></i>MPI E1</label>
-        <label><input type="checkbox" value="mpi_dinamico" checked><i class="muestra" data-b="mpi_dinamico"></i>MPI E2</label>
-        <label><input type="checkbox" value="hibrido" checked><i class="muestra" data-b="hibrido"></i>Híbrido</label>
-      </fieldset>
-    </section>
-
-    <section class="bloque bloque-riesgo">
-      <h2>Explorador de riesgo</h2>
-      <label class="campo">Estación y régimen
-        <select id="r-config"></select>
-      </label>
-      <label class="campo deslizador">Capacidad de drenaje C <output id="r-c-val">—</output>
-        <input id="r-c" type="range" min="0" max="10" step="0.1" value="5">
-      </label>
-      <label class="campo deslizador">Umbral U <output id="r-u-val">—</output>
-        <input id="r-u" type="range" min="0" max="100" step="0.5" value="50">
-      </label>
-      <div class="lectura">
-        <span class="lectura-etq">P(Amax &gt; U)</span>
-        <span id="r-p" class="lectura-val">—</span>
-        <span id="r-ic" class="lectura-ic"></span>
-      </div>
-      <div id="graf-riesgo" class="grafico" role="img" aria-label="Curva de excedencia P(Amax mayor que u) con banda de Wilson"></div>
-      <p id="r-meta" class="nota"></p>
-    </section>
-  </aside>
-
-  <main class="panel panel-centro">
-    <div class="encabezado-calor">
-      <h2>Uso de núcleos</h2>
-      <div class="total">
-        <span id="cpu-total" class="total-val">—</span>
-        <span id="cpu-total-sub" class="total-sub">esperando datos de CPU</span>
-      </div>
-    </div>
-    <div id="calor" class="calor"></div>
-    <div class="escala">
-      <span>0 %</span><i class="escala-barra"></i><span>100 %</span>
-    </div>
-  </main>
-
-  <aside class="panel panel-der">
-    <h2>Carrera de backends</h2>
-    <div id="carriles" class="carriles">
-      <p class="vacio-grande">Pulsa «Carrera» para lanzar los backends uno tras otro.</p>
-    </div>
-  </aside>
-
-  <footer class="franja">
-    <div class="franja-titulo">
-      <h2>V1 · Identidad de resultados</h2>
-      <p class="nota">Mismo k y misma huella del histograma en todos los backends</p>
-    </div>
-    <div id="identidad" class="identidad"></div>
-    <div id="veredicto" class="veredicto veredicto-espera">
-      <span class="veredicto-icono">—</span>
-      <span class="veredicto-texto">Esperando resultados</span>
-    </div>
-  </footer>
-</div>
-
-<div id="modal-conv" class="modal" hidden>
-  <div class="modal-caja" role="dialog" aria-modal="true" aria-labelledby="conv-titulo">
-    <header class="modal-cab">
-      <h2 id="conv-titulo">Convergencia de p̂ al crecer N</h2>
-      <button id="conv-cerrar" class="btn">Cerrar</button>
-    </header>
-    <p id="conv-sub" class="nota"></p>
-    <div id="graf-conv" class="grafico grafico-conv" role="img" aria-label="p estimado y banda de Wilson frente a N en escala logarítmica"></div>
-    <table id="conv-tabla" class="tabla"></table>
-  </div>
-</div>
-
-<div id="toasts" class="toasts" aria-live="polite"></div>
-
-<script src="graficos.js"></script>
-<script src="sala.js"></script>
-</body>
+<html lang="es" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="dark light" />
+    <meta name="theme-color" content="#0e0e10" />
+    <link rel="icon" href="data:," />
+    <title>Sala de control · Riesgo de inundación urbana</title>
+    <script>
+      // Dark by default (the room is projected); ?tema=claro|oscuro or the saved toggle override it.
+      (function () {
+        var t = "dark";
+        try {
+          t = localStorage.getItem("sala-tema") || t;
+        } catch (e) {}
+        var q = new URLSearchParams(location.search).get("tema");
+        if (q === "claro") t = "light";
+        if (q === "oscuro") t = "dark";
+        document.documentElement.dataset.theme = t;
+        if (t === "light") document.querySelector('meta[name="theme-color"]').setAttribute("content", "#f7f7f8");
+      })();
+    </script>
+    <script type="module" crossorigin src="/static/assets/index-D5nEPZ2J.js"></script>
+    <link rel="stylesheet" crossorigin href="/static/assets/index-BFxV9CZ2.css">
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
 </html>

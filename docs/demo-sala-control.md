@@ -55,6 +55,31 @@ Desde la raíz del repositorio. En Windows use PowerShell; en Linux y macOS, `ba
 
 Cualquier acción acepta `-Simular`, que imprime los comandos sin ejecutarlos. El registro del servidor se ve con `docker logs -f pp-sala`.
 
+### Interfaz moderna y clásica
+
+El servidor sirve por defecto la interfaz moderna (React), ya compilada y versionada en `scripts/demo/sala/static/`, así que la demo no necesita Node. La interfaz original sigue en `scripts/demo/sala/clasica/` y se elige con una opción:
+
+```bash
+python3 scripts/demo/sala_control.py --interfaz clasica   # por defecto: --interfaz moderna
+```
+
+En la interfaz moderna:
+
+- El tema es oscuro por defecto, pensado para el proyector. El botón del sol lo cambia y se puede forzar con `?tema=claro`.
+- **Parámetros** aparece plegado con un resumen; al hacer clic se despliega.
+- Cada carril de la carrera también se despliega con un clic. Muestra el trabajo por rango de E1, la línea de bloques de E2 y un botón con las métricas completas y la línea de comando.
+- Si la página se abre con una corrida ya en marcha, lo indica y sus carriles aparecen con la corrida siguiente. El uso de núcleos se ve en vivo desde el primer momento.
+
+Para cambiar la interfaz moderna, edite `scripts/demo/sala/web/` y vuelva a compilarla (necesita Node 20 o posterior):
+
+```bash
+npm --prefix scripts/demo/sala/web install
+npm --prefix scripts/demo/sala/web test
+npm --prefix scripts/demo/sala/web run build   # escribe scripts/demo/sala/static/
+```
+
+Para desarrollar sin simulador, ejecute `npm --prefix scripts/demo/sala/web run dev` y abra `http://localhost:5173/static/?mock=1`. Ese modo genera eventos falsos en el navegador y lleva el distintivo **MOCK · datos ilustrativos**. Sus cifras no son mediciones, así que nunca lo use en la exposición. El respaldo real es el modo replay (sección 4).
+
 ## 3. Guion de 5 minutos
 
 | Tiempo | Acción del operador | Qué decir |

@@ -2,6 +2,7 @@
 
 Corre dentro del contenedor pp-g8, solo con la biblioteca estándar de Python 3.12:
     python3 scripts/demo/sala_control.py --puerto 8765 --build-dir build/docker [--sin-progreso]
+        [--interfaz moderna|clasica]
 
 Lanza los backends reales, muestrea /proc/stat cada 0,2 s, emite eventos SSE en /api/stream,
 graba en results/demo/sala/<nombre>.jsonl y reproduce esas grabaciones con sus tiempos.
@@ -30,6 +31,10 @@ from sala.lanzador import (BACKENDS, CorridaDetenida, CorridaFallida, Especifica
 
 RAIZ = Path(__file__).resolve().parents[2]
 ESTATICOS = Path(__file__).resolve().parent / "sala" / "static"
+# --interfaz: "moderna" is the React build committed in static/; "clasica" is the original vanilla UI.
+INTERFACES = {"moderna": ESTATICOS, "clasica": ESTATICOS.parent / "clasica"}
+mimetypes.add_type("font/woff2", ".woff2")
+mimetypes.add_type("text/javascript", ".js")
 NS_CONVERGENCIA = [1_000, 10_000, 100_000, 1_000_000, 10_000_000]
 PLACEHOLDER = """<!doctype html><html lang="es"><head><meta charset="utf-8"><title>Sala de control</title>
 <style>body{font-family:system-ui,sans-serif;background:#0F1726;color:#E7ECF4;margin:2rem}
@@ -266,6 +271,7 @@ class Sala:
 
 class Manejador(BaseHTTPRequestHandler):
     sala: Sala
+    estaticos: Path = ESTATICOS
     protocol_version = "HTTP/1.1"
 
     def _enviar(self, codigo: int, cuerpo: bytes, tipo: str) -> None:
@@ -294,8 +300,8 @@ class Manejador(BaseHTTPRequestHandler):
 
     def _estatico(self, ruta: str) -> None:
         relativa = ruta.lstrip("/").removeprefix("static/") or "index.html"
-        archivo = (ESTATICOS / relativa).resolve()
-        if not archivo.is_relative_to(ESTATICOS.resolve()) or not archivo.is_file():
+        archivo = (self.estaticos / relativa).resolve()
+        if not archivo.is_relative_to(self.estaticos.resolve()) or not archivo.is_file():
             if relativa == "index.html":
                 self._enviar(200, PLACEHOLDER.encode(), "text/html; charset=utf-8")
             else:
@@ -377,29 +383,36 @@ class Manejador(BaseHTTPRequestHandler):
             log.info("http %s | %s", self.client_address[0], fmt % args)
 
 
-def crear_servidor(sala: Sala, host: str, puerto: int) -> ThreadingHTTPServer:
-    manejador = type("ManejadorSala", (Manejador,), {"sala": sala})
+def crear_servidor(sala: Sala, host: str, puerto: int, estaticos: Path = ESTATICOS) -> ThreadingHTTPServer:
+    """`estaticos` is the UI folder served at `/` and under `/static/` (see INTERFACES)."""
+    manejador = type("ManejadorSala", (Manejador,), {"sala": sala, "estaticos": estaticos})
     servidor = ThreadingHTTPServer((host, puerto), manejador)
     servidor.daemon_threads = True
     return servidor
 
 
-def main(argv: list[str] | None = None) -> None:
+def analizar_argumentos(argv: list[str] | None = None) -> argparse.Namespace:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--puerto", type=int, default=8765)
     ap.add_argument("--host", default="0.0.0.0")
     ap.add_argument("--build-dir", default="build/docker", help="directorio de compilación de CMake")
     ap.add_argument("--sin-progreso", action="store_true",
                     help="no pasa --progreso a los binarios; el avance se estima con el tiempo esperado")
-    a = ap.parse_args(argv)
+    ap.add_argument("--interfaz", choices=sorted(INTERFACES), default="moderna",
+                    help="moderna: compilación React de sala/static/; clasica: interfaz original de sala/clasica/")
+    return ap.parse_args(argv)
+
+
+def main(argv: list[str] | None = None) -> None:
+    a = analizar_argumentos(argv)
     logging.basicConfig(level=logging.INFO, stream=sys.stdout, format="%(asctime)s [%(levelname)s] %(message)s")
     dir_build = Path(a.build_dir)
     dir_build = dir_build if dir_build.is_absolute() else RAIZ / dir_build
     sala = Sala(dir_build / "src" / "backends", progreso=not a.sin_progreso)
     MuestreadorCPU(sala.cpu).start()
-    servidor = crear_servidor(sala, a.host, a.puerto)
-    log.info("Sala de control en http://127.0.0.1:%d (binarios %s, progreso %s)", a.puerto, dir_build,
-             "estimado" if a.sin_progreso else "real")
+    servidor = crear_servidor(sala, a.host, a.puerto, INTERFACES[a.interfaz])
+    log.info("Sala de control en http://127.0.0.1:%d (interfaz %s, binarios %s, progreso %s)", a.puerto,
+             a.interfaz, dir_build, "estimado" if a.sin_progreso else "real")
     try:
         servidor.serve_forever()
     except KeyboardInterrupt:

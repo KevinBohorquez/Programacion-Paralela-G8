@@ -1,0 +1,129 @@
+/*
+ * Design tokens: one zinc grey ramp, ONE indigo accent, state hues only for state, and the
+ * backend/heat scales the charts read. Components only use the semantic aliases (second block).
+ * Alias values here are the LIGHT theme; themes.css remaps them for dark (the default).
+ *
+ * The room is projected, so every UI size is the reference size times --ui-scale (≈ 1.15):
+ * 14px body becomes 16px. Spacing stays on the plain 4px grid.
+ */
+:root {
+  /* Neutral zinc ramp (private). */
+  --grey-0: #ffffff;
+  --grey-25: #f7f7f8;
+  --grey-50: #f4f4f5;
+  --grey-75: #ececef;
+  --grey-100: #ebebee;
+  --grey-150: #e4e4e7;
+  --grey-200: #d4d4d8;
+  --grey-300: #a8a8b3;
+  --grey-400: #8d8d98;
+  --grey-450: #85858f;
+  --grey-490: #707079;
+  --grey-500: #6b6b74;
+  --grey-600: #52525b;
+  --grey-700: #34343c;
+  --grey-750: #2a2a30;
+  --grey-775: #26262c;
+  --grey-800: #232328;
+  --grey-825: #1f1f24;
+  --grey-850: #1b1b1f;
+  --grey-875: #18181b;
+  --grey-900: #151518;
+  --grey-950: #0e0e10;
+  --grey-975: #0a0a0c;
+
+  /* One accent family: indigo (private). */
+  --accent-50: #eef0ff;
+  --accent-300: #a5b4fc;
+  --accent-400: #818cf8;
+  --accent-500: #4f46e5;
+  --accent-550: #5a52ea;
+  --accent-600: #4338ca;
+  --accent-900: #23243f;
+
+  /* Semantic aliases. */
+  --surface: var(--grey-25);
+  --surface-raised: var(--grey-0);
+  --surface-sunken: var(--grey-50);
+  --surface-strong: var(--grey-100);
+  --state-hover: rgba(24, 24, 27, 0.05);
+  --state-active: rgba(24, 24, 27, 0.08);
+  --text: var(--grey-875);
+  --text-muted: var(--grey-600);
+  --text-subtle: var(--grey-500);
+  --text-inverse: var(--grey-0);
+  --border: var(--grey-150);
+  --border-strong: var(--grey-200);
+  --border-control: var(--grey-450);
+  --control-checked: var(--accent-500);
+  --focus-ring: var(--accent-500);
+  --scrim: rgba(9, 9, 11, 0.36);
+  --action-surface: var(--accent-500);
+  --action-surface-hover: var(--accent-600);
+  --action-text: var(--accent-600);
+  --action-soft: var(--accent-50);
+  --toast-surface: var(--grey-875);
+  --toast-text: var(--grey-25);
+  --shadow-dialog: 0 2px 4px rgba(0, 0, 0, 0.06), 0 24px 64px rgba(0, 0, 0, 0.18);
+  --shadow-toast: 0 1px 2px rgba(0, 0, 0, 0.06), 0 8px 24px rgba(0, 0, 0, 0.1);
+
+  --success-surface: #ecfdf3;
+  --success-text: #15803d;
+  --warning-surface: #fef8e7;
+  --warning-text: #a16207;
+  --danger-surface: #fef2f2;
+  --danger-text: #b91c1c;
+  --info-surface: #eff4ff;
+  --info-text: #1d4ed8;
+
+  /* Backends (light: darkened so each reaches 3:1 on white). */
+  --backend-serial: #2f72b0;
+  --backend-openmp: #b0601a;
+  --backend-mpi-estatico: #1b847c;
+  --backend-mpi-dinamico: #6b58d0;
+  --backend-hibrido: #b83e76;
+
+  /* Heat scale for core utilisation, 0 % → 100 %. */
+  --heat-0: #ececef;
+  --heat-1: #c7cdf7;
+  --heat-2: #8b93ee;
+  --heat-3: #5a52ea;
+  --heat-4: #312a9c;
+
+  /* Type. */
+  --ui-scale: 1.15;
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: ui-monospace, "Cascadia Code", "SFMono-Regular", Consolas, monospace;
+  --font-size-12: calc(12px * var(--ui-scale));
+  --font-size-13: calc(13px * var(--ui-scale));
+  --font-size-14: calc(14px * var(--ui-scale));
+  --font-size-16: calc(16px * var(--ui-scale));
+  --font-size-24: calc(24px * var(--ui-scale));
+  --font-size-40: calc(40px * var(--ui-scale));
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --line-height-body: 1.5;
+
+  /* Space: a 4px grid. */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+
+  --radius-small: 4px;
+  --radius-control: 6px;
+  --radius-card: 10px;
+  --radius-pill: 999px;
+  --control-height: 36px;
+
+  --motion-duration: 180ms;
+  --motion-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+
+  --z-dialog: 60;
+  --z-toast: 80;
+}

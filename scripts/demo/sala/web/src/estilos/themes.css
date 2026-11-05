@@ -1,0 +1,104 @@
+/*
+ * Theme remapping (aliases only, never the ramp). Order matters: the media query is the default when
+ * nobody chose; [data-theme] is the manual toggle and comes after it so a manual "light" wins on a
+ * dark machine. index.html sets data-theme="dark" before first paint: the room is projected.
+ */
+:root {
+  color-scheme: light dark;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --surface: var(--grey-950);
+    --surface-raised: var(--grey-900);
+    --surface-sunken: var(--grey-850);
+    --surface-strong: var(--grey-800);
+    --state-hover: rgba(255, 255, 255, 0.05);
+    --state-active: rgba(255, 255, 255, 0.08);
+    --text: var(--grey-75);
+    --text-muted: var(--grey-300);
+    --text-subtle: var(--grey-400);
+    --border: var(--grey-775);
+    --border-strong: var(--grey-700);
+    --border-control: var(--grey-490);
+    --control-checked: var(--accent-550);
+    --focus-ring: var(--accent-400);
+    --scrim: rgba(0, 0, 0, 0.6);
+    --action-surface-hover: var(--accent-550);
+    --action-text: var(--accent-300);
+    --action-soft: var(--accent-900);
+    --toast-surface: var(--grey-75);
+    --toast-text: var(--grey-950);
+    --shadow-dialog: 0 2px 4px rgba(0, 0, 0, 0.4), 0 24px 64px rgba(0, 0, 0, 0.6);
+    --shadow-toast: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.5);
+    --success-surface: #1b2d24;
+    --success-text: #4ade80;
+    --warning-surface: #312919;
+    --warning-text: #fbbf24;
+    --danger-surface: #302023;
+    --danger-text: #f87171;
+    --info-surface: #1e2633;
+    --info-text: #7aa7ff;
+    --backend-serial: #3d8fd1;
+    --backend-openmp: #cf7a26;
+    --backend-mpi-estatico: #2aa198;
+    --backend-mpi-dinamico: #8f7be8;
+    --backend-hibrido: #d0508a;
+    --heat-0: #1b1b1f;
+    --heat-1: #262a52;
+    --heat-2: #3b3a9e;
+    --heat-3: #5a52ea;
+    --heat-4: #a5b4fc;
+  }
+}
+
+:root[data-theme="dark"] {
+  --surface: var(--grey-950);
+  --surface-raised: var(--grey-900);
+  --surface-sunken: var(--grey-850);
+  --surface-strong: var(--grey-800);
+  --state-hover: rgba(255, 255, 255, 0.05);
+  --state-active: rgba(255, 255, 255, 0.08);
+  --text: var(--grey-75);
+  --text-muted: var(--grey-300);
+  --text-subtle: var(--grey-400);
+  --border: var(--grey-775);
+  --border-strong: var(--grey-700);
+  --border-control: var(--grey-490);
+  --control-checked: var(--accent-550);
+  --focus-ring: var(--accent-400);
+  --scrim: rgba(0, 0, 0, 0.6);
+  --action-surface-hover: var(--accent-550);
+  --action-text: var(--accent-300);
+  --action-soft: var(--accent-900);
+  --toast-surface: var(--grey-75);
+  --toast-text: var(--grey-950);
+  --shadow-dialog: 0 2px 4px rgba(0, 0, 0, 0.4), 0 24px 64px rgba(0, 0, 0, 0.6);
+  --shadow-toast: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.5);
+  --success-surface: #1b2d24;
+  --success-text: #4ade80;
+  --warning-surface: #312919;
+  --warning-text: #fbbf24;
+  --danger-surface: #302023;
+  --danger-text: #f87171;
+  --info-surface: #1e2633;
+  --info-text: #7aa7ff;
+  --backend-serial: #3d8fd1;
+  --backend-openmp: #cf7a26;
+  --backend-mpi-estatico: #2aa198;
+  --backend-mpi-dinamico: #8f7be8;
+  --backend-hibrido: #d0508a;
+  --heat-0: #1b1b1f;
+  --heat-1: #262a52;
+  --heat-2: #3b3a9e;
+  --heat-3: #5a52ea;
+  --heat-4: #a5b4fc;
+}

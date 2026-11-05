@@ -1,0 +1,49 @@
+.region {
+  position: fixed;
+  inset-block-end: var(--space-6);
+  inset-inline-end: var(--space-6);
+  z-index: var(--z-toast);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--space-2);
+  pointer-events: none;
+}
+
+.aviso {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  max-inline-size: 520px;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-control);
+  background: var(--toast-surface);
+  color: var(--toast-text);
+  box-shadow: var(--shadow-toast);
+  font-size: var(--font-size-14);
+  font-weight: var(--font-weight-medium);
+  pointer-events: auto;
+  animation: entrar var(--motion-duration) var(--motion-ease);
+}
+
+.aviso svg {
+  flex: none;
+  inline-size: 1.2em;
+  block-size: 1.2em;
+}
+
+.peligro svg {
+  color: var(--danger-text);
+  filter: saturate(1.2);
+}
+
+.exito svg {
+  color: var(--success-text);
+}
+
+@keyframes entrar {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
