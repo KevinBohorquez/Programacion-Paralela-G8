@@ -9,6 +9,7 @@
 #include <sstream>
 #include <stdexcept>
 
+#include "progreso.hpp"
 #include "resultados.hpp"
 
 namespace pp {
@@ -86,7 +87,8 @@ void ayuda() {
         "  --calentamiento     marca la fila como calentamiento (repeticion 0)\n"
         "  --verificar         MPI: compara k e histograma con la referencia secuencial (V1)\n"
         "  --silencioso        no imprime el resumen\n"
-        "  --ayuda             esta ayuda\n";
+        "  --progreso          imprime líneas de avance [prog] en stderr (sala de control)\n"
+        "  --ayuda            esta ayuda\n";
 }
 
 }  // namespace
@@ -124,6 +126,7 @@ bool parsear_argumentos(int argc, char** argv, Configuracion& cfg) {
         if (a == "--ayuda" || a == "--help" || a == "-h") { ayuda(); return false; }
         if (a == "--silencioso") { cfg.silencioso = true; continue; }
         if (a == "--verificar") { cfg.verificar = true; continue; }
+        if (a == "--progreso") { activar_progreso(true); continue; }
         if (a == "--calentamiento") { cfg.calentamiento = true; cfg.repeticion = 0; continue; }
         if (a == "--config") { ++i; continue; }
         if (a.rfind("--", 0) != 0) throw std::runtime_error("argumento inesperado: " + a);

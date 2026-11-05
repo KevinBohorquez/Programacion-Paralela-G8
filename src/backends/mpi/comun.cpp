@@ -10,6 +10,7 @@
 #include <utility>
 #include <vector>
 
+#include "progreso.hpp"
 #include "simulacion.hpp"
 
 namespace mpi_pi {
@@ -79,6 +80,7 @@ int ejecutar_mpi(int argc, char** argv, const char* backend, const Esquema& esqu
         return 2;
     }
     cfg.backend = backend;  // la etiqueta la fija el ejecutable, no el archivo de configuración
+    pp::fijar_rango_progreso(rango);  // las líneas [prog] de MPI llevan rango= (solo con --progreso)
 
     // El híbrido llama a MPI solo desde el hilo principal: exige al menos MPI_THREAD_FUNNELED.
     if (cfg.backend == "hibrido" && provisto < MPI_THREAD_FUNNELED) {

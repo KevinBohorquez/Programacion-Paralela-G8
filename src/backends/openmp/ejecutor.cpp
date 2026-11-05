@@ -5,6 +5,7 @@
 #include <stdexcept>
 
 #include "openmp.hpp"
+#include "progreso.hpp"
 
 namespace pp {
 
@@ -63,12 +64,34 @@ Acumulador ejecutar_openmp(const Parametros& p, uint64_t clave, uint64_t config_
 
     // Cada hilo recibe copias privadas de k, n y de UN histograma de 512 clases (4 KB);
     // OpenMP las suma al cerrar la región. No hay escrituras compartidas en el bucle.
+    if (!progreso_activo()) {
 #pragma omp parallel for schedule(runtime) reduction(+ : k, n) reduction(+ : hist[:NBINS])
-    for (uint64_t j = j0; j < j1; ++j) {
-        const Resultado r = simular_escenario(p, clave, base + j);
-        k += r.inundacion ? 1u : 0u;
-        n += 1u;
-        hist[clase_histograma(r.amax)] += 1u;
+        for (uint64_t j = j0; j < j1; ++j) {
+            const Resultado r = simular_escenario(p, clave, base + j);
+            k += r.inundacion ? 1u : 0u;
+            n += 1u;
+            hist[clase_histograma(r.amax)] += 1u;
+        }
+    } else {
+        // Mismo reparto y misma reducción; cada hilo suma al contador atómico cada PASO_PROGRESO escenarios.
+        Progreso prog(j1 - j0, rango_progreso());
+#pragma omp parallel reduction(+ : k, n) reduction(+ : hist[:NBINS])
+        {
+            uint64_t pendiente = 0;
+#pragma omp for schedule(runtime)
+            for (uint64_t j = j0; j < j1; ++j) {
+                const Resultado r = simular_escenario(p, clave, base + j);
+                k += r.inundacion ? 1u : 0u;
+                n += 1u;
+                hist[clase_histograma(r.amax)] += 1u;
+                if (++pendiente == PASO_PROGRESO) {
+                    prog.sumar(pendiente);
+                    pendiente = 0;
+                }
+            }
+            if (pendiente > 0) prog.sumar(pendiente);
+        }
+        prog.terminar();
     }
 
     Acumulador acc;  // fuera de la región paralela: un solo hilo

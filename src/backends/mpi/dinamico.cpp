@@ -4,6 +4,8 @@
 #include <algorithm>
 #include <vector>
 
+#include "progreso.hpp"
+
 namespace mpi_pi {
 
 namespace {
@@ -39,6 +41,7 @@ ResumenRango maestro(MPI_Comm comm, int procesos, const pp::Configuracion& cfg) 
             const std::uint64_t i1 = std::min(cfg.n, siguiente + cfg.lote);
             const std::uint64_t rango[2] = {siguiente, i1};
             MPI_Send(rango, 2, MPI_UINT64_T, st.MPI_SOURCE, ETIQUETA_WORK, comm);
+            if (pp::progreso_activo()) pp::reportar_bloque(st.MPI_SOURCE, siguiente, i1);
             asignadas.push_back({siguiente, i1});
             siguiente = i1;
         } else {
@@ -76,6 +79,7 @@ ResumenRango esquema_dinamico(MPI_Comm comm, const pp::Configuracion& cfg, const
 
     ResumenRango res;
     if (procesos == 1) {  // sin trabajadores, el rango 0 procesa todo
+        if (pp::progreso_activo()) pp::reportar_bloque(0, 0, cfg.n);
         for (std::uint64_t i = 0; i < cfg.n; ++i) escenario(i, local);
         res.bloques = 1;
     } else if (rango == 0) {
