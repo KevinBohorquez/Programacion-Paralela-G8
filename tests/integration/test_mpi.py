@@ -1,10 +1,11 @@
 # T21 | Responsable: Ashley | Pruebas V1, V3 y V4 de MPI (E1 estático y E2 dinámico).
 #
 # V1: k, n e histograma idénticos a pp_serial (y v1_referencia=OK del propio ejecutable con --verificar).
-# V3: E2 termina limpio: cada trabajador recibe su STOP y el programa sale con código 0 antes del
+# V3 (conservación, docs/contratos.md): la suma del trabajo por rango (n_local de las líneas [verif])
+#     es exactamente N.
+# V4 (reproducibilidad): dos corridas iguales dan el mismo resultado.
+# Además, E2 termina limpio: cada trabajador recibe su STOP y el programa sale con código 0 antes del
 #     tiempo límite (sin cuelgue); los bloques que el maestro asignó son los que procesaron los trabajadores.
-# V4: la suma del trabajo por rango (n_local de las líneas [verif]) es exactamente N, y dos corridas
-#     iguales dan el mismo resultado.
 #
 # Uso (en la imagen pp-g8, tras compilar con -DPP_BUILD_MPI=ON):
 #   PP_BIN_DIR=build/src/backends python3 -m pytest -q tests/integration/test_mpi.py
@@ -73,7 +74,7 @@ def correr_mpi(esquema, np_, salida):
     try:
         r = subprocess.run(cmd, capture_output=True, text=True, timeout=TIEMPO_LIMITE, env=entorno())
     except subprocess.TimeoutExpired:
-        pytest.fail(f"V3: {esquema} con {np_} procesos no terminó en {TIEMPO_LIMITE} s (¿falta un STOP?)")
+        pytest.fail(f"E2/STOP: {esquema} con {np_} procesos no terminó en {TIEMPO_LIMITE} s (¿falta un STOP?)")
     assert r.returncode == 0, f"{' '.join(cmd)}\n{r.stdout}\n{r.stderr}"
     return leer(salida), parse_verif(r.stdout)
 
@@ -90,7 +91,7 @@ def test_v1_igual_al_secuencial(esquema, np_, serial, tmp_path):
 
 @pytest.mark.parametrize("np_", PROCESOS)
 @pytest.mark.parametrize("esquema", ESQUEMAS)
-def test_v4_suma_del_trabajo_por_rango_es_n(esquema, np_, tmp_path):
+def test_v3_suma_del_trabajo_por_rango_es_n(esquema, np_, tmp_path):
     _, v = correr_mpi(esquema, np_, tmp_path / "r.csv")
     assert len(v["rangos"]) == np_
     assert sum(r["n_local"] for r in v["rangos"]) == N
@@ -101,7 +102,7 @@ def test_v4_suma_del_trabajo_por_rango_es_n(esquema, np_, tmp_path):
 
 
 @pytest.mark.parametrize("np_", [2, 4])
-def test_v3_dinamico_termina_con_stop_para_cada_trabajador(np_, tmp_path):
+def test_e2_termina_con_stop_para_cada_trabajador(np_, tmp_path):
     _, v = correr_mpi("pp_mpi_dinamico", np_, tmp_path / "r.csv")
     maestro, trabajadores = v["rangos"][0], v["rangos"][1:]
     bloques_esperados = -(-N // LOTE)
