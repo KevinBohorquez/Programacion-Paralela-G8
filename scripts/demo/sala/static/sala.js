@@ -107,7 +107,15 @@
     const k = clave(d);
     const repetido = [...estado.corridas.values()].some((c) => clave(c) === k && c.terminada);
     const enCurso = [...estado.corridas.values()].some((c) => !c.terminada);
-    if (repetido && !enCurso) estado.corridas.clear();
+    if (repetido && !enCurso) {
+      // A standalone hybrid run only replaces its own lane, so "con error" and "corregido"
+      // stay next to the race; any other repeated backend starts a fresh race.
+      if (d.backend === 'hibrido') {
+        [...estado.corridas.entries()].forEach(([id, c]) => { if (clave(c) === k) estado.corridas.delete(id); });
+      } else {
+        estado.corridas.clear();
+      }
+    }
     const c = {
       id: d.id, backend: d.backend, procesos: d.procesos, hilos: d.hilos, n: d.n,
       afinidad: d.afinidad, ts0: d.ts,
@@ -117,6 +125,17 @@
     estado.corridas.set(d.id, c);
     renderCarriles();
     renderIdentidad();
+    mostrarCarril(c);
+  }
+
+  // With six or more lanes the column scrolls; keep the lane that is running (or just finished) on screen.
+  function mostrarCarril(c) {
+    const cont = $('#carriles');
+    if (!c.nodo || !cont) return;
+    const arriba = c.nodo.offsetTop - cont.offsetTop;
+    const abajo = arriba + c.nodo.offsetHeight;
+    if (abajo > cont.scrollTop + cont.clientHeight) cont.scrollTop = abajo - cont.clientHeight;
+    else if (arriba < cont.scrollTop) cont.scrollTop = arriba;
   }
 
   function alAvanzar(d) {
@@ -151,6 +170,7 @@
     c.fin = d; c.terminada = true;
     renderCarril(c);
     renderIdentidad();
+    mostrarCarril(c);
   }
 
   function alError(d) {
@@ -369,7 +389,7 @@
         <span class="celda-nombre">${nombre}</span>
         <span class="celda-fila"><span>k</span><b>${f.k.toLocaleString('es')}</b></span>
         <span class="celda-fila"><span>p̂</span><b>${G.fmtP(f.p)}</b></span>
-        <span class="celda-fila"><span>huella</span><b>${f.huella}</b></span>
+        <span class="celda-fila huella"><span>huella</span><b>${f.huella}</b></span>
       </div>`;
     }).join('');
     if (fin.length < 2) {
