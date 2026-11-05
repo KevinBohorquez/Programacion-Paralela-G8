@@ -159,7 +159,7 @@ export function ExploradorRiesgo() {
               ? "Hay una corrida en curso: la curva se recalcula al terminar."
               : estado.tipo === "fallo"
                 ? "No se pudo calcular la curva."
-                : `N = ${fmtEntero(estado.curva.n)} escenarios en ${fmtDecimal(estado.curva.segundos)} s · banda de Wilson al 95 %.`}
+                : `N = ${fmtEntero(estado.curva.n)} · ${fmtDecimal(estado.curva.segundos)} s · banda de Wilson 95 %`}
         </p>
       </Plegable.Content>
     </Plegable.Root>

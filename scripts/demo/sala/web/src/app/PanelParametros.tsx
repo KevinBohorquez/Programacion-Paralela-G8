@@ -1,4 +1,6 @@
+import { useState } from "react";
 import { BACKENDS } from "../dominio/eventos";
+import { fmtCompacto } from "../dominio/formato";
 import { colorBackend } from "../viz/tipos";
 import { Plegable } from "../ui/Plegable";
 import { useControles } from "./controles";
@@ -8,10 +10,18 @@ const ETIQUETAS = { serial: "Serial", openmp: "OpenMP", mpi_estatico: "MPI E1", 
 
 export function PanelParametros() {
   const { controles, fijar } = useControles();
+  const [abierto, setAbierto] = useState(false);
   return (
-    <Plegable.Root porDefecto className={f.panel}>
+    <Plegable.Root abierto={abierto} alCambiar={setAbierto} className={f.panel}>
       <h2>
-        <Plegable.Trigger className={f.panelCabecera}>Parámetros</Plegable.Trigger>
+        <Plegable.Trigger className={f.panelCabecera}>
+          Parámetros
+          {abierto ? null : (
+            <span className={`${f.resumen} tnum`}>
+              N {fmtCompacto(controles.n)} · {controles.nucleos} núcleos · {controles.backends.length} backends
+            </span>
+          )}
+        </Plegable.Trigger>
       </h2>
       <Plegable.Content className={f.panelCuerpo}>
         <div className={f.rejilla}>

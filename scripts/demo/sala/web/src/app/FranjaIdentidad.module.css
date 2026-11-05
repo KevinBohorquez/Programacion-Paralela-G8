@@ -3,6 +3,7 @@
   grid-template-columns: 280px 1fr 300px;
   align-items: stretch;
   gap: var(--space-5);
+  min-block-size: 144px;
   padding: var(--space-4) var(--space-5);
   border: 1px solid var(--border);
   border-radius: var(--radius-card);

@@ -10,6 +10,15 @@
   font-weight: var(--font-weight-semibold);
 }
 
+.resumen {
+  overflow: hidden;
+  color: var(--text-subtle);
+  font-size: var(--font-size-12);
+  font-weight: var(--font-weight-regular);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .panelCuerpo {
   display: flex;
   flex-direction: column;
