@@ -1,4 +1,4 @@
-import { defineConfig } from "vite";
+import { defineConfig } from "vitest/config";
 import react from "@vitejs/plugin-react";
 
 // Build is served by scripts/demo/sala_control.py under /static/; dev proxies the API to the Python server.
