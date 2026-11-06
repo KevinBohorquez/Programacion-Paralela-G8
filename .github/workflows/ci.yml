@@ -35,7 +35,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Instalar dependencias
-        run: sudo apt-get update && sudo apt-get install -y cmake g++ python3-pytest openmpi-bin libopenmpi-dev
+        run: sudo apt-get update && sudo apt-get install -y cmake g++ python3-pytest python3-numpy python3-scipy openmpi-bin libopenmpi-dev
       - name: Compilar con MPI
         run: |
           cmake -S . -B build-mpi -DCMAKE_BUILD_TYPE=Release -DPP_BUILD_MPI=ON
