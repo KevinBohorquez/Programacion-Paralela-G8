@@ -1,0 +1,107 @@
+# Contenedor: docker run --rm --shm-size=1g -v "$PWD:/work" -w /work pp-g8 bash -c '<comando>'
+# Comando: cmake --fresh -S . -B build/docker-mpi -DCMAKE_BUILD_TYPE=Release -DPP_BUILD_MPI=ON && cmake --build build/docker-mpi --parallel && timeout 300 ctest --test-dir build/docker-mpi --output-on-failure
+# Fecha (UTC): 2026-10-16T00:45:30Z
+# Commit: ce6e04d (árbol con cambios sin commit: evidencia nueva aún no versionada)
+# Imagen: pp-g8 sha256:fce5a0e04a7a1e1b1ea86805dead6ed51dd7fb087deb6a8bd2721ab1284c7410
+# nproc (contenedor): 24
+# Compilador: g++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0
+
+-- The CXX compiler identification is GNU 13.3.0
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Found OpenMP_CXX: -fopenmp (found version "4.5") 
+-- Found OpenMP: TRUE (found version "4.5") found components: CXX 
+-- Found MPI_CXX: /usr/lib/x86_64-linux-gnu/openmpi/lib/libmpi_cxx.so (found version "3.1") 
+-- Found MPI: TRUE (found version "3.1") found components: CXX 
+-- Configuring done (14.8s)
+-- Generating done (1.7s)
+-- Build files have been written to: /work/build/docker-mpi
+[  6%] Building CXX object src/core/CMakeFiles/pp_core.dir/philox_rng.cpp.o
+[  6%] Building CXX object src/core/CMakeFiles/pp_core.dir/modelo_lluvia.cpp.o
+[ 10%] Building CXX object src/core/CMakeFiles/pp_core.dir/balance_hidrico.cpp.o
+[ 13%] Linking CXX static library libpp_core.a
+[ 13%] Built target pp_core
+[ 20%] Building CXX object src/stats/CMakeFiles/pp_stats.dir/wilson.cpp.o
+[ 20%] Building CXX object src/stats/CMakeFiles/pp_stats.dir/histograma.cpp.o
+[ 23%] Linking CXX static library libpp_stats.a
+[ 23%] Built target pp_stats
+[ 30%] Building CXX object src/io/CMakeFiles/pp_io.dir/configuracion.cpp.o
+[ 30%] Building CXX object src/io/CMakeFiles/pp_io.dir/resultados_csv.cpp.o
+[ 33%] Linking CXX static library libpp_io.a
+[ 33%] Built target pp_io
+[ 36%] Building CXX object CMakeFiles/smoke.dir/tests/smoke/smoke.cpp.o
+[ 46%] Building CXX object src/backends/openmp/CMakeFiles/pp_openmp_lib.dir/ejecutor.cpp.o
+[ 46%] Building CXX object src/backends/serial/CMakeFiles/pp_serial.dir/main.cpp.o
+[ 46%] Building CXX object src/backends/mpi/CMakeFiles/pp_mpi_comun.dir/comun.cpp.o
+[ 50%] Linking CXX static library libpp_openmp_lib.a
+[ 53%] Linking CXX executable smoke
+[ 56%] Linking CXX executable pp_serial
+[ 56%] Built target smoke
+[ 56%] Built target pp_openmp_lib
+[ 56%] Built target pp_serial
+[ 60%] Building CXX object src/backends/openmp/CMakeFiles/pp_openmp.dir/main.cpp.o
+[ 63%] Linking CXX executable pp_openmp
+[ 66%] Linking CXX static library libpp_mpi_comun.a
+[ 66%] Built target pp_openmp
+[ 66%] Built target pp_mpi_comun
+[ 73%] Building CXX object src/backends/mpi/CMakeFiles/pp_mpi_esquemas.dir/estatico.cpp.o
+[ 73%] Building CXX object src/backends/mpi/CMakeFiles/pp_mpi_esquemas.dir/dinamico.cpp.o
+[ 76%] Linking CXX static library libpp_mpi_esquemas.a
+[ 76%] Built target pp_mpi_esquemas
+[ 83%] Building CXX object src/backends/mpi/CMakeFiles/pp_mpi_estatico.dir/main_estatico.cpp.o
+[ 83%] Building CXX object src/backends/mpi/CMakeFiles/pp_mpi_dinamico.dir/main_dinamico.cpp.o
+[ 90%] Building CXX object src/backends/hybrid/CMakeFiles/pp_hibrido.dir/main.cpp.o
+[ 90%] Building CXX object src/backends/hybrid/CMakeFiles/pp_hibrido.dir/hibrido.cpp.o
+[ 96%] Linking CXX executable pp_mpi_estatico
+[ 96%] Linking CXX executable pp_mpi_dinamico
+[100%] Linking CXX executable pp_hibrido
+[100%] Built target pp_mpi_dinamico
+[100%] Built target pp_mpi_estatico
+[100%] Built target pp_hibrido
+Internal ctest changing into directory: /work/build/docker-mpi
+Test project /work/build/docker-mpi
+      Start  1: smoke
+ 1/18 Test  #1: smoke ............................   Passed    0.02 sec
+      Start  2: v1_equivalencia_openmp
+ 2/18 Test  #2: v1_equivalencia_openmp ...........   Passed    0.57 sec
+      Start  3: pp_mpi_estatico_np1
+ 3/18 Test  #3: pp_mpi_estatico_np1 ..............   Passed    1.59 sec
+      Start  4: pp_mpi_estatico_np2
+ 4/18 Test  #4: pp_mpi_estatico_np2 ..............   Passed    0.73 sec
+      Start  5: pp_mpi_estatico_np4
+ 5/18 Test  #5: pp_mpi_estatico_np4 ..............   Passed    1.14 sec
+      Start  6: pp_mpi_estatico_np8
+ 6/18 Test  #6: pp_mpi_estatico_np8 ..............   Passed    2.02 sec
+      Start  7: pp_mpi_estatico_np16
+ 7/18 Test  #7: pp_mpi_estatico_np16 .............   Passed    4.93 sec
+      Start  8: pp_mpi_dinamico_np1
+ 8/18 Test  #8: pp_mpi_dinamico_np1 ..............   Passed    1.58 sec
+      Start  9: pp_mpi_dinamico_np2
+ 9/18 Test  #9: pp_mpi_dinamico_np2 ..............   Passed    0.73 sec
+      Start 10: pp_mpi_dinamico_np4
+10/18 Test #10: pp_mpi_dinamico_np4 ..............   Passed    1.09 sec
+      Start 11: pp_mpi_dinamico_np8
+11/18 Test #11: pp_mpi_dinamico_np8 ..............   Passed    2.14 sec
+      Start 12: pp_mpi_dinamico_np16
+12/18 Test #12: pp_mpi_dinamico_np16 .............   Passed    5.17 sec
+      Start 13: pp_hibrido_1x2
+13/18 Test #13: pp_hibrido_1x2 ...................   Passed    1.68 sec
+      Start 14: pp_hibrido_2x2
+14/18 Test #14: pp_hibrido_2x2 ...................   Passed    0.97 sec
+      Start 15: pp_hibrido_2x4
+15/18 Test #15: pp_hibrido_2x4 ...................   Passed    0.95 sec
+      Start 16: pp_hibrido_4x2
+16/18 Test #16: pp_hibrido_4x2 ...................   Passed    1.61 sec
+      Start 17: pp_hibrido_4x4
+17/18 Test #17: pp_hibrido_4x4 ...................   Passed    1.61 sec
+      Start 18: pp_hibrido_8x2
+18/18 Test #18: pp_hibrido_8x2 ...................   Passed    3.20 sec
+
+100% tests passed, 0 tests failed out of 18
+
+Total Test time (real) =  31.86 sec
+
+# Código de salida: 0

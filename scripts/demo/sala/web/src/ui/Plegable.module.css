@@ -1,0 +1,39 @@
+.disparador {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  inline-size: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  text-align: start;
+  cursor: pointer;
+}
+
+.disparador:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+  border-radius: var(--radius-small);
+}
+
+.chevron {
+  flex: none;
+  margin-inline-start: auto;
+  color: var(--text-subtle);
+  transition: transform var(--motion-duration) var(--motion-ease);
+}
+
+.chevron[data-abierto="false"] {
+  transform: rotate(-90deg);
+}
+
+.contenido {
+  animation: entrar var(--motion-duration) var(--motion-ease);
+}
+
+@keyframes entrar {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}

@@ -1,1 +1,1 @@
-# T39 | Responsable: Lita | Pendiente: Pruebas V2 y V8 para CUDA.
+# T39 | Responsable: Lita | Extensión CUDA EXT1 en desarrollo: V2 y V8 se activarán con el kernel; ver docs/decision-cuda.md.

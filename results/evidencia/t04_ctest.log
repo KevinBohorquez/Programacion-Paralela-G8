@@ -1,0 +1,45 @@
+# Contenedor: docker run --rm --shm-size=1g -v "$PWD:/work" -w /work pp-g8 bash -c '<comando>'
+# Comando: cmake --fresh -S . -B build/docker -DCMAKE_BUILD_TYPE=Release && cmake --build build/docker --parallel && ctest --test-dir build/docker --output-on-failure
+# Fecha (UTC): 2026-10-16T00:44:43Z
+# Commit: ce6e04d
+# Imagen: pp-g8 sha256:fce5a0e04a7a1e1b1ea86805dead6ed51dd7fb087deb6a8bd2721ab1284c7410
+# nproc (contenedor): 24
+# Compilador: g++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0
+
+-- The CXX compiler identification is GNU 13.3.0
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Found OpenMP_CXX: -fopenmp (found version "4.5") 
+-- Found OpenMP: TRUE (found version "4.5") found components: CXX 
+-- Configuring done (1.4s)
+-- Generating done (0.6s)
+-- Build files have been written to: /work/build/docker
+[ 22%] Built target pp_core
+[ 38%] Built target pp_stats
+[ 50%] Building CXX object src/io/CMakeFiles/pp_io.dir/configuracion.cpp.o
+[ 50%] Building CXX object src/io/CMakeFiles/pp_io.dir/resultados_csv.cpp.o
+[ 55%] Linking CXX static library libpp_io.a
+[ 55%] Built target pp_io
+[ 61%] Building CXX object CMakeFiles/smoke.dir/tests/smoke/smoke.cpp.o
+[ 72%] Built target pp_openmp_lib
+[ 77%] Linking CXX executable pp_serial
+[ 83%] Built target pp_serial
+[ 88%] Linking CXX executable smoke
+[ 94%] Linking CXX executable pp_openmp
+[ 94%] Built target smoke
+[100%] Built target pp_openmp
+Internal ctest changing into directory: /work/build/docker
+Test project /work/build/docker
+    Start 1: smoke
+1/2 Test #1: smoke ............................   Passed    0.02 sec
+    Start 2: v1_equivalencia_openmp
+2/2 Test #2: v1_equivalencia_openmp ...........   Passed    0.61 sec
+
+100% tests passed, 0 tests failed out of 2
+
+Total Test time (real) =   0.65 sec
+
+# Código de salida: 0

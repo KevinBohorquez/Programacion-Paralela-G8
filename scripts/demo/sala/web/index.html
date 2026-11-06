@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="es" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="dark light" />
+    <meta name="theme-color" content="#0e0e10" />
+    <link rel="icon" href="data:," />
+    <title>Sala de control · Riesgo de inundación urbana</title>
+    <script>
+      // Dark by default (the room is projected); ?tema=claro|oscuro or the saved toggle override it.
+      (function () {
+        var t = "dark";
+        try {
+          t = localStorage.getItem("sala-tema") || t;
+        } catch (e) {}
+        var q = new URLSearchParams(location.search).get("tema");
+        if (q === "claro") t = "light";
+        if (q === "oscuro") t = "dark";
+        document.documentElement.dataset.theme = t;
+        if (t === "light") document.querySelector('meta[name="theme-color"]').setAttribute("content", "#f7f7f8");
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

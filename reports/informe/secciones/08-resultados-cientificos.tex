@@ -1,0 +1,31 @@
+\section{Resultados científicos}
+\label{sec:resultados}
+
+Esta sección presenta los productos de la campaña oficial X6 sobre las 5 estaciones de trabajo, los 2 regímenes, las 13 capacidades de drenaje y los $K = 100$ conjuntos bootstrap.
+
+\textbf{Advertencia sobre la validez del generador.} La validación V6 frente a las series observadas no se cumple en los estadísticos de cola (Sección~\ref{sec:metodologia}): el generador reproduce la frecuencia de días lluviosos, la media de los montos y la longitud de las rachas, pero subestima la desviación y los percentiles altos de la lluvia diaria. Mientras no se resuelva, las probabilidades de esta sección deben leerse como cotas inferiores del riesgo, sobre todo en las capacidades de drenaje altas, donde la inundación depende de eventos extremos.
+% TODO-V6: actualizar esta advertencia con el resultado final de la Ola D (docs/validacion-v6.md).
+
+\subsection{Probabilidad de inundación por zona, capacidad y régimen}
+
+% TODO-T35: tabla desde el CSV de X6 (scripts/run/analizar-riesgo.py): por estación × régimen × C,
+%   p_hat, intervalo de Wilson al 95 % y banda epistémica P5–P95 entre los 100 conjuntos bootstrap.
+%   Si la tabla completa no cabe, mostrar C = 5, 15, 25, 35 y 65 mm/día y llevar el resto a un anexo.
+\textit{[Pendiente: tabla de $\phat$ con IC de Wilson y banda epistémica, T35.]}
+
+\subsection{Curva riesgo--capacidad}
+
+% TODO-T35: figura results/figures/riesgo_capacidad_*.png (una curva por estación, paneles normal / El Niño,
+%   banda epistémica sombreada) y tabla de la capacidad mínima C* que cumple p_hat <= 10 %, interpolada.
+\textit{[Pendiente: curvas riesgo--capacidad y capacidad mínima $C^{*}$ para $\phat \le 10$\,\%, T35.]}
+
+\subsection{Curva de excedencia del máximo acumulado}
+
+% TODO-T35: curva P(A_max > a) a partir del histograma de 512 clases, por estación y régimen, en escala log.
+\textit{[Pendiente: curvas de excedencia de $\Amax$, T35.]}
+
+\subsection{Año normal frente a año El Niño}
+
+% TODO-T35: cociente p_hat(El Niño) / p_hat(normal) por estación y capacidad, con su incertidumbre;
+%   contrastar el mecanismo de cantidad de lluvia (costa norte) con el de capacidad de drenaje (Chosica).
+\textit{[Pendiente: comparación entre regímenes, T35.]}

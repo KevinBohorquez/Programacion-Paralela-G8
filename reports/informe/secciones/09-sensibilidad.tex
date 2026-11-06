@@ -1,0 +1,13 @@
+\section{Análisis de sensibilidad}
+\label{sec:sensibilidad}
+
+El experimento X7 evalúa cuánto dependen las conclusiones de los supuestos de diseño que no provienen de mediciones de campo: el umbral crítico $U$ y el régimen climático. Se repite la estimación de la Sección~\ref{sec:resultados} con $U = 30$, 50 y \qty{80}{\milli\metre}, manteniendo la semilla y los conjuntos bootstrap, de modo que las diferencias entre umbrales no se confunden con ruido de muestreo.
+
+% TODO-T42: desde los CSV de scripts/run/sensibilidad.py:
+%   (a) figura de p_hat frente a C para U = 30 / 50 / 80 mm, por estación y régimen;
+%   (b) tabla del desplazamiento de la capacidad mínima C* al cambiar U;
+%   (c) efecto del régimen (normal / El Niño) para cada U.
+\textit{[Pendiente: sensibilidad al umbral $U$ y al régimen, T42.]}
+
+La sensibilidad se interpreta con la misma salvedad de V6 que la Sección~\ref{sec:resultados}: un generador que subestima la cola tiende a subestimar el riesgo, y el sesgo crece con $U$, porque un umbral mayor solo se supera con eventos más extremos.
+% TODO-V6: revisar este párrafo cuando la Ola D cierre el diagnóstico de V6.

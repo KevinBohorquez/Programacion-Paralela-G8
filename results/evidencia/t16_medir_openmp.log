@@ -1,0 +1,23 @@
+# Comando: python3 scripts/bench/medir_openmp.py --build-dir build/docker --n 20000000 --hilos 2,4,8,16 --schedules static,dynamic,64 --repeticiones 5 --salida build/barrido/openmp.csv
+# Contenedor: docker run --rm --shm-size=1g -v "$PWD:/work" -w /work pp-g8 bash -c '<comando>'
+# Fecha inicio (UTC): 2026-10-16T01:22:38Z
+# Commit: 43be549
+# Imagen: pp-g8 sha256:95d58276392f3b2679067bbd1e917dabf4b985aa420a756d28f437f33f577ab3
+# Host: Intel Core Ultra 9 275HX (8 P + 16 E, sin SMT), 63 GB RAM, Windows 11, Docker Desktop WSL2 (24 vCPU), con corriente alterna
+serial hilos= 1 -          media=59.2821s sd=0.1874s V1=ok
+openmp hilos= 2 static     media=29.9609s sd=0.8054s V1=ok
+openmp hilos= 4 static     media=16.0179s sd=0.6513s V1=ok
+openmp hilos= 8 static     media=10.0143s sd=0.3446s V1=ok
+openmp hilos=16 static     media=5.4586s sd=0.1139s V1=ok
+openmp hilos= 2 dynamic:1  media=32.1326s sd=1.2407s V1=ok
+openmp hilos= 4 dynamic:1  media=18.0203s sd=0.6458s V1=ok
+openmp hilos= 8 dynamic:1  media=9.9701s sd=0.2980s V1=ok
+openmp hilos=16 dynamic:1  media=5.5238s sd=0.0349s V1=ok
+openmp hilos= 2 dynamic:64 media=29.8201s sd=0.2195s V1=ok
+openmp hilos= 4 dynamic:64 media=15.6977s sd=0.8962s V1=ok
+openmp hilos= 8 dynamic:64 media=9.4643s sd=0.1129s V1=ok
+openmp hilos=16 dynamic:64 media=5.4235s sd=0.0322s V1=ok
+escrito build/barrido/openmp.csv
+
+# Fecha fin (UTC): 2026-10-16T01:47:17Z
+# Código de salida: 0

@@ -1,0 +1,13 @@
+# Comando: docker run --rm --shm-size=1g -v "$PWD:/work" -w /work -e OMP_NUM_THREADS=2 pp-g8 bash -c 'mpicxx -fopenmp -O2 -o /tmp/hello_hibrido docker/hello_hibrido.cpp && mpirun -np 2 --bind-to none /tmp/hello_hibrido'
+# Fecha: 2026-10-16T00:39:41Z
+# Imagen: pp-g8 sha256:fce5a0e04a7a1e1b1ea86805dead6ed51dd7fb087deb6a8bd2721ab1284c7410
+# Commit: a8b72d2
+# Anfitrión: MINGW64_NT-10.0-26200 | vCPU visibles por Docker: 24
+
+MPI: Open MPI v4.1.6
+Nivel de hilos: pedido MPI_THREAD_FUNNELED, provisto MPI_THREAD_FUNNELED
+Procesos MPI: 2 | hilos OpenMP máx. por proceso: 2
+rango 0/2 | hilo 0/2 | host 2b12672e23da
+rango 0/2 | hilo 1/2 | host 2b12672e23da
+rango 1/2 | hilo 0/2 | host 2b12672e23da
+rango 1/2 | hilo 1/2 | host 2b12672e23da

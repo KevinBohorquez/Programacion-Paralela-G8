@@ -1,0 +1,44 @@
+\section{Implementación}
+\label{sec:implementacion}
+
+\subsection{Descomposición del trabajo}
+
+El trabajo de una configuración $c$ son $N$ escenarios independientes. El escenario local $j\in[0,N)$ se identifica con el índice global $i = c\cdot N + j$. Como el resultado de cada escenario depende solo de $i$ (Sección~\ref{sec:metodologia}), repartir trabajo equivale a repartir rangos de índices, y cualquier reparto produce el mismo resultado. Cada backend acumula por configuración tres cantidades enteras: $k$ (inundaciones), $n$ (escenarios simulados) y el histograma de 512 clases. La reducción, entre hilos o entre procesos, es una suma de enteros sin signo de 64 bits; con \codigo{uint64\_t} se evita el desbordamiento que un \codigo{int} sufriría a partir de $2{,}1\times10^{9}$ escenarios.
+
+Todos los ejecutables comparten la misma línea de comandos, el mismo archivo de configuración y el mismo formato CSV de resultados, que incluye $\phat$, el intervalo de Wilson, el histograma completo, los metadatos de hardware y el commit.
+
+\subsection{Versión secuencial}
+
+\codigo{pp\_serial} recorre $j = 0,\dots,N-1$, llama a \codigo{simular\_escenario} y acumula. Es la referencia de V1 y la línea base $T_1$ de todas las métricas.
+
+\subsection{OpenMP}
+
+\codigo{pp\_openmp} procesa el intervalo $[j_0, j_1)$ con un único bucle paralelo:
+\begin{center}
+\small
+\codigo{\#pragma omp parallel for schedule(runtime) \textbackslash}\\
+\codigo{\ \ reduction(+:k,n) reduction(+:hist[:512])}
+\end{center}
+Cada hilo tiene copias privadas de $k$, $n$ y de un histograma de \qty{4}{\kilo\byte}, y el runtime las suma al cerrar la región; el cuerpo del bucle no escribe en memoria compartida, por lo que no hay carreras (V5). \codigo{schedule(runtime)} permite comparar \codigo{static}, \codigo{dynamic} y \codigo{guided} sin recompilar: el tipo y el tamaño de bloque se fijan con \codigo{omp\_set\_schedule} y el valor efectivo se lee con \codigo{omp\_get\_schedule} y se registra. La reducción se hace por bloque de una sola configuración; reducir los acumuladores de todas las configuraciones a la vez crearía una copia privada de decenas de megabytes por hilo.
+
+\subsection{MPI: dos esquemas algorítmicos}
+
+Los dos ejecutables MPI comparten el flujo: \codigo{MPI\_Init\_thread} con \codigo{MPI\_THREAD\_FUNNELED}; \codigo{MPI\_Barrier} y \codigo{MPI\_Wtime} para iniciar la medición; ejecución del esquema; una única \codigo{MPI\_Reduce} con \codigo{MPI\_SUM} sobre un vector de $2 + 512$ valores \codigo{MPI\_UINT64\_T}; un \codigo{MPI\_Gather} con el resumen de cada rango para comprobar la cobertura (V3); y \codigo{MPI\_Bcast} del código de salida.
+
+\textbf{E1, SPMD estático con reducción (\emph{map-reduce}).} Cada rango $r$ de $P$ procesa un intervalo contiguo de tamaño $\lfloor N/P\rfloor$ o $\lfloor N/P\rfloor + 1$: los primeros $N \bmod P$ rangos reciben un escenario más, sin solapes ni huecos. Durante el cómputo no hay mensajes punto a punto; la comunicación se reduce a una colectiva. Su limitación es que, con nodos heterogéneos, el más lento fija el tiempo total.
+
+\textbf{E2, maestro--trabajador dinámico.} Con $P > 1$, el rango 0 actúa solo como coordinador y mantiene una cola de lotes de $B = \num{62500}$ escenarios. Cada trabajador envía una solicitud (\codigo{REQ}), recibe un rango $[i_0, i_1)$ (\codigo{WORK}) y repite hasta recibir \codigo{STOP}. El coordinador envía exactamente un \codigo{STOP} por trabajador y lleva la cuenta de trabajadores activos, lo que excluye interbloqueos; al terminar verifica que los lotes asignados cubren $[0, N)$ sin solapes. El esquema equilibra la carga de forma automática ---un nodo más rápido pide más lotes---, al costo de un mensaje por lote y de dedicar el rango 0 a coordinar, en línea con los marcos de planificación dinámica para clústeres heterogéneos~\cite{tse2010}.
+
+\subsection{Híbrido MPI + OpenMP}
+
+\codigo{pp\_hibrido} reparte $[0, N)$ entre procesos como E1 y, dentro de cada proceso, ejecuta el bucle OpenMP con $T$ hilos sobre su intervalo; el presupuesto de recursos es $P\times T$. Todas las llamadas MPI ocurren antes o después de la región paralela y solo desde el hilo principal, por lo que basta el nivel \codigo{MPI\_THREAD\_FUNNELED}; si el nivel concedido es menor, el programa termina con error. Open MPI ancla por defecto cada proceso a un núcleo, de modo que los $T$ hilos compartirían ese núcleo; por eso el híbrido se lanza con \codigo{-{}-bind-to none} y \codigo{OMP\_PROC\_BIND=close}, \codigo{OMP\_PLACES=cores}, o bien con \codigo{-{}-map-by ppr:1:node:PE=$T$}, que reserva $T$ núcleos por proceso.
+% TODO-T33: citar aquí el efecto medido de --bind-to none con el CSV versionado de T27 (results/bench/hibrido.csv); la cifra exploratoria previa no está versionada y no se publica.
+
+\subsection{CUDA: extensión en desarrollo}
+
+Monte Carlo es un caso típico de cómputo en GPU: un hilo por escenario, aritmética regular y una reducción final~\cite{benguigui2012}. El equipo decidió incluir CUDA como extensión desacoplada del núcleo, diseñada y aprobada, que se encuentra en desarrollo. EXT1 es un kernel con un hilo por escenario, Philox en la GPU y reducción del conteo en memoria compartida, validado frente a la CPU con V2 (diferencia relativa $\le 10^{-6}$) y V8 (\codigo{compute-sanitizer}), más el barrido de bloques X5. EXT2 integra la GPU como trabajador MPI del esquema E2, el nivel objetivo que combina todos los backends. Como Philox ya es una función pura, marcarla \codigo{\_\_host\_\_ \_\_device\_\_} permite reutilizar el mismo flujo aleatorio en la GPU. El requisito previo es instalar el CUDA Toolkit~12.x en WSL en el equipo con la RTX~4060; ambas GPU disponibles (RTX~4060 y RTX~5090 Laptop) trabajan en modo WDDM, con el \emph{watchdog} TDR de Windows, de unos 2~s, sobre los kernels largos, por lo que el kernel se lanza por lotes acotados. Todavía no hay kernels implementados ni medidos, así que este informe no publica cifras de GPU.
+
+\subsection{Contenedores, Compose y Swarm}
+
+La imagen \codigo{pp-g8} se construye una vez y es idéntica en todos los nodos. En Compose, un archivo define un coordinador y dos trabajadores en una red común; los binarios se compilan una vez en un volumen compartido, y el coordinador lanza \codigo{mpirun} por SSH con clave entre contenedores. En Swarm, el \emph{stack} define un servicio por equipo físico, restringido por la etiqueta de nodo \codigo{pp\_nodo=1|2|3}, conectado a una red \emph{overlay} con resolución DNS por tarea (\codigo{endpoint\_mode: dnsrr}); el \emph{hostfile} de \codigo{mpirun} se genera a partir de los servicios. El mismo \emph{stack} puede simularse en un único anfitrión para pruebas, sabiendo que esa simulación no sirve para medir escalabilidad. La red universitaria suele bloquear los puertos de la \emph{overlay} (4789/udp, 7946 y 2377), por lo que el despliegue se planificó para una red doméstica o compartida.
+% TODO-T33: registrar la ejecución de principio a fin en los tres equipos (logs de T25/T34) y la latencia/ancho de banda de la red usada.

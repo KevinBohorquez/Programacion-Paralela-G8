@@ -1,0 +1,20 @@
+# Contenedor: docker run --rm --shm-size=1g --security-opt seccomp=unconfined -v "$PWD:/work" -w /work pp-g8 bash -c '<comando>'
+# Comando: python3 -m pytest -v tests/concurrency
+# Fecha (UTC): 2026-10-16T00:50:42Z
+# Commit: ce6e04d (árbol con cambios sin commit: evidencia nueva aún no versionada)
+# Imagen: pp-g8 sha256:95d58276392f3b2679067bbd1e917dabf4b985aa420a756d28f437f33f577ab3
+# nproc (contenedor): 24
+# Compilador: Ubuntu clang version 18.1.3 (1ubuntu1)
+
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-7.4.4, pluggy-1.4.0 -- /usr/bin/python3
+cachedir: .pytest_cache
+rootdir: /work
+collecting ... collected 2 items
+
+tests/concurrency/test_openmp_carreras.py::test_v5_sin_carreras_con_archer PASSED [ 50%]
+tests/concurrency/test_openmp_carreras.py::test_v5_control_negativo_detecta_una_carrera_deliberada PASSED [100%]
+
+============================== 2 passed in 5.02s ===============================
+
+# Código de salida: 0

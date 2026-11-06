@@ -38,22 +38,46 @@ def binario():
     return DIR_BUILD / "src" / "backends" / "openmp" / "pp_openmp"
 
 
+def ruta_de_clang(tipo, nombre):
+    """Ruta absoluta que clang conoce para una biblioteca (tipo='file') o programa (tipo='prog'), o None."""
+    r = subprocess.run(["clang++", f"-print-{tipo}-name={nombre}"], capture_output=True, text=True).stdout.strip()
+    return r if os.path.isabs(r) and os.path.exists(r) else None
+
+
+def entorno_archer():
+    # libomp busca "libarcher.so" por nombre; en algunas distribuciones (Ubuntu 26.04 + LLVM 21) no está en
+    # la ruta del cargador y ThreadSanitizer corre SIN Archer, dando falsos positivos en las reducciones.
+    tsan = "ignore_noninstrumented_modules=1"
+    simbolizador = ruta_de_clang("prog", "llvm-symbolizer")
+    if simbolizador:
+        tsan += f" external_symbolizer_path={simbolizador}"
+    entorno = dict(os.environ, TSAN_OPTIONS=tsan, ARCHER_OPTIONS="verbose=1")
+    archer = ruta_de_clang("file", "libarcher.so")
+    if archer:
+        entorno["OMP_TOOL_LIBRARIES"] = archer
+    return entorno, archer
+
+
 @requiere_clang
 def test_v5_sin_carreras_con_archer(binario):
-    entorno = dict(os.environ, TSAN_OPTIONS="ignore_noninstrumented_modules=1")
+    entorno, archer = entorno_archer()
     LOG.parent.mkdir(parents=True, exist_ok=True)
     reportes_total = 0
     with open(LOG, "w") as log:
         log.write(f"# V5 ThreadSanitizer + Archer | {subprocess.run(['clang++', '--version'], capture_output=True, text=True).stdout.splitlines()[0]}\n")
+        log.write(f"# OMP_TOOL_LIBRARIES={archer or '(sin definir; libomp lo busca por nombre)'}\n")
         for hilos, schedule in CONFIGURACIONES:
             r = subprocess.run([str(binario), "--config", str(CONFIG), "--n", "4000", "--hilos", str(hilos),
                                 "--schedule", schedule, "--silencioso"],
                                capture_output=True, text=True, env=entorno, timeout=600)
+            archer_activo = "Archer detected OpenMP application with TSan" in r.stdout + r.stderr  # Archer usa stdout
             reportes = r.stderr.count("WARNING: ThreadSanitizer")
             reportes_total += reportes
-            log.write(f"hilos={hilos} schedule={schedule} rc={r.returncode} reportes={reportes}\n")
+            log.write(f"hilos={hilos} schedule={schedule} archer={'activo' if archer_activo else 'NO cargado'} "
+                      f"rc={r.returncode} reportes={reportes}\n")
             if reportes:
                 log.write(r.stderr + "\n")
+            assert archer_activo, f"Archer no se cargó: sin él ThreadSanitizer no entiende las barreras de OpenMP; ver {LOG}"
             assert r.returncode == 0, r.stderr[-2000:]
     assert reportes_total == 0, f"ThreadSanitizer/Archer reportó {reportes_total} carrera(s); ver {LOG}"
 
@@ -67,6 +91,6 @@ def test_v5_control_negativo_detecta_una_carrera_deliberada(tmp_path):
     exe = tmp_path / "carrera"
     subprocess.run(["clang++", "-fopenmp", "-fsanitize=thread", "-g", "-O1", str(fuente), "-o", str(exe)],
                    check=True, capture_output=True, text=True)
-    r = subprocess.run([str(exe)], capture_output=True, text=True, timeout=120,
-                       env=dict(os.environ, OMP_NUM_THREADS="4", TSAN_OPTIONS="ignore_noninstrumented_modules=1"))
+    entorno, _ = entorno_archer()  # el mismo entorno que V5: Archer no debe ocultar una carrera real
+    r = subprocess.run([str(exe)], capture_output=True, text=True, timeout=120, env=dict(entorno, OMP_NUM_THREADS="4"))
     assert "WARNING: ThreadSanitizer: data race" in r.stderr

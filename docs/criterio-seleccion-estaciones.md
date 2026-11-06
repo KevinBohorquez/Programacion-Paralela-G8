@@ -38,3 +38,17 @@ Es decir: el proyecto compara dos mecanismos de inundación distintos y necesita
 8 estaciones en total, por encima del mínimo de 3–5. Ver el detalle de faltantes y elegibilidad por año en [`auditoria-datos.md`](auditoria-datos.md): 5 de 8 son elegibles como estación completa; las 3 restantes (Chulucanas, Lambayeque, Cañete) igual aportan años individuales elegibles a la calibración de T10.
 
 Si una estación propuesta no cumple el umbral de 20 años o de faltantes, se documenta aquí el reemplazo y la razón, no se oculta la estación descartada.
+
+## Estaciones de trabajo (5) para la simulación
+
+La calibración de T10 (`scripts/run/calibrar.py`) usa los años elegibles de las 8 estaciones, pero el estudio corre sobre **5**, el máximo que fija la definición. `scripts/run/generar_configs.py` las elige a partir de `data/processed/auditoria_calidad.csv`: califican las que tienen al menos 20 años elegibles; se ordenan primero las elegibles como estación completa (>= 90 % de años elegibles) y luego por menor % de faltantes en su temporada; si ninguna de Lima entra, la mejor de Lima ocupa la última plaza. Resultado vigente (`data/processed/estaciones_seleccionadas.csv`):
+
+| Estación | Zona | Años elegibles | % faltantes | Motivo |
+| --- | --- | --- | --- | --- |
+| Miraflores (Piura) | costa norte | 40 de 43 | 3,49 % | elegible como estación completa |
+| Chosica (Lima) | Lima (temporada enero–abril) | 23 de 25 | 3,93 % | elegible como estación completa |
+| Puerto Pizarro (Tumbes) | costa norte | 47 de 52 | 4,05 % | elegible como estación completa |
+| El Tigre (Tumbes) | costa norte | 47 de 50 | 4,53 % | elegible como estación completa |
+| Bernal (Piura) | costa norte | 45 de 51 | 6,96 % | quinta plaza: >= 20 años elegibles y menor % faltante entre las no completas |
+
+Cada estación tiene dos configuraciones, `config/<estacion>_normal.yaml` y `config/<estacion>_el_nino.yaml` (10 en total).

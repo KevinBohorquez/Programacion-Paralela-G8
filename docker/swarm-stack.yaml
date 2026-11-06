@@ -1,1 +1,92 @@
-# T25 | Responsable: Miguel | Pendiente: Configuración Swarm de tres equipos.
+# T25 | Responsable: Miguel | Configuración Swarm de tres equipos.
+# Un servicio por equipo físico (restricción por etiqueta de nodo pp_nodo=1|2|3) en una red overlay.
+# Cada nodo compila el MISMO commit en su volumen local /opt/pp (mismo camino en los tres) a partir
+# del repositorio clonado en PP_REPO; nodo2 y nodo3 dejan sshd; nodo1 (lanzador) espera a ambos
+# por ssh y mide E1/E2 con mpirun entre los tres (docker/nodo_mpi.sh). Resultados en
+# PP_RESULTADOS_HOST del equipo 1.
+#
+# Clúster real (lo automatiza scripts/deploy/desplegar_swarm.ps1; ver docker/README.md):
+#   PP_REPO=/ruta/absoluta/al/repo docker stack deploy -c docker/swarm-stack.yaml pp
+#   docker service logs -f pp_nodo1 ; docker stack rm pp
+# Simulación en un solo anfitrión (sin `docker swarm init`; Compose ignora `deploy:`):
+#   PP_RED_DRIVER=bridge docker compose -f docker/swarm-stack.yaml -p pp-swarm-sim \
+#     up --abort-on-container-exit --exit-code-from nodo1
+#   docker compose -f docker/swarm-stack.yaml -p pp-swarm-sim down -v
+#
+# Parámetros: PP_REPO (..)  PP_IMAGEN (pp-g8)  PP_RED_DRIVER (overlay)  PP_SUBRED (10.77.0.0/24)
+#   PP_HOSTS (nodo1:4,nodo2:4,nodo3:4)  PP_PROCESOS (4,8,12)  PP_N (20000000)  PP_REPS (5)
+#   PP_LOTE (0)  PP_NUCLEOS (vacío = núcleos locales x 3)  PP_RESULTADOS_HOST (../results/swarm)
+#   GIT_COMMIT (commit del anfitrión)  PP_COMMIT (commit de los simuladores; por defecto GIT_COMMIT)
+version: "3.8"  # docker stack deploy aún lo usa; Compose solo avisa que es obsoleto
+
+x-nodo: &nodo
+  image: ${PP_IMAGEN:-pp-g8}
+  working_dir: /work
+  networks: [mpi]
+# /dev/shm de 1 GiB en cada servicio: Swarm no admite shm_size, pero sí un tmpfs.
+
+services:
+  nodo2:
+    <<: *nodo
+    hostname: nodo2
+    volumes:
+      - ${PP_REPO:-..}:/work:ro
+      - {type: tmpfs, target: /dev/shm, tmpfs: {size: 1073741824}}
+      - binarios_nodo2:/opt/pp
+    command: ["bash", "docker/nodo_mpi.sh", "trabajador"]
+    deploy:
+      endpoint_mode: dnsrr
+      placement: {constraints: [node.labels.pp_nodo == 2]}
+      restart_policy: {condition: on-failure}
+
+  nodo3:
+    <<: *nodo
+    hostname: nodo3
+    volumes:
+      - ${PP_REPO:-..}:/work:ro
+      - {type: tmpfs, target: /dev/shm, tmpfs: {size: 1073741824}}
+      - binarios_nodo3:/opt/pp
+    command: ["bash", "docker/nodo_mpi.sh", "trabajador"]
+    deploy:
+      endpoint_mode: dnsrr
+      placement: {constraints: [node.labels.pp_nodo == 3]}
+      restart_policy: {condition: on-failure}
+
+  nodo1:
+    <<: *nodo
+    hostname: nodo1
+    volumes:
+      - ${PP_REPO:-..}:/work:ro
+      - {type: tmpfs, target: /dev/shm, tmpfs: {size: 1073741824}}
+      - binarios_nodo1:/opt/pp
+      - ${PP_RESULTADOS_HOST:-../results/swarm}:/resultados
+    environment:
+      PP_HOSTS: ${PP_HOSTS:-nodo1:4,nodo2:4,nodo3:4}
+      PP_PROCESOS: ${PP_PROCESOS:-4,8,12}
+      PP_N: ${PP_N:-20000000}
+      PP_REPS: ${PP_REPS:-5}
+      PP_LOTE: ${PP_LOTE:-0}
+      PP_NUCLEOS: ${PP_NUCLEOS:-}
+      PP_CONFIG: ${PP_CONFIG:-config/sintetico.yaml}
+      # CIDR de la red overlay: en Swarm el contenedor tiene eth0/eth1 y el orden no es fijo.
+      PP_RED_TCP: ${PP_SUBRED:-10.77.0.0/24}
+      GIT_COMMIT: ${GIT_COMMIT:-desconocido}
+      PP_COMMIT: ${PP_COMMIT:-}  # vacío: nodo_mpi.sh lo toma de GIT_COMMIT y lo reenvía con mpirun -x
+    command: ["bash", "docker/nodo_mpi.sh", "lanzador"]
+    deploy:
+      endpoint_mode: dnsrr
+      placement: {constraints: [node.labels.pp_nodo == 1]}
+      restart_policy: {condition: none}
+
+volumes:
+  binarios_nodo1:
+  binarios_nodo2:
+  binarios_nodo3:
+
+networks:
+  mpi:
+    driver: ${PP_RED_DRIVER:-overlay}
+    attachable: true
+    ipam:
+      config:
+        - subnet: ${PP_SUBRED:-10.77.0.0/24}

@@ -1,0 +1,38 @@
+\section{Entorno de ejecución}
+\label{sec:entorno}
+
+\subsection{Hardware}
+
+La Tabla~\ref{tab:hardware} describe los equipos usados hasta este borrador. El equipo de referencia ejecuta Docker Desktop sobre WSL2 en Windows~11 y expone 24 vCPU al contenedor. Su procesador tiene 8 núcleos de rendimiento (P) y 16 núcleos de eficiencia (E) sin \emph{hyper-threading}; WSL2 los presenta como 24 núcleos iguales y el planificador de Windows decide en qué núcleo real corre cada vCPU. Esta heterogeneidad no es controlable desde el contenedor y condiciona la lectura de las curvas a partir de 8 hilos (Sección~\ref{sec:rendimiento}). El segundo equipo tiene 6 núcleos físicos y 12 lógicos, por lo que en él los puntos de 8 y 16 hilos están sobresuscritos; además, compiló fuera de la imagen \codigo{pp-g8}, con otra versión de g++, así que sus cifras no se mezclan con las del equipo de referencia.
+
+\begin{table}[!t]
+\centering
+\caption{Equipos de medición}
+\label{tab:hardware}
+\begin{tabular}{@{}lll@{}}
+\toprule
+ & Referencia & Equipo 2 \\
+\midrule
+CPU & Intel Core Ultra 9 275HX & Intel Core i5-12400F \\
+Núcleos & 8 P + 16 E, sin SMT & 6 físicos, 12 lógicos \\
+vCPU en WSL2 & 24 & 12 \\
+RAM visible & \qty{31.1}{\giga\byte} (anfitrión 63) & \qty{7.7}{\giga\byte} \\
+Compilador & g++ 13.3.0 & g++ 15.2.0 \\
+Uso & T1, OpenMP oficial & OpenMP complementario \\
+\bottomrule
+\end{tabular}
+\end{table}
+% TODO-T33: añadir los tres equipos físicos del Swarm (CPU, núcleos, RAM, red y conexión) cuando se registren en los CSV de X1--X4.
+
+\subsection{Software}
+
+Todo el cómputo se compila y se ejecuta dentro de una única imagen Docker, \codigo{pp-g8}, basada en Ubuntu~24.04, la misma distribución que usa la integración continua. La imagen contiene solo la cadena de herramientas: CMake~3.28, g++~13.3 con OpenMP, clang y \codigo{libomp} (para Archer), Open MPI~4.1, Python~3 con pytest, matplotlib y scipy, y un servidor SSH para lanzar \codigo{mpirun} entre contenedores. El código fuente no se copia en la imagen: se monta en \codigo{/work} en cada corrida, de modo que cada medición usa el árbol versionado y registra su commit. OpenMP se usa según la versión~4.5 del estándar~\cite{openmp45}, que introduce la reducción sobre secciones de arreglo, y MPI según la versión~3.1~\cite{mpi31}. Python se usa solo para calibración, validación y gráficos, fuera del núcleo evaluado.
+
+\subsection{Topologías}
+
+\begin{itemize}
+  \item \textbf{T0, un equipo}: binarios nativos dentro de un contenedor; desarrollo, pruebas y la campaña OpenMP.
+  \item \textbf{T1, varios contenedores en un equipo}: Docker Compose con un coordinador y dos trabajadores en una red común; sirve para probar el protocolo MPI, pero no para medir escalabilidad, porque los contenedores comparten los mismos núcleos.
+  \item \textbf{T2, clúster real}: Docker Swarm sobre tres equipos físicos, con un servicio por equipo fijado por una etiqueta de nodo y una red \emph{overlay}; es la topología oficial de X1--X4 y X6.
+\end{itemize}
+Docker garantiza el mismo entorno, bit a bit, en todos los nodos~\cite{merkel2014}, que es condición para que V1 sea válida entre equipos distintos.

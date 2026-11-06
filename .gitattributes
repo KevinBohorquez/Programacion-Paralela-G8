@@ -1,0 +1,6 @@
+# T05 | Archivos que se ejecutan dentro de Linux (contenedor o CI): siempre LF,
+# aunque el clon de Windows tenga core.autocrlf=true.
+*.sh        text eol=lf
+Dockerfile  text eol=lf
+*.yaml      text eol=lf
+*.yml       text eol=lf

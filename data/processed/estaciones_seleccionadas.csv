@@ -1,0 +1,6 @@
+estacion,zona,meses_temporada,dias,anios_auditados,anios_elegibles,pct_faltantes_temporada,estacion_elegible,motivo_seleccion
+piura_miraflores,costa_norte,1;2;3;4,120,43,40,3.49,1,elegible como estación completa
+lima_chosica,lima,1;2;3;4,120,25,23,3.93,1,elegible como estación completa
+tumbes_puertopizarro,costa_norte,1;2;3;4,120,52,47,4.05,1,elegible como estación completa
+tumbes_eltigre,costa_norte,1;2;3;4,120,50,47,4.53,1,elegible como estación completa
+piura_bernal,costa_norte,1;2;3;4,120,51,45,6.96,0,>= 20 años elegibles; siguiente por menor % faltante

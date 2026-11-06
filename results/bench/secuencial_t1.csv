@@ -1,0 +1,2 @@
+backend,n,semilla,config_id,dias,k,repeticiones,cpu,nucleos_fisicos,nucleos_logicos,ram_gb,compilador,tipo_build,commit,fecha,so,t_calentamiento,t1,t2,t3,t4,t5,media,desviacion,us_por_escenario,supera_10us
+serial,20000000,20261015,0,120,2122915,5,Intel(R) Core(TM) Ultra 9 275HX,24,24,31.1,c++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0,Release,43be549ae855,2026-10-16T01:16:40+00:00,Linux-6.18.33.2-microsoft-standard-WSL2-x86_64-with-glibc2.39,59.216402763,58.984194971,59.173037239,60.433590025,60.638669572,59.292359451,59.704370251600004,0.7706161176121307,2.9852185125800004,0

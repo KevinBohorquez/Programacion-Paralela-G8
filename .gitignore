@@ -1,23 +1,39 @@
 # Archivos temporales de generación
 /_build/
 
-# Datos, resultados y compilaciones futuras
+# Compilaciones (build/, build-mpi/, build-w0/, ...)
 /build/
-/data/raw/*
-!/data/raw/.gitkeep
-/data/processed/*
-!/data/processed/.gitkeep
+/build-*/
+*.o
+*.obj
+*.exe
+
+# Datos: las series SENAMHI (data/raw) y las salidas de T08–T10 (data/processed) se versionan
+# para que la calibración y las configuraciones config/*.yaml sean reproducibles sin descargar nada.
+
+# Resultados intermedios que se regeneran; los CSV y logs de results/bench, results/cientifico,
+# results/validacion y results/evidencia sí se versionan.
 /results/raw/*
 !/results/raw/.gitkeep
 /results/processed/*
 !/results/processed/.gitkeep
-/results/figures/*
+# Las figuras generadas se versionan (T18, T27, T35, T42, T45).
 !/results/figures/.gitkeep
-*.o
-*.obj
-*.exe
+!/results/figures/openmp_*.png
+!/results/figures/openmp_*.svg
 *.log
+!/results/evidencia/*.log
+!/results/bench/**/*.log
+!/results/cientifico/**/*.log
+!/results/validacion/**/*.log
+
+# Cachés y entornos
 __pycache__/
+.pytest_cache/
 .venv/
 ~$*.docx
 ~$*.xlsx
+
+# Salidas de humo de Compose y de la simulación de Swarm
+/results/compose/
+/results/swarm-sim/

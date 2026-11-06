@@ -1,0 +1,126 @@
+/* Temporary tokens for the viz harness only, until W-UI's design tokens land. Not imported by the app. */
+:root {
+  color-scheme: dark;
+  --surface: #0e0e10;
+  --surface-raised: #151518;
+  --surface-sunken: #0b0b0d;
+  --border: #232328;
+  --text: #ececef;
+  --text-muted: #a8a8b3;
+  --text-subtle: #8d8d98;
+  --action-surface: #818cf8;
+  --success-text: #4ade80;
+  --danger-text: #f87171;
+  --warning-text: #fbbf24;
+  --backend-serial: #3d8fd1;
+  --backend-openmp: #cf7a26;
+  --backend-mpi-estatico: #2aa198;
+  --backend-mpi-dinamico: #8f7be8;
+  --backend-hibrido: #d0508a;
+  --heat-0: #1b1b1f;
+  --heat-1: #23243f;
+  --heat-2: #4f46e5;
+  --heat-3: #a5b4fc;
+  --heat-4: #fbbf24;
+  --heat-ink-0: #ececef;
+  --heat-ink-1: #ececef;
+  --heat-ink-2: #ffffff;
+  --heat-ink-3: #0e0e10;
+  --heat-ink-4: #0e0e10;
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+  --surface: #f4f4f5;
+  --surface-raised: #ffffff;
+  --surface-sunken: #f4f4f5;
+  --border: #e4e4e7;
+  --text: #18181b;
+  --text-muted: #52525b;
+  --text-subtle: #6b6b75;
+  --action-surface: #4f46e5;
+  --success-text: #15803d;
+  --danger-text: #b91c1c;
+  --warning-text: #a16207;
+  --backend-serial: #1f6fb2;
+  --backend-openmp: #b4610f;
+  --backend-mpi-estatico: #1a8079;
+  --backend-mpi-dinamico: #6d58d6;
+  --backend-hibrido: #b8336f;
+  --heat-0: #f4f4f5;
+  --heat-1: #e0e7ff;
+  --heat-2: #818cf8;
+  --heat-3: #4338ca;
+  --heat-4: #f59e0b;
+  --heat-ink-0: #18181b;
+  --heat-ink-1: #18181b;
+  --heat-ink-2: #18181b;
+  --heat-ink-3: #ffffff;
+  --heat-ink-4: #18181b;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--surface);
+  color: var(--text);
+  font-family: "Inter Variable", system-ui, sans-serif;
+  font-size: 16px;
+}
+
+.harness {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+  padding: 24px 32px;
+}
+
+.harness-cabecera {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: baseline;
+  gap: 24px;
+}
+
+.harness-cabecera h1 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.harness-aviso {
+  margin: 0;
+  color: var(--warning-text);
+  font-size: 0.875rem;
+}
+
+.harness-control {
+  margin-inline-start: auto;
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.harness-panel {
+  min-inline-size: 0;
+  padding: 20px 24px;
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+}
+
+.harness-panel h2 {
+  margin: 0 0 12px;
+  color: var(--text-muted);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.harness-ancho {
+  grid-column: span 2;
+}

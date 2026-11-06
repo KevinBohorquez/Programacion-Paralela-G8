@@ -1,0 +1,37 @@
+# T05 | Responsable: Miguel | Hola híbrido MPI + OpenMP repartido en dos contenedores.
+# Uso (desde la raíz del repositorio):
+#   docker compose -f docker/compose-hello.yaml up --abort-on-container-exit --exit-code-from nodo1
+#   docker compose -f docker/compose-hello.yaml down -v
+# nodo2 solo ofrece sshd; nodo1 compila el hola en un volumen compartido y lanza
+# mpirun con un rango en cada contenedor (ssh para arrancar, TCP para los mensajes).
+# No reemplaza a compose.yaml (T22, corridas E1/E2).
+name: pp-g8-hello
+
+x-nodo: &nodo
+  image: pp-g8
+  shm_size: 1g
+  volumes:
+    - ..:/work:ro
+    - binarios:/opt/hello
+  working_dir: /work
+  networks: [mpi]
+
+services:
+  nodo2:
+    <<: *nodo
+    hostname: nodo2
+    command: ["/usr/sbin/sshd", "-D", "-e"]
+
+  nodo1:
+    <<: *nodo
+    hostname: nodo1
+    depends_on: [nodo2]
+    environment:
+      OMP_NUM_THREADS: "2"
+    command: ["bash", "docker/hello_dos_contenedores.sh"]
+
+volumes:
+  binarios:
+
+networks:
+  mpi:

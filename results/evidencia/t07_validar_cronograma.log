@@ -1,0 +1,12 @@
+# Contenedor: docker run --rm --shm-size=1g -v "$PWD:/work" -w /work pp-g8 bash -c '<comando>'
+# Comando: python3 scripts/validar_cronograma.py
+# Fecha (UTC): 2026-10-16T00:46:31Z
+# Commit: ce6e04d (árbol con cambios sin commit: evidencia nueva aún no versionada)
+# Imagen: pp-g8 sha256:fce5a0e04a7a1e1b1ea86805dead6ed51dd7fb087deb6a8bd2721ab1284c7410
+# nproc (contenedor): 24
+# Compilador: Python 3.12.3
+
+T07 correcto: T01–T53 únicos, con responsable, semanas, fecha, estado y criterio.
+Distribución: David 11, Angela 6, Ashley 7, Lita 10, Miguel 9, Rhamses 10
+
+# Código de salida: 0

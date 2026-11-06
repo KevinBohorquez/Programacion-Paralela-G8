@@ -1,0 +1,92 @@
+/* Speedup bars grow by scaleX and their labels glide by translate, both 180 ms; running bars shimmer. */
+.etiqueta {
+  fill: var(--text);
+  font-size: calc(0.9375rem * var(--viz-escala, 1));
+  font-weight: 500;
+}
+
+.pista {
+  fill: var(--surface-sunken);
+}
+
+.barra {
+  transform-box: fill-box;
+  transform-origin: left center;
+  transition: transform 180ms ease-out;
+}
+
+.rotulo {
+  transition: transform 180ms ease-out;
+}
+
+.valor {
+  fill: var(--text);
+  font-size: calc(1.0625rem * var(--viz-escala, 1));
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+  paint-order: stroke;
+  stroke: var(--surface-raised);
+  stroke-width: 5px;
+  stroke-linejoin: round;
+}
+
+.segundos {
+  fill: var(--text-muted);
+  font-size: calc(0.875rem * var(--viz-escala, 1));
+  font-weight: 400;
+}
+
+.ideal {
+  stroke: var(--text-muted);
+  stroke-width: 1.5;
+  stroke-dasharray: 6 5;
+}
+
+.textoIdeal {
+  fill: var(--text-muted);
+  font-size: calc(0.8125rem * var(--viz-escala, 1));
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.ventana {
+  overflow: hidden;
+}
+
+.paradaBorde {
+  stop-color: var(--text);
+  stop-opacity: 0;
+}
+
+.paradaCentro {
+  stop-color: var(--text);
+  stop-opacity: 0.28;
+}
+
+.brillo {
+  transform-box: fill-box;
+  transform: translateX(-100%);
+  animation: barrido 1.4s linear infinite;
+}
+
+@keyframes barrido {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(var(--recorrido, 100%));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .barra,
+  .rotulo {
+    transition: none;
+  }
+
+  .brillo {
+    animation: none;
+    transform: none;
+    opacity: 0.6;
+  }
+}

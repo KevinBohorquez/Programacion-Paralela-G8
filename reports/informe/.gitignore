@@ -1,0 +1,11 @@
+# Artefactos de compilación de LaTeX (latexmk/bibtex). El PDF tampoco se versiona por ahora.
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.synctex.gz
+*.toc
+*.pdf

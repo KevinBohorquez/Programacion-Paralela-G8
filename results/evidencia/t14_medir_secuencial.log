@@ -1,0 +1,16 @@
+# Comando: python3 scripts/bench/medir_secuencial.py --build-dir build/docker --n 20000000 --repeticiones 5 --salida build/barrido/secuencial_t1.csv
+# Contenedor: docker run --rm --shm-size=1g -v "$PWD:/work" -w /work pp-g8 bash -c '<comando>'
+# Fecha inicio (UTC): 2026-10-16T01:16:39Z
+# Commit: 43be549
+# Imagen: pp-g8 sha256:95d58276392f3b2679067bbd1e917dabf4b985aa420a756d28f437f33f577ab3
+# Host: Intel Core Ultra 9 275HX (8 P + 16 E, sin SMT), 63 GB RAM, Windows 11, Docker Desktop WSL2 (24 vCPU), con corriente alterna
+repetición 1: 58.9842 s  k=2122915
+repetición 2: 59.1730 s  k=2122915
+repetición 3: 60.4336 s  k=2122915
+repetición 4: 60.6387 s  k=2122915
+repetición 5: 59.2924 s  k=2122915
+T1 = 59.7044 s (sd 0.7706 s), 2.985 µs/temporada, k=2122915 idéntico en 6 corridas
+escrito build/barrido/secuencial_t1.csv
+
+# Fecha fin (UTC): 2026-10-16T01:22:38Z
+# Código de salida: 0

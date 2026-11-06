@@ -1,0 +1,92 @@
+\section{Modelo de simulación}
+\label{sec:modelo}
+
+\subsection{Unidad de simulación}
+
+Un \emph{escenario} es una temporada de lluvias hipotética de $D$ días, generada al azar pero coherente con la estadística observada de la zona y el régimen. Cada escenario produce dos salidas: un veredicto binario (inundación o no) y el máximo de agua acumulada $\Amax$ durante la temporada. La Tabla~\ref{tab:parametros} resume los parámetros.
+
+\begin{table}[!t]
+\centering
+\caption{Parámetros del modelo}
+\label{tab:parametros}
+\begin{tabular}{@{}llr@{}}
+\toprule
+Símbolo & Descripción & Origen / valor \\
+\midrule
+$D$ & Días de la temporada & 120 \\
+$p_{01}$ & $P(\text{lluvia hoy} \mid \text{ayer seco})$ & Calibrado \\
+$p_{11}$ & $P(\text{lluvia hoy} \mid \text{ayer lluvioso})$ & Calibrado \\
+$\alpha,\theta$ & Forma y escala (mm) de la gamma & Calibrados (Thom) \\
+$C$ & Capacidad de drenaje (mm/día) & 5--65, paso 5 \\
+$U$ & Umbral crítico (mm) & 30 / 50 / 80 \\
+$K$ & Conjuntos bootstrap & 100 \\
+$N$ & Temporadas por conjunto & $10^{6}$ \\
+$s$ & Semilla global (64 bits) & Registrada \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Ocurrencia: cadena de Markov de dos estados}
+
+Si la ocurrencia de lluvia fuese independiente día a día, el modelo subestimaría las rachas húmedas, que son las que acumulan agua. Por eso se usa una cadena de Markov de primer orden~\cite{richardson1981,wilks2011}: la probabilidad de lluvia hoy depende solo de si llovió ayer, con $p_{01}$ si ayer fue seco y $p_{11}$ si fue lluvioso. Con $p_{11} > p_{01}$ el modelo reproduce la persistencia observada. La frecuencia estacionaria de días lluviosos es
+\begin{equation}
+\pi_1 = \frac{p_{01}}{1 - p_{11} + p_{01}}.
+\label{eq:estacionaria}
+\end{equation}
+El día previo a la temporada se toma como seco.
+
+\subsection{Monto: distribución gamma}
+
+En un día lluvioso la lámina $R$ sigue una distribución $\Gamma(\alpha,\theta)$, asimétrica a la derecha: muchos días de lluvia leve y pocos extremos. Se muestrea con el método de Marsaglia y Tsang~\cite{marsaglia2000}. Cuando $\alpha < 1$ se usa la identidad $X = Y\,V^{1/\alpha}$, con $Y\sim\Gamma(\alpha+1,\theta)$ y $V$ uniforme en $(0,1)$.
+
+\subsection{Balance hídrico}
+
+Con capacidad de drenaje $C$ (mm/día) y umbral crítico $U$ (mm), el agua acumulada evoluciona según la recursión de Lindley~\cite{lindley1952}:
+\begin{align}
+A_0 &= 0, \nonumber\\
+A_t &= \max(0,\; A_{t-1} + R_t - C), \qquad t = 1,\dots,D, \label{eq:lindley}\\
+\Amax &= \max_{1\le t\le D} A_t, \qquad \text{inundación} \iff \Amax > U. \nonumber
+\end{align}
+Si el drenaje evacúa todo, el acumulado vuelve a cero; si la lluvia lo supera, el excedente se arrastra al día siguiente. Así, varios días seguidos de lluvia moderada pueden ser más peligrosos que un solo día intenso. La recursión es una caminata aleatoria con barrera reflectante en cero; las temporadas son caminatas independientes, que es la fuente de paralelismo explotada aquí~\cite{youssef1993}.
+
+\subsection{Calibración}
+
+Para cada estación y régimen se usan solo los días de la temporada de los años elegibles. Un día es lluvioso si la precipitación es de al menos \qty{0.1}{\milli\metre}. Las probabilidades de transición se estiman por conteo, $\hat p_{01} = n_{01}/(n_{00}+n_{01})$ y $\hat p_{11} = n_{11}/(n_{10}+n_{11})$. Los parámetros de la gamma se estiman con la aproximación de máxima verosimilitud de Thom~\cite{thom1958}:
+\begin{equation}
+\hat\alpha = \frac{1 + \sqrt{1 + 4A/3}}{4A}, \quad A = \ln\bar{x} - \overline{\ln x}, \quad \hat\theta = \frac{\bar{x}}{\hat\alpha},
+\label{eq:thom}
+\end{equation}
+donde $\bar x$ es la media de los montos de los días lluviosos. La incertidumbre de calibración se representa con $K = 100$ conjuntos de parámetros obtenidos por remuestreo bootstrap~\cite{efron1979} de los \emph{años} de la serie, con semilla fija; remuestrear años completos conserva la dependencia entre días de una misma temporada.
+
+\subsection{Estimadores}
+
+Para una configuración con $N$ temporadas simuladas y $k$ inundaciones, la probabilidad se estima como $\phat = k/N$. Su intervalo de confianza al 95\,\% es el de Wilson~\cite{wilson1927}:
+\begin{equation}
+\frac{\phat + \frac{z^2}{2N} \pm z\sqrt{\frac{\phat(1-\phat)}{N} + \frac{z^2}{4N^2}}}{1 + \frac{z^2}{N}}, \qquad z = 1{,}96.
+\label{eq:wilson}
+\end{equation}
+Se prefiere al intervalo de Wald porque mantiene una cobertura cercana a la nominal cuando $\phat$ es pequeña o el número de éxitos es bajo~\cite{agresti1998}, que es el caso de las capacidades de drenaje altas. A esta incertidumbre de muestreo se añade una banda epistémica: los percentiles 5 y 95 de $\phat$ entre los $K$ conjuntos bootstrap. Además, cada configuración guarda un histograma de $\Amax$ con 512 clases de \qty{1}{\milli\metre}, $\min(\lfloor\Amax\rfloor, 511)$, del que se obtiene la curva de excedencia. La curva riesgo--capacidad es $\phat$ en función de $C$, por zona y régimen.
+
+\subsection{Pseudocódigo del núcleo}
+
+La función \codigo{simular\_escenario} es pura: depende solo de los parámetros, de la clave derivada de la semilla y la configuración, y del índice global del escenario (Fig.~\ref{alg:escenario}). La sección~\ref{sec:metodologia} explica por qué esa propiedad garantiza la reproducibilidad entre backends.
+
+\begin{figure}[!t]
+\centering
+\begin{minipage}{0.95\columnwidth}
+\small
+\begin{tabbing}
+\hspace*{1em}\=\hspace*{1em}\=\hspace*{1em}\=\kill
+\textbf{función} \codigo{simular\_escenario}(\codigo{p}, \codigo{clave}, \codigo{idx})\\
+\> $A \gets 0$;\; $\Amax \gets 0$;\; \codigo{lluvioso} $\gets$ falso\\
+\> \textbf{para} $d = 0,\dots,D-1$ \textbf{hacer}\\
+\>\> $u \gets \text{Philox}(\codigo{clave}, \{\codigo{idx}, d, 0\})$\\
+\>\> \codigo{lluvioso} $\gets u < (\codigo{lluvioso}\; ?\; p_{11} : p_{01})$\\
+\>\> $R \gets \codigo{lluvioso}\; ?\; \Gamma(\alpha,\theta;\, \codigo{clave}, \codigo{idx}, d) : 0$\\
+\>\> $A \gets \max(0, A + R - C)$;\; $\Amax \gets \max(\Amax, A)$\\
+\> \textbf{devolver} $(\Amax > U,\; \Amax)$
+\end{tabbing}
+\end{minipage}
+\caption{Pseudocódigo de la simulación de una temporada (\codigo{src/core/balance\_hidrico.cpp}).}
+\label{alg:escenario}
+\end{figure}

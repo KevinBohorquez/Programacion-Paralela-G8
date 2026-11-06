@@ -1,0 +1,51 @@
+/* Shared chart vocabulary: box, gridlines, axis text and the empty state. Sizes scale with --viz-escala. */
+.caja {
+  inline-size: 100%;
+  min-inline-size: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.svg {
+  display: block;
+  inline-size: 100%;
+  block-size: auto;
+  overflow: visible;
+}
+
+.rejilla {
+  stroke: var(--border);
+  stroke-width: 1;
+  shape-rendering: crispEdges;
+}
+
+.base {
+  stroke: var(--text-subtle);
+  stroke-width: 1;
+  shape-rendering: crispEdges;
+}
+
+.eje {
+  fill: var(--text-subtle);
+  font-size: calc(0.8125rem * var(--viz-escala, 1));
+  font-variant-numeric: tabular-nums;
+}
+
+.tituloEje {
+  fill: var(--text-muted);
+  font-size: calc(0.8125rem * var(--viz-escala, 1));
+  font-weight: 500;
+}
+
+.vacio {
+  fill: var(--text-subtle);
+  font-size: calc(0.9375rem * var(--viz-escala, 1));
+}
+
+.oculto {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

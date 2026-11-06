@@ -1,0 +1,13 @@
+# Comando: docker compose -f docker/compose-hello.yaml --progress quiet run --rm nodo1
+# Fecha: 2026-10-16T00:39:44Z
+# Imagen: pp-g8 sha256:fce5a0e04a7a1e1b1ea86805dead6ed51dd7fb087deb6a8bd2721ab1284c7410
+# Commit: a8b72d2
+# Anfitrión: MINGW64_NT-10.0-26200 | vCPU visibles por Docker: 24
+
+MPI: Open MPI v4.1.6
+Nivel de hilos: pedido MPI_THREAD_FUNNELED, provisto MPI_THREAD_FUNNELED
+Procesos MPI: 2 | hilos OpenMP máx. por proceso: 2
+rango 0/2 | hilo 0/2 | host nodo1
+rango 0/2 | hilo 1/2 | host nodo1
+rango 1/2 | hilo 0/2 | host nodo2
+rango 1/2 | hilo 1/2 | host nodo2
