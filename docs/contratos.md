@@ -86,7 +86,7 @@ La columna `kappa` (H5) se agregó después, también **al final**. Los lectores
 
 | Columna | Tipo / unidad | Regla |
 | --- | --- | --- |
-| `backend` | texto | `serial`, `openmp`, `mpi_estatico`, `mpi_dinamico`, `hibrido` o `cuda`. |
+| `backend` | texto | `serial`, `openmp`, `mpi_estatico`, `mpi_dinamico`, `hibrido`, `cuda` o `mpi_dinamico_gpu` (EXT2: E2 con el último rango en la GPU; escribe la grilla de la GPU en `bloques` e `hilos_por_bloque`). |
 | `estacion`, `regimen`, `config_id`, `semilla` | texto, texto, entero, entero | Copia de la configuración. |
 | `n`, `k` | `uint64` | `n` es lo **simulado** (debe ser igual a lo pedido, V3) y `k` las inundaciones. |
 | `p_hat`, `wilson_inf`, `wilson_sup` | reales | `k / n` e intervalo de Wilson al 95 %. |

@@ -84,7 +84,8 @@ def graficar(resumen, destino):
         a2.set_xticks(list(x), [r["etiqueta"] for r in mixtas], fontsize=8)
         a2.set_ylabel("fracción de los N escenarios")
         a2.set_title("Reparto que hizo la cola dinámica")
-        a2.legend(fontsize=8)
+        a2.set_ylim(0, 1.25)
+        a2.legend(fontsize=8, loc="upper center", ncol=2)
     fig.tight_layout()
     for ext in ("png", "svg"):
         fig.savefig(Path(destino) / f"cuda_ext2.{ext}", dpi=150)
