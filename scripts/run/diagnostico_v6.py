@@ -12,6 +12,10 @@ varias explicaciones de la cola ligera del modelo:
       cola de Pareto generalizada (GPD) por encima del percentil 90.
   H4  heterogeneidad: una gamma por mes de la temporada y una gamma por anio (mezcla ponderada por
       el numero de dias lluviosos), frente a una sola gamma por temporada.
+  H5  escala aleatoria por temporada: los montos de cada temporada se multiplican por
+      M ~ Gamma(kappa, 1/kappa) (media 1), con kappa en forma cerrada para igualar el CV observado.
+      "escala_temporada" conserva (alfa, theta) de Thom (solo agrega kappa); "escala_temporada_z"
+      toma alfa de Thom sobre los montos divididos por la media de su temporada.
 
 Para cada candidato se simula la cadena de Markov calibrada (p01, p11) con el monto candidato en
 numpy y se calculan los mismos estadisticos que V6 (frecuencia, media, desviacion, p95, p99, racha
@@ -176,8 +180,18 @@ def gamma_gpd(x, a, th, q=0.90):
     return f, (u, xi, sigma)
 
 
-def simular(p01, p11, dias, sampler, n, rng):
-    """Cadena de Markov con el dia previo seco (como simular_escenario) y montos del sampler."""
+def kappa_escala(cv, alfa):
+    """H5: kappa de la escala por temporada M ~ Gamma(kappa, 1/kappa) (media 1) que, con montos
+    Gamma(alfa, theta) dentro de la temporada, iguala el CV total observado:
+        CV^2 = (1 + 1/kappa)(1 + 1/alfa) - 1.
+    Si el CV observado no supera el de la gamma, no hay heterogeneidad que modelar (kappa = inf)."""
+    inv = (cv ** 2 + 1.0) / (1.0 + 1.0 / alfa) - 1.0
+    return 1.0 / inv if inv > 1e-12 else math.inf
+
+
+def simular(p01, p11, dias, sampler, n, rng, kappa=math.inf):
+    """Cadena de Markov con el dia previo seco (como simular_escenario) y montos del sampler. Con
+    kappa finito (H5), todos los montos de una temporada se multiplican por M ~ Gamma(kappa, 1/kappa)."""
     estado = np.zeros(n, bool)
     lluvia = np.zeros((n, dias), bool)
     for d in range(dias):
@@ -187,6 +201,8 @@ def simular(p01, p11, dias, sampler, n, rng):
     nl = int(lluvia.sum())
     montos = np.zeros((n, dias))
     montos[lluvia] = sampler(rng, nl)
+    if math.isfinite(kappa):
+        montos *= rng.gamma(kappa, 1.0 / kappa, n)[:, None]
     m = montos[lluvia]
     # rachas cerradas por un dia seco dentro de la temporada
     fin = lluvia[:, :-1] & ~lluvia[:, 1:]
@@ -287,14 +303,21 @@ def main() -> int:
         top = x >= np.percentile(x, 99)
         anios_p99 = sorted({int(y) for y in anio_m[top]})
 
-        candidatos = {
-            "gamma_thom (actual)": gamma_sampler(a0, th0),
-            "gamma_mle": gamma_sampler(a_m, th_m),
-            "exp_mixta": mezcla_sampler([w, 1 - w], [lambda r, k, b=b1: r.exponential(b, k),
-                                                     lambda r, k, b=b2: r.exponential(b, k)]),
-            "gamma+gpd_q90": s_gpd,
-            f"gamma_por_mes(k={k_mes})": s_mes,
-            f"gamma_por_anio(k={k_anio})": s_anio,
+        # ---- H5: escala aleatoria por temporada ----
+        medias_anio = {y: x[anio_m == y].mean() for y in np.unique(anio_m)}
+        a_z, _ = CAL.estimar_gamma(list(x / np.array([medias_anio[y] for y in anio_m])))
+        kap_t, kap_z = kappa_escala(cv_obs, a0), kappa_escala(cv_obs, a_z)
+
+        candidatos = {  # nombre -> (muestreador de montos, kappa de la escala por temporada)
+            "gamma_thom (actual)": (gamma_sampler(a0, th0), math.inf),
+            "gamma_mle": (gamma_sampler(a_m, th_m), math.inf),
+            "exp_mixta": (mezcla_sampler([w, 1 - w], [lambda r, k, b=b1: r.exponential(b, k),
+                                                      lambda r, k, b=b2: r.exponential(b, k)]), math.inf),
+            "gamma+gpd_q90": (s_gpd, math.inf),
+            f"gamma_por_mes(k={k_mes})": (s_mes, math.inf),
+            f"gamma_por_anio(k={k_anio})": (s_anio, math.inf),
+            "escala_temporada": (gamma_sampler(a0, obs["media_monto"] / a0), kap_t),
+            "escala_temporada_z": (gamma_sampler(a_z, obs["media_monto"] / a_z), kap_z),
         }
         print(f"\n=== {est}/{reg} anios={len(max_anio)} n_lluvia={len(x)} D={dias} ===")
         print(f"H1 n_dias_lluvia y Thom reproducen parametros.csv: OK | resolucion 0,1 mm: {resol:.1%} | "
@@ -304,13 +327,14 @@ def main() -> int:
               f"GPD u={u:.2f} xi={xi:.3f} sigma={sig:.3f}")
         print(f"H4 anios con dias >= p99: {anios_p99} | 3 anios mas lluviosos (mm): "
               + ", ".join(f"{y}={s:.0f}" for s, y in orden[:3]) + f" de {sum(s for s, _ in orden):.0f}")
+        print(f"H5 kappa escala_temporada={kap_t:.3f} | alfa_z={a_z:.4f} kappa escala_temporada_z={kap_z:.3f}")
         print(f"   {'candidato':26s} " + " ".join(f"{k[:10]:>10s}" for k in ESTADISTICOS) + "   KS_p  KS_p(0,1mm)  n_fallos")
         print(f"   {'observado':26s} " + " ".join(f"{obs[k]:10.4f}" for k in ESTADISTICOS)
               + "   P(Amax>U) U=" + "/".join(f"{u:.0f}" for u in UMBRALES_X6) + ": "
               + "/".join(f"{np.mean(amax_obs > u):.3f}" for u in UMBRALES_X6) + f" (n={len(amax_obs)} temporadas)")
-        for nombre, s in candidatos.items():
+        for nombre, (s, kap) in candidatos.items():
             rng = np.random.default_rng(SEMILLA)
-            sim, m, amax_sim = simular(p01, p11, dias, s, args.n, rng)
+            sim, m, amax_sim = simular(p01, p11, dias, s, args.n, rng, kappa=kap)
             riesgo = [float(np.mean(amax_sim > u)) for u in UMBRALES_X6]
             d1, p1, d2, p2 = ks(x, m, rng)
             errores = {k: (sim[k] - obs[k]) / obs[k] for k in ESTADISTICOS}
@@ -326,6 +350,7 @@ def main() -> int:
                           "alfa_momentos": round(alfa_momentos, 6), "p_gamma_bajo_umbral": round(masa_bajo_umbral, 5),
                           "aic_gamma": round(2 * 2 - 2 * ll_gamma, 2), "aic_mixexp": round(2 * 3 - 2 * ll_mix, 2),
                           "gpd_xi": round(xi, 4),
+                          "kappa": round(kap, 4) if math.isfinite(kap) else "inf",
                           **{f"obs_p_amax_gt_{u:.0f}": round(float(np.mean(amax_obs > u)), 5) for u in UMBRALES_X6},
                           **{f"sim_p_amax_gt_{u:.0f}": round(r, 5) for u, r in zip(UMBRALES_X6, riesgo)},
                           "n_temporadas_obs": len(amax_obs)})

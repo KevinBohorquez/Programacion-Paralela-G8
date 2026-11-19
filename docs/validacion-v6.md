@@ -1,7 +1,11 @@
 # Validación V6 frente a lo observado: diagnóstico de las colas (T13)
 
-**Estado:** hallazgo científico documentado. El modelo y la calibración **no cambian**; la prueba
-`v6_observado` sigue registrada en CTest pero **desactivada** por defecto (`-DPP_V6_OBSERVADO=ON` la activa).
+**Estado (19/11/2026):** la prueba frente a lo observado se reescribió con un **criterio estadístico**
+(§«Criterio estadístico») y vuelve a estar **activa** en CTest (`v6_observado`). Con el modelo vigente,
+los 7 estadísticos pasan en 13/16 grupos y KS en 3/16. Los grupos que no pasan están marcados como
+*xfail* estricto con su causa, así que la suite queda en verde y avisa si algo cambia. Se agrega la
+hipótesis H5 (escala aleatoria por temporada) como **propuesta de cambio del modelo, pendiente de
+decisión del equipo** (§«H5»). Hasta que se decida, el modelo y la calibración no cambian.
 
 ## Resumen
 
@@ -200,10 +204,86 @@ estadístico, de 16; la réplica de la gamma actual da KS p = 0,06 en Chosica El
 | gamma por mes | 0 | 15 | 9 | 14 | 10 | 14 | 0 |
 | gamma por año | 0 | 8 | 8 | 10 | 11 | 13 | 0 |
 
+## Criterio estadístico (revisión del 19/11/2026)
+
+La definición (§7.7) pide error relativo ≤ 10 % en cada estadístico y KS no rechazado al 5 %. Ese
+criterio es correcto en la **parte 1** de V6, donde la referencia es el valor exacto del modelo, y la
+prueba sigue igual. En la **parte 2** la referencia es una muestra de 7–53 temporadas, y aplicar el mismo
+criterio tiene cuatro problemas:
+
+1. **Ignora la incertidumbre de lo observado.** La desviación y el p99 dependen de 1–3 años extremos.
+   Con tan pocas temporadas, su error de muestreo supera holgadamente el 10 %: ni el modelo verdadero
+   pasaría siempre.
+2. **El KS comparaba conjuntos distintos.** Lo observado solo tiene montos ≥ 0,1 mm con resolución de
+   0,1 mm. Lo simulado era continuo e incluía la masa que la gamma pone por debajo de 0,1 mm (2,6–13,5 %).
+3. **El valor p asintótico de KS no vale con datos discretizados** (muchos empates).
+4. **Comparaciones múltiples:** 8 contrastes por grupo al 5 % cada uno. Un modelo perfecto fallaría
+   algún contraste en cerca de un tercio de los grupos.
+
+Criterio nuevo (`tests/unit/test_estadistico.py`, `test_v6_estadisticos_frente_a_observado` y
+`test_v6_ks_frente_a_observado`):
+
+| Contraste | Pasa si |
+| --- | --- |
+| Cada uno de los 7 estadísticos | Error relativo ≤ 10 % (criterio de la definición) **o** valor simulado dentro del IC bootstrap del observado, remuestreando **temporadas completas** (B = 5000, percentiles). Remuestrear temporadas conserva la dependencia entre los días de un mismo año. |
+| KS de los montos | Ambas muestras se registran como un pluviómetro (redondeo a 0,1 mm y ≥ 0,1 mm). El valor p sale de un bootstrap paramétrico: 999 conjuntos simulados del propio modelo con el mismo número de temporadas que lo observado. |
+| Nivel | Bonferroni por grupo: 5 % / 8 contrastes = 0,625 % por contraste (IC al 99,375 %). |
+
+El criterio solo usa la incertidumbre que tienen los datos: donde el observado es preciso (frecuencia,
+media, rachas), sigue mandando el 10 %.
+
+**Resultado con el modelo vigente** (`pytest tests/unit/test_estadistico.py`: 24 pasan, 16 *xfail*):
+
+| Contraste | Pasan | No pasan (marcados *xfail* estricto) |
+| --- | --- | --- |
+| 7 estadísticos | **13/16** | Chulucanas normal (p99 −41 %), El Tigre normal (desviación −22 %, p99 −21 %), Puerto Pizarro normal (desviación −32 %) |
+| KS | 3/16 | Los otros 13 grupos |
+
+- Los tres grupos que fallan en los estadísticos son del **régimen normal**. Es el sesgo de cola
+  ligera que subestima el riesgo en años normales (§«Impacto en el riesgo X6»).
+- El KS falla por la **forma del cuerpo**, no por la cola. La mayor diferencia entre las funciones de
+  distribución está entre 0,3 y 7 mm: lo observado tiene más montos pequeños que la gamma (D = 0,10–0,27).
+  En Puerto Pizarro (49 % y 36 % de registros enteros), Miraflores (20 % y 19 %) y Chosica normal
+  (19 %), además, el observador redondeó a milímetros enteros. Ningún candidato de H1–H5 corrige el KS
+  (`diagnostico_v6.log`). Los tres grupos donde pasa tienen pocas temporadas (7–16).
+- *Xfail* estricto significa que, si un cambio del modelo hace pasar un grupo, la prueba falla con
+  XPASS. Así se obliga a actualizar la lista `FALLOS_CONOCIDOS_*` y este documento.
+
+### H5: escala aleatoria por temporada (propuesta)
+
+Cada temporada sortea un factor de intensidad M ~ Gamma(κ, 1/κ), con media 1, que multiplica todos sus
+montos diarios. Se conservan p01, p11, α y θ de Thom y se agrega **un parámetro κ** por estación ×
+régimen, en forma cerrada para igualar el CV observado:
+
+    CV² = (1 + 1/κ)(1 + 1/α) − 1   ⇒   1/κ = (CV² + 1)/(1 + 1/α) − 1   (κ = ∞ si sale ≤ 0)
+
+Con κ = ∞ el modelo es exactamente el actual. Representa la heterogeneidad entre años (H4) con un solo
+parámetro, en vez de una gamma por año. Resultados de `diagnostico_v6.py` (candidatos
+`escala_temporada` y `escala_temporada_z`):
+
+| Candidato | Desviación > 10 % | p99 > 10 % | Error medio de P(Amax > 30 / 50 / 80 mm) |
+| --- | --- | --- | --- |
+| gamma de Thom (actual) | 16 | 15 | 0,122 / 0,117 / 0,060 |
+| exponencial mixta | 7 | 11 | 0,114 / 0,102 / 0,071 |
+| **escala por temporada** | **0** | 7 | **0,106 / 0,086 / 0,053** |
+
+- Es el **mejor candidato para el riesgo** en los tres umbrales, y corrige los dos sesgos a la vez
+  (U = 50 mm): Puerto Pizarro normal pasa de 0,07 a 0,20 (observado 0,33) y El Niño de 0,92 a 0,66
+  (observado 0,53); Miraflores El Niño pasa de 0,59 a 0,50 (observado 0,23).
+- En un experimento preliminar con IC bootstrap al 95 %, sin Bonferroni, pasaron los 7 estadísticos
+  14/16 grupos, frente a 10/16 del modelo actual. Se confirmará con esta prueba cuando κ esté en el
+  generador.
+- No cambia el máximo diario medio por temporada (E[M] = 1) ni corrige el KS.
+- **Qué implica adoptarlo:** κ en `calibrar.py` y en las réplicas bootstrap (T10); un sorteo de M por
+  escenario en `simular_escenario` con Philox, sin mover los flujos diarios (T11, la V1 entre backends se
+  mantiene); `kappa` en el YAML y en `contratos.md`; κ en `pp_v6_generador` y en el kernel CUDA; revisar
+  V7; volver a correr X6, el bootstrap y X7. Las mediciones de rendimiento no cambian de forma apreciable
+  (un sorteo más por temporada de unos 120 días).
+
 ## Decisión
 
-Se documenta como hallazgo (opción b) y **no se cambia** el modelo, la calibración, `data/processed/*`
-ni `config/*.yaml`:
+Decisión vigente hasta que el equipo resuelva H5: se documenta como hallazgo (opción b) y **no se
+cambia** el modelo, la calibración, `data/processed/*` ni `config/*.yaml`:
 
 - El error no es de código ni de calibración: la calibración reproduce la definición del proyecto
   (Markov de 2 estados + gamma, Thom, temporada por zona) y el generador la implementa bien (V6
@@ -216,8 +296,8 @@ ni `config/*.yaml`:
   o separar "El Niño extraordinario" de "El Niño moderado"), cambia la definición del modelo y queda
   como trabajo futuro.
 
-`v6_observado` sigue desactivada en el CTest por defecto (ver `CMakeLists.txt`); su resultado está
-documentado aquí y no es un fallo del código.
+Desde el 19/11/2026, `v6_observado` está activa en CTest con el criterio estadístico, y los fallos
+conocidos se marcan como *xfail* estricto (ver `CMakeLists.txt` y §«Criterio estadístico»).
 
 ## Impacto en el riesgo X6
 
@@ -254,14 +334,18 @@ Para U = 30 y 80 mm el patrón es el mismo (ver `diagnostico_v6.log`). Direcció
 ## Qué debe decir el informe
 
 1. V6 frente al modelo pasa: el generador implementa correctamente la cadena de Markov + gamma.
-2. V6 frente a lo observado reproduce frecuencia, media y rachas (< 1,1 % de error), pero no las colas:
-   desviación −12 a −48 %, p99 hasta −55 %, KS rechaza en 16/16 grupos. Se descartaron con datos un error
-   de implementación y el estimador (Thom ≈ MLE).
+2. V6 frente a lo observado reproduce frecuencia, media y rachas (< 1,1 % de error). Con el criterio
+   estadístico (IC bootstrap por temporadas, Bonferroni), los 7 estadísticos pasan en 13/16 grupos; los
+   3 que fallan son colas del régimen normal. El KS de los montos registrados rechaza en 13/16 por la
+   forma del cuerpo (más montos pequeños que la gamma). Se descartaron con datos un error de
+   implementación y el estimador (Thom ≈ MLE). Explicar por qué el 10 % fijo no es adecuado frente a
+   una muestra de 7–53 temporadas.
 3. La causa es del modelo de la definición: una gamma de 2 parámetros, i.i.d. por temporada, no captura
    la cola pesada de la lluvia costera ni la diferencia entre eventos El Niño extraordinarios y moderados.
 4. Las probabilidades de X6 deben leerse como **riesgo condicionado al modelo**: en años normales son una
    cota inferior probable del riesgo real; en años El Niño de Piura/Tumbes, una cota superior probable.
    El contraste El Niño / normal está exagerado. La banda epistémica del bootstrap (T35) **no** cubre este
    sesgo, porque remuestrea años pero sigue ajustando una sola gamma.
-5. Trabajo futuro: intensidad aleatoria por temporada, o separar El Niño extraordinario de moderado,
-   y volver a correr V6.
+5. Si el equipo adopta H5 (escala por temporada), presentarla como la corrección de la heterogeneidad
+   entre años y volver a correr V6 y X6. Si no, presentarla como trabajo futuro con sus resultados del
+   diagnóstico. En ambos casos, el KS (forma del cuerpo) queda como limitación.
