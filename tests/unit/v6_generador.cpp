@@ -16,7 +16,7 @@
 namespace {
 constexpr double ANCHO_CLASE = 0.01;      // mm: resolución de los percentiles
 constexpr size_t CLASES = 400000;         // hasta 4000 mm; el resto cae en la última clase
-constexpr size_t MUESTRA_KS = 5000;       // primeros montos (i.i.d. gamma) para Kolmogorov–Smirnov
+constexpr size_t MUESTRA_KS = 5000;       // montos i.i.d. para Kolmogorov–Smirnov (con kappa finito, uno por temporada)
 
 double percentil(const std::vector<uint64_t>& h, uint64_t total, double q) {
     const double objetivo = q * static_cast<double>(total);
@@ -47,6 +47,9 @@ int main(int argc, char** argv) {
         muestra.reserve(MUESTRA_KS);
 
         for (uint64_t j = 0; j < cfg.n; ++j) {
+            const double m = pp::factor_temporada(p, clave, base + j);  // H5: 1.0 si kappa es infinito
+            // H5: con M, los montos de una temporada no son independientes; para KS se toma uno por temporada.
+            bool tomado_en_temporada = false;
             bool lluvioso = false;  // igual que simular_escenario: el día previo se toma como seco
             uint64_t racha = 0;
             double max_temporada = 0.0;
@@ -55,14 +58,18 @@ int main(int argc, char** argv) {
                 lluvioso = pp::ocurre_lluvia(p, clave, base + j, dia, lluvioso);
                 ++dias;
                 if (lluvioso) {
-                    const double r = pp::monto_gamma(p, clave, base + j, dia);
+                    const double r = pp::monto_gamma(p, clave, base + j, dia) * m;  // igual que simular_escenario
                     ++lluviosos;
                     ++racha;
                     suma += r;
                     suma2 += r * r;
                     max_temporada = std::max(max_temporada, r);
                     hist[std::min(static_cast<size_t>(r / ANCHO_CLASE), CLASES - 1)] += 1;
-                    if (muestra.size() < MUESTRA_KS) muestra.push_back(r);
+                    const bool tomar = std::isfinite(p.kappa) ? !tomado_en_temporada : true;
+                    if (tomar && muestra.size() < MUESTRA_KS) {
+                        muestra.push_back(r);
+                        tomado_en_temporada = true;
+                    }
                 } else if (racha > 0) {  // solo rachas cerradas por un día seco: su longitud es geométrica
                     ++rachas;
                     dias_en_rachas += racha;
