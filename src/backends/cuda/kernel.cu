@@ -10,6 +10,7 @@
 #include <algorithm>
 #include <stdexcept>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "cuda.hpp"
@@ -37,6 +38,35 @@ __global__ void kernel_escenarios(Parametros p, uint64_t clave, uint64_t base, u
     }
     __syncthreads();
     cuda::volcar(red, hist_global, k_global);
+}
+
+// Mismo trabajo que kernel_escenarios, más la marca de SM, inicio y fin de cada bloque (diagnóstico T40).
+__global__ void kernel_instrumentado(Parametros p, uint64_t clave, uint64_t base, uint64_t inicio, uint64_t fin,
+                                     unsigned long long* hist_global, unsigned long long* k_global,
+                                     unsigned int* sm_de, unsigned long long* t_ini, unsigned long long* t_fin) {
+    __shared__ cuda::ReduccionBloque red;
+    if (threadIdx.x == 0) {
+        unsigned int smid;
+        unsigned long long t;
+        asm volatile("mov.u32 %0, %%smid;" : "=r"(smid));
+        asm volatile("mov.u64 %0, %%globaltimer;" : "=l"(t));
+        sm_de[blockIdx.x] = smid;
+        t_ini[blockIdx.x] = t;
+    }
+    cuda::iniciar(red);
+    __syncthreads();
+    const uint64_t paso = static_cast<uint64_t>(gridDim.x) * blockDim.x;
+    for (uint64_t j = inicio + static_cast<uint64_t>(blockIdx.x) * blockDim.x + threadIdx.x; j < fin; j += paso) {
+        const Resultado r = hd::simular_escenario(p, clave, base + j);
+        cuda::sumar(red, hd::clase_histograma(r.amax), r.inundacion);
+    }
+    __syncthreads();
+    cuda::volcar(red, hist_global, k_global);
+    if (threadIdx.x == 0) {
+        unsigned long long t;
+        asm volatile("mov.u64 %0, %%globaltimer;" : "=l"(t));
+        t_fin[blockIdx.x] = t;
+    }
 }
 
 __global__ void kernel_amax(Parametros p, uint64_t clave, uint64_t base, uint64_t n, double* amax) {
@@ -90,48 +120,132 @@ int registros_por_hilo() {
     return a.numRegs;
 }
 
-EjecucionCuda simular_cuda(const Parametros& p, uint64_t clave, uint64_t base, uint64_t n, int bloques,
-                           int hilos_por_bloque, const std::function<void(uint64_t)>& avance) {
+OcupacionCuda ocupacion_cuda(int bloques, int hilos_por_bloque) {
+    cudaDeviceProp prop{};
+    comprobar(cudaGetDeviceProperties(&prop, 0), "cudaGetDeviceProperties");
+    OcupacionCuda o;
+    o.sm = prop.multiProcessorCount;
+    o.hilos_por_sm_max = prop.maxThreadsPerMultiProcessor;
+    o.registros_por_hilo = registros_por_hilo();
+    comprobar(cudaOccupancyMaxActiveBlocksPerMultiprocessor(&o.bloques_por_sm_max, kernel_escenarios, hilos_por_bloque, 0),
+              "cudaOccupancyMaxActiveBlocksPerMultiprocessor");
+    const int b = bloques > 0 ? bloques : std::max(1, o.bloques_por_sm_max) * o.sm;
+    const int capacidad = std::max(1, o.bloques_por_sm_max) * o.sm;
+    o.sm_usados = std::min(b, o.sm);
+    o.bloques_por_sm = std::min((b + o.sm - 1) / o.sm, std::max(1, o.bloques_por_sm_max));
+    o.olas = (b + capacidad - 1) / capacidad;
+    o.ocupacion_sm = static_cast<double>(o.bloques_por_sm * hilos_por_bloque) / o.hilos_por_sm_max;
+    o.ocupacion_gpu = o.ocupacion_sm * o.sm_usados / o.sm;
+    return o;
+}
+
+MotorCuda::MotorCuda(int bloques, int hilos_por_bloque) : hilos_por_bloque_(hilos_por_bloque) {
     if (hilos_por_bloque > max_hilos_por_bloque())
         throw std::runtime_error("hilos_por_bloque=" + std::to_string(hilos_por_bloque) +
                                  " supera el máximo del kernel en esta GPU (" + std::to_string(max_hilos_por_bloque()) +
                                  "; el kernel usa " + std::to_string(registros_por_hilo()) + " registros por hilo)");
-    EjecucionCuda r;
-    r.hilos_por_bloque = hilos_por_bloque;
-    r.bloques = bloques > 0 ? bloques : bloques_residentes(hilos_por_bloque);
+    bloques_ = bloques > 0 ? bloques : bloques_residentes(hilos_por_bloque);
+    comprobar(cudaMalloc(&d_hist_, NBINS * sizeof(unsigned long long)), "cudaMalloc hist");
+    if (cudaMalloc(&d_k_, sizeof(unsigned long long)) != cudaSuccess) {
+        cudaFree(d_hist_);
+        throw std::runtime_error("CUDA (cudaMalloc k): sin memoria");
+    }
+}
 
-    unsigned long long* d_hist = nullptr;
-    unsigned long long* d_k = nullptr;
-    comprobar(cudaMalloc(&d_hist, NBINS * sizeof(unsigned long long)), "cudaMalloc hist");
-    comprobar(cudaMalloc(&d_k, sizeof(unsigned long long)), "cudaMalloc k");
-    try {
-        comprobar(cudaMemset(d_hist, 0, NBINS * sizeof(unsigned long long)), "cudaMemset hist");
-        comprobar(cudaMemset(d_k, 0, sizeof(unsigned long long)), "cudaMemset k");
-        for (uint64_t inicio = 0; inicio < n; inicio += LOTE_GPU) {
-            const uint64_t fin = std::min(n, inicio + LOTE_GPU);
-            kernel_escenarios<<<r.bloques, hilos_por_bloque>>>(p, clave, base, inicio, fin, d_hist, d_k);
-            comprobar(cudaGetLastError(), "lanzamiento del kernel");
-            ++r.lanzamientos;
-            if (avance) {
-                comprobar(cudaDeviceSynchronize(), "cudaDeviceSynchronize");
-                avance(fin - inicio);
-            }
+MotorCuda::~MotorCuda() {
+    cudaFree(d_hist_);
+    cudaFree(d_k_);
+}
+
+Acumulador MotorCuda::simular(const Parametros& p, uint64_t clave, uint64_t base, uint64_t n,
+                              const std::function<void(uint64_t)>& avance) {
+    comprobar(cudaMemset(d_hist_, 0, NBINS * sizeof(unsigned long long)), "cudaMemset hist");
+    comprobar(cudaMemset(d_k_, 0, sizeof(unsigned long long)), "cudaMemset k");
+    const uint64_t lote = lote_gpu(bloques_, hilos_por_bloque_);
+    for (uint64_t inicio = 0; inicio < n; inicio += lote) {
+        const uint64_t fin = std::min(n, inicio + lote);
+        kernel_escenarios<<<bloques_, hilos_por_bloque_>>>(p, clave, base, inicio, fin, d_hist_, d_k_);
+        comprobar(cudaGetLastError(), "lanzamiento del kernel");
+        ++lanzamientos_;
+        if (avance) {
+            comprobar(cudaDeviceSynchronize(), "cudaDeviceSynchronize");
+            avance(fin - inicio);
         }
+    }
+    comprobar(cudaDeviceSynchronize(), "cudaDeviceSynchronize");
+    unsigned long long hist[NBINS];
+    unsigned long long k = 0;
+    comprobar(cudaMemcpy(hist, d_hist_, sizeof hist, cudaMemcpyDeviceToHost), "cudaMemcpy hist");
+    comprobar(cudaMemcpy(&k, d_k_, sizeof k, cudaMemcpyDeviceToHost), "cudaMemcpy k");
+    Acumulador acc;
+    acc.k = k;
+    acc.n = n;
+    for (int i = 0; i < NBINS; ++i) acc.hist[static_cast<size_t>(i)] = hist[i];
+    return acc;
+}
+
+OcupacionObservada observar_ocupacion(const Parametros& p, uint64_t clave, uint64_t base, uint64_t n, int bloques,
+                                      int hilos_por_bloque) {
+    const OcupacionCuda teorica = ocupacion_cuda(bloques, hilos_por_bloque);
+    MotorCuda motor(bloques, hilos_por_bloque);  // valida hilos_por_bloque y resuelve bloques = 0
+    const int b = motor.bloques();
+    const uint64_t m = std::min(n, lote_gpu(b, hilos_por_bloque));  // un solo lanzamiento
+    unsigned long long *d_hist = nullptr, *d_k = nullptr, *d_ini = nullptr, *d_fin = nullptr;
+    unsigned int* d_sm = nullptr;
+    comprobar(cudaMalloc(&d_hist, NBINS * sizeof(unsigned long long)), "cudaMalloc");
+    comprobar(cudaMalloc(&d_k, sizeof(unsigned long long)), "cudaMalloc");
+    comprobar(cudaMalloc(&d_ini, b * sizeof(unsigned long long)), "cudaMalloc");
+    comprobar(cudaMalloc(&d_fin, b * sizeof(unsigned long long)), "cudaMalloc");
+    comprobar(cudaMalloc(&d_sm, b * sizeof(unsigned int)), "cudaMalloc");
+    std::vector<unsigned int> sm(b);
+    std::vector<unsigned long long> ini(b), fin(b);
+    try {
+        comprobar(cudaMemset(d_hist, 0, NBINS * sizeof(unsigned long long)), "cudaMemset");
+        comprobar(cudaMemset(d_k, 0, sizeof(unsigned long long)), "cudaMemset");
+        kernel_instrumentado<<<b, hilos_por_bloque>>>(p, clave, base, 0, m, d_hist, d_k, d_sm, d_ini, d_fin);
+        comprobar(cudaGetLastError(), "lanzamiento de kernel_instrumentado");
         comprobar(cudaDeviceSynchronize(), "cudaDeviceSynchronize");
-        unsigned long long hist[NBINS];
-        unsigned long long k = 0;
-        comprobar(cudaMemcpy(hist, d_hist, sizeof hist, cudaMemcpyDeviceToHost), "cudaMemcpy hist");
-        comprobar(cudaMemcpy(&k, d_k, sizeof k, cudaMemcpyDeviceToHost), "cudaMemcpy k");
-        r.acc.k = k;
-        r.acc.n = n;
-        for (int i = 0; i < NBINS; ++i) r.acc.hist[static_cast<size_t>(i)] = hist[i];
+        comprobar(cudaMemcpy(sm.data(), d_sm, b * sizeof(unsigned int), cudaMemcpyDeviceToHost), "cudaMemcpy");
+        comprobar(cudaMemcpy(ini.data(), d_ini, b * sizeof(unsigned long long), cudaMemcpyDeviceToHost), "cudaMemcpy");
+        comprobar(cudaMemcpy(fin.data(), d_fin, b * sizeof(unsigned long long), cudaMemcpyDeviceToHost), "cudaMemcpy");
     } catch (...) {
-        cudaFree(d_hist);
-        cudaFree(d_k);
+        cudaFree(d_hist); cudaFree(d_k); cudaFree(d_ini); cudaFree(d_fin); cudaFree(d_sm);
         throw;
     }
-    cudaFree(d_hist);
-    cudaFree(d_k);
+    cudaFree(d_hist); cudaFree(d_k); cudaFree(d_ini); cudaFree(d_fin); cudaFree(d_sm);
+
+    // Por SM: barrido de eventos (inicio +1, fin −1) para el máximo de bloques simultáneos.
+    std::vector<std::vector<std::pair<unsigned long long, int>>> eventos(256);
+    for (int i = 0; i < b; ++i) {
+        const unsigned int s = sm[i] % 256u;
+        eventos[s].push_back({ini[i], +1});
+        eventos[s].push_back({fin[i], -1});
+    }
+    OcupacionObservada o;
+    double suma = 0.0;
+    for (auto& ev : eventos) {
+        if (ev.empty()) continue;
+        std::sort(ev.begin(), ev.end());  // a igual instante, el fin (−1) antes que el inicio (+1)
+        int vivos = 0, maximo = 0;
+        for (const auto& e : ev) maximo = std::max(maximo, vivos += e.second);
+        ++o.sm_observados;
+        o.max_bloques_por_sm = std::max(o.max_bloques_por_sm, maximo);
+        suma += maximo;
+    }
+    o.media_bloques_por_sm = o.sm_observados ? suma / o.sm_observados : 0.0;
+    o.ocupacion_observada = o.media_bloques_por_sm * hilos_por_bloque / teorica.hilos_por_sm_max;
+    o.ocupacion_gpu_observada = o.ocupacion_observada * o.sm_observados / teorica.sm;
+    return o;
+}
+
+EjecucionCuda simular_cuda(const Parametros& p, uint64_t clave, uint64_t base, uint64_t n, int bloques,
+                           int hilos_por_bloque, const std::function<void(uint64_t)>& avance) {
+    MotorCuda motor(bloques, hilos_por_bloque);
+    EjecucionCuda r;
+    r.acc = motor.simular(p, clave, base, n, avance);
+    r.bloques = motor.bloques();
+    r.hilos_por_bloque = motor.hilos_por_bloque();
+    r.lanzamientos = motor.lanzamientos();
     return r;
 }
 

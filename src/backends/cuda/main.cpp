@@ -52,8 +52,20 @@ int main(int argc, char** argv) {
         fila.meta.hilos_por_bloque = ej.hilos_por_bloque;
         if (!cfg.silencioso) {
             pp::imprimir_resumen(fila);
+            const pp::OcupacionCuda o = pp::ocupacion_cuda(ej.bloques, ej.hilos_por_bloque);
             std::cout << "bloques=" << ej.bloques << " hilos_por_bloque=" << ej.hilos_por_bloque
-                      << " lanzamientos=" << ej.lanzamientos << " " << pp::descripcion_gpu() << "\n";
+                      << " lanzamientos=" << ej.lanzamientos << " " << pp::descripcion_gpu() << "\n"
+                      << "[cuda] sm=" << o.sm << " sm_usados=" << o.sm_usados << " registros_por_hilo="
+                      << o.registros_por_hilo << " bloques_por_sm_max=" << o.bloques_por_sm_max
+                      << " bloques_por_sm=" << o.bloques_por_sm << " olas=" << o.olas
+                      << " ocupacion_sm=" << o.ocupacion_sm << " ocupacion_gpu=" << o.ocupacion_gpu << "\n";
+            // Diagnóstico fuera del tiempo medido: un lanzamiento instrumentado con la misma grilla.
+            const pp::OcupacionObservada ob =
+                pp::observar_ocupacion(cfg.params, clave, base, cfg.n, ej.bloques, ej.hilos_por_bloque);
+            std::cout << "[cuda] sm_observados=" << ob.sm_observados << " max_bloques_por_sm=" << ob.max_bloques_por_sm
+                      << " media_bloques_por_sm=" << ob.media_bloques_por_sm
+                      << " ocupacion_observada=" << ob.ocupacion_observada
+                      << " ocupacion_gpu_observada=" << ob.ocupacion_gpu_observada << "\n";
         }
         if (!cfg.salida.empty()) pp::escribir_csv(cfg.salida, fila);
         return 0;
