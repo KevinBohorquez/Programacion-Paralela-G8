@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
+#include <limits>
 #include <set>
 #include <sstream>
 #include <stdexcept>
@@ -30,7 +31,9 @@ const char* COLUMNAS[] = {"backend", "estacion", "regimen", "config_id", "semill
                           "theta", "hilos", "procesos", "repeticion", "calentamiento", "schedule", "afinidad", "tiempo_s", "commit", "cpu",
                           "nucleos_fisicos", "nucleos_logicos", "hist512",
                           // S15: agregadas al final para no mover las columnas anteriores.
-                          "hardware", "nodos", "distribucion", "bloques", "hilos_por_bloque"};
+                          "hardware", "nodos", "distribucion", "bloques", "hilos_por_bloque",
+                          // H5: al final para no mover las columnas anteriores.
+                          "kappa"};
 constexpr size_t NCOL = sizeof(COLUMNAS) / sizeof(COLUMNAS[0]);
 
 std::string limpiar(std::string s) {  // sin comas ni saltos: el CSV no usa comillas
@@ -144,7 +147,8 @@ std::string fila_csv(const FilaResultado& f) {
         std::to_string(f.cfg.repeticion), f.cfg.calentamiento ? "1" : "0", limpiar(f.meta.schedule_usado), limpiar(f.meta.afinidad),
         num(f.meta.tiempo_s), limpiar(f.meta.commit), limpiar(f.meta.cpu), std::to_string(f.meta.nucleos_fisicos),
         std::to_string(f.meta.nucleos_logicos), h, limpiar(f.meta.hardware), std::to_string(f.meta.nodos),
-        limpiar(f.meta.distribucion), opcional(f.meta.bloques), opcional(f.meta.hilos_por_bloque)};
+        limpiar(f.meta.distribucion), opcional(f.meta.bloques), opcional(f.meta.hilos_por_bloque),
+        num(p.kappa)};
     std::string s;
     for (size_t i = 0; i < v.size(); ++i) s += (i ? "," : "") + v[i];
     return s;
@@ -175,10 +179,14 @@ FilaResultado leer_primera_fila_csv(const std::string& ruta) {
     std::ifstream in(ruta);
     if (!in) throw std::runtime_error("no se puede leer el CSV: " + ruta);
     std::string cab, fila;
-    if (!std::getline(in, cab) || cab != encabezado_csv()) throw std::runtime_error("encabezado CSV inesperado");
+    // Se aceptan también los CSV anteriores a H5, sin la última columna (kappa).
+    const std::string cab_actual = encabezado_csv();
+    const std::string cab_previo = cab_actual.substr(0, cab_actual.rfind(','));
+    if (!std::getline(in, cab) || (cab != cab_actual && cab != cab_previo))
+        throw std::runtime_error("encabezado CSV inesperado");
     if (!std::getline(in, fila)) throw std::runtime_error("CSV sin filas de datos");
     const std::vector<std::string> v = separar(fila, ',');
-    if (v.size() != NCOL) throw std::runtime_error("número de columnas inesperado");
+    if (v.size() != NCOL && v.size() != NCOL - 1) throw std::runtime_error("número de columnas inesperado");
     FilaResultado f;
     f.cfg.backend = v[0]; f.cfg.estacion = v[1]; f.cfg.regimen = v[2];
     f.cfg.config_id = std::stoull(v[3]); f.cfg.semilla = std::stoull(v[4]);
@@ -198,6 +206,7 @@ FilaResultado leer_primera_fila_csv(const std::string& ruta) {
     f.meta.hardware = v[29]; f.meta.nodos = std::stoi(v[30]); f.meta.distribucion = v[31];
     f.meta.bloques = v[32].empty() ? 0 : std::stoi(v[32]);
     f.meta.hilos_por_bloque = v[33].empty() ? 0 : std::stoi(v[33]);
+    p.kappa = v.size() == NCOL ? std::stod(v[NCOL - 1]) : std::numeric_limits<double>::infinity();
     return f;
 }
 

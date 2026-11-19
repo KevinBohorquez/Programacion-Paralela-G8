@@ -30,7 +30,9 @@ import time
 
 ROOT = Path(__file__).resolve().parents[2]
 Z95 = 1.959963984540054
-PARAMETROS = ("p01", "p11", "alfa", "theta")
+PARAMETROS = ("p01", "p11", "alfa", "theta", "kappa")
+# Valor de un parámetro ausente en un YAML o en un CSV anterior a H5: kappa infinito = H5 desactivada.
+DEFECTOS_PARAMETROS = {"kappa": "inf"}
 CAPACIDADES_X6 = (2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 15, 20, 25, 30)
 NOTA_V6 = ("V6 (validación contra datos observados) falla en estadísticos de cola (sd -32 %, "
            "p99 -42 %) en 16/16 grupos: el modelo subestima los extremos y estas probabilidades "
@@ -38,7 +40,7 @@ NOTA_V6 = ("V6 (validación contra datos observados) falla en estadísticos de c
 ENCABEZADO = (
     "backend,estacion,regimen,config_id,semilla,n,k,p_hat,wilson_inf,wilson_sup,dias,capacidad,umbral,"
     "p01,p11,alfa,theta,hilos,procesos,repeticion,calentamiento,schedule,afinidad,tiempo_s,commit,cpu,"
-    "nucleos_fisicos,nucleos_logicos,hist512,hardware,nodos,distribucion,bloques,hilos_por_bloque"
+    "nucleos_fisicos,nucleos_logicos,hist512,hardware,nodos,distribucion,bloques,hilos_por_bloque,kappa"
 ).split(",")
 BINARIOS = {"openmp": "src/backends/openmp/pp_openmp", "hibrido": "src/backends/hybrid/pp_hibrido"}
 
@@ -60,6 +62,12 @@ def escribir_yaml_plano(ruta: Path, datos: dict, comentario: str = "") -> Path:
     lineas = [f"# {c}" for c in comentario.splitlines() if c] + [f"{k}: {v}" for k, v in datos.items()]
     Path(ruta).write_text("\n".join(lineas) + "\n", encoding="utf-8")
     return Path(ruta)
+
+
+def parametro(fila: dict, p: str):
+    """Valor del parámetro `p` en una fila o YAML; si falta, su valor por defecto (kappa = inf)."""
+    v = fila.get(p)
+    return v if v not in (None, "") else DEFECTOS_PARAMETROS.get(p, v)
 
 
 def leer_resultados(ruta: Path) -> list[dict]:
@@ -171,7 +179,7 @@ class Punto:
     capacidad: float
     umbral: float
     n: int
-    params: dict = field(default_factory=dict)  # p01, p11, alfa, theta del YAML (texto)
+    params: dict = field(default_factory=dict)  # p01, p11, alfa, theta, kappa del YAML (texto)
     replica: str = ""
 
     @property
@@ -188,7 +196,8 @@ def punto_desde_config(ruta: Path, *, capacidad=None, umbral=None, n=None, repli
                  capacidad=float(c.get("capacidad", 0) if capacidad is None else capacidad),
                  umbral=float(c.get("umbral", 0) if umbral is None else umbral),
                  n=int(float(c.get("n", 1_000_000) if n is None else n)),
-                 params={p: c.get(p, "0") for p in PARAMETROS}, replica=replica)
+                 params={p: c.get(p, DEFECTOS_PARAMETROS.get(p, "0")) for p in PARAMETROS},
+                 replica=replica)
 
 
 def clave_punto(p: Punto) -> tuple:
@@ -198,7 +207,7 @@ def clave_punto(p: Punto) -> tuple:
 
 def clave_fila(f: dict) -> tuple:
     return (f["estacion"], f["regimen"], num(f["capacidad"]), num(f["umbral"]), int(f["n"]),
-            *(num(f[k]) for k in PARAMETROS))
+            *(num(parametro(f, k)) for k in PARAMETROS))
 
 
 def pendientes(plan: list[Punto], salida: Path) -> list[Punto]:
@@ -311,7 +320,7 @@ class RunnerFalso:
                     config_id=datos.get("config_id", "0"), semilla=datos.get("semilla", "0"), n=n, k=k,
                     p_hat=k / n, wilson_inf=inf, wilson_sup=sup, dias=datos.get("dias", "120"),
                     capacidad=datos["capacidad"], umbral=datos["umbral"],
-                    **{p: datos[p] for p in PARAMETROS}, hilos=datos.get("hilos", "1"), procesos=1,
+                    **{p: parametro(datos, p) for p in PARAMETROS}, hilos=datos.get("hilos", "1"), procesos=1,
                     repeticion=1, calentamiento=0, schedule="", afinidad="", tiempo_s=0.001,
                     commit=env.get("PP_COMMIT", ""), cpu="falsa", nucleos_fisicos=1, nucleos_logicos=1,
                     hist512=";".join(map(str, hist)), hardware="host=falso;ram_gb=1", nodos=1,

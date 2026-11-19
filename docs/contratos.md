@@ -45,6 +45,7 @@ Pares `clave: valor` sin anidar; `#` inicia un comentario. Ejemplo en [`config/e
 | `dias` (`D`) | entero | 120 | `> 0`. |
 | `p01`, `p11` | probabilidad | 0 | `[0, 1]`. Calibrados por T10. |
 | `alfa`, `theta` | reales; `theta` en mm | 1 | `> 0`. Calibrados por T10. |
+| `kappa` (`κ`) | real o `inf` | `inf` | `> 0`. Escala aleatoria por temporada (H5): cada escenario sortea M ~ Gamma(κ, 1/κ), de media 1, y multiplica todos sus montos por M. `inf` o ausente = desactivada (modelo sin H5, idéntico bit a bit). |
 | `capacidad` (`C`) | real, mm/día | 0 | `≥ 0`. Rango de diseño 5–65, paso 5. |
 | `umbral` (`U`) | real, mm | 0 | `≥ 0`. Referencias 30 / 50 / 80. |
 | `hilos` | entero | 1 | `≥ 0`; 0 deja `OMP_NUM_THREADS`. Solo OpenMP e híbrido. |
@@ -55,7 +56,7 @@ Pares `clave: valor` sin anidar; `#` inicia un comentario. Ejemplo en [`config/e
 
 ## 4. Línea de comandos
 
-Todos los ejecutables aceptan las mismas opciones (`--ayuda` las lista). Cada clave del YAML tiene su bandera (`--n`, `--semilla` o `--seed`, `--config-id`, `--capacidad`, `--umbral`, `--dias`, `--p01`, `--p11`, `--alfa`, `--theta`, `--estacion`, `--regimen`, `--hilos`, `--schedule`, `--lote`, `--repeticion`, `--salida`) más:
+Todos los ejecutables aceptan las mismas opciones (`--ayuda` las lista). Cada clave del YAML tiene su bandera (`--n`, `--semilla` o `--seed`, `--config-id`, `--capacidad`, `--umbral`, `--dias`, `--p01`, `--p11`, `--alfa`, `--theta`, `--kappa`, `--estacion`, `--regimen`, `--hilos`, `--schedule`, `--lote`, `--repeticion`, `--salida`) más:
 
 ```text
 <ejecutable> [--config archivo.yaml] [opciones] [--calentamiento] [--verificar] [--silencioso]
@@ -73,10 +74,12 @@ Todos los ejecutables aceptan las mismas opciones (`--ayuda` las lista). Cada cl
 UTF-8, separador coma, `\n`, punto decimal, sin comillas. Una fila por corrida y configuración; el archivo se crea con la cabecera y las corridas siguientes se agregan. Cabecera exacta (`pp::encabezado_csv`):
 
 ```csv
-backend,estacion,regimen,config_id,semilla,n,k,p_hat,wilson_inf,wilson_sup,dias,capacidad,umbral,p01,p11,alfa,theta,hilos,procesos,repeticion,calentamiento,schedule,afinidad,tiempo_s,commit,cpu,nucleos_fisicos,nucleos_logicos,hist512,hardware,nodos,distribucion,bloques,hilos_por_bloque
+backend,estacion,regimen,config_id,semilla,n,k,p_hat,wilson_inf,wilson_sup,dias,capacidad,umbral,p01,p11,alfa,theta,hilos,procesos,repeticion,calentamiento,schedule,afinidad,tiempo_s,commit,cpu,nucleos_fisicos,nucleos_logicos,hist512,hardware,nodos,distribucion,bloques,hilos_por_bloque,kappa
 ```
 
 Las cinco últimas columnas (`hardware` … `hilos_por_bloque`) se agregaron para la entrega final (S15) **al final** de la cabecera: las columnas anteriores conservan su posición y los lectores por nombre (`csv.DictReader`) siguen funcionando. Un archivo con la cabecera anterior no se mezcla: `pp::escribir_csv` se niega a agregar filas a un CSV cuya cabecera no coincide.
+
+La columna `kappa` (H5) se agregó después, también **al final**. Los lectores aceptan los CSV anteriores sin ella y les asignan `kappa = inf` (`pp::leer_primera_fila_csv` y `parametro()` de `scripts/run/_comun_cientifico.py`); para agregar filas nuevas a un CSV anterior hay que empezar un archivo nuevo.
 
 | Columna | Tipo / unidad | Regla |
 | --- | --- | --- |
@@ -98,6 +101,7 @@ Las cinco últimas columnas (`hardware` … `hilos_por_bloque`) se agregaron par
 | `nodos` | entero | Nodos distintos según `MPI_Get_processor_name`; 1 sin MPI. |
 | `distribucion` | texto | Procesos por nodo, `host:p;host:p` en orden del primer rango de cada nodo (p. ej. `pc1:8;pc2:8`); `host:1` sin MPI. |
 | `bloques`, `hilos_por_bloque` | entero o vacío | Grilla CUDA (bloques e hilos por bloque); **vacías** en los backends de CPU. |
+| `kappa` | real o `inf` | Escala por temporada H5 usada (§3); `inf` = desactivada. |
 
 El generador de gráficos de T18 usa su propio CSV de medición ([`protocolo-graficos-openmp.md`](protocolo-graficos-openmp.md)); falta unificarlo con este.
 
