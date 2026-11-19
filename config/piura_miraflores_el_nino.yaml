@@ -1,5 +1,5 @@
 # T10 | Configuración calibrada: piura_miraflores / el_nino.
-# Generado por scripts/run/generar_configs.py desde data/processed/parametros.csv (commit 1f9e7a2).
+# Generado por scripts/run/generar_configs.py desde data/processed/parametros.csv (commit e9d1999).
 # Calibración: scripts/run/calibrar.py (temporada por zona, Thom); años del grupo = 13.
 # Claves no calibradas copiadas de config/sintetico.yaml.
 estacion: piura_miraflores
@@ -12,5 +12,6 @@ p01: 0.105634
 p11: 0.507353
 alfa: 0.63559
 theta: 18.715851
+kappa: 4.871225
 capacidad: 6
 umbral: 50

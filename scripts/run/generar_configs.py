@@ -3,7 +3,7 @@
 
 Entradas (salidas de la tubería vigente de T08–T10, todas de HEAD):
     data/processed/auditoria_calidad.csv  (auditoria_datos.py: elegibilidad por estacion/anio)
-    data/processed/parametros.csv         (calibrar.py: p01, p11, alfa, theta por estacion/regimen)
+    data/processed/parametros.csv         (calibrar.py: p01, p11, alfa, theta, kappa por estacion/regimen)
     data/metadata/inventario_senamhi.csv  (zona de cada estacion)
     scripts/run/calibrar.py               (ventana de temporada por zona: define `dias`)
 
@@ -18,7 +18,7 @@ Lima entra y alguna califica, la mejor de Lima ocupa la última plaza (la defini
 y Lima).
 
 Cada YAML usa las claves planas `clave: valor` que lee cargar_archivo_configuracion() en
-src/io/configuracion.cpp. estacion, regimen, p01, p11, alfa, theta salen de parametros.csv; `dias` es
+src/io/configuracion.cpp. estacion, regimen, p01, p11, alfa, theta, kappa salen de parametros.csv; `dias` es
 el largo de la temporada de la zona (enero–abril = 120, junio–setiembre = 122, año no bisiesto); el
 resto (semilla, n, capacidad, umbral) se copia de la plantilla (config/sintetico.yaml). config_id se
 asigna 0, 1, 2, ... en orden para que el índice global c*N + j no se repita entre configuraciones.
@@ -43,11 +43,11 @@ from collections import defaultdict
 from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parents[2]
-CALIBRADAS = ("p01", "p11", "alfa", "theta")
+CALIBRADAS = ("p01", "p11", "alfa", "theta", "kappa")
 # Claves que asignar() de configuracion.cpp acepta; cualquier otra haría fallar la carga.
 CLAVES_CONTRATO = {
     "backend", "estacion", "regimen", "config_id", "semilla", "n", "hilos", "schedule", "salida",
-    "lote", "repeticion", "p01", "p11", "alfa", "theta", "capacidad", "umbral", "dias",
+    "lote", "repeticion", "p01", "p11", "alfa", "theta", "kappa", "capacidad", "umbral", "dias",
 }
 MIN_ANIOS_ELEGIBLES = 20
 FRACCION_ESTACION_ELEGIBLE = 0.9  # misma regla que auditoria_datos.py
@@ -121,6 +121,8 @@ def validar_parametros(p):
         raise ValueError("p01 y p11 deben estar en [0,1]")
     if not (p["alfa"] > 0.0 and p["theta"] > 0.0):
         raise ValueError("alfa y theta deben ser > 0")
+    if not (p["kappa"] > 0.0):
+        raise ValueError("kappa debe ser > 0 (o inf)")
 
 
 def nombre_archivo(estacion, regimen):
@@ -149,7 +151,8 @@ def escribir_configs(filas, estaciones, dias_por_estacion, plantilla, ruta_plant
         try:
             if fila.get("estado_validacion", "OK").strip() != "OK":
                 raise ValueError(f"estado_validacion={fila['estado_validacion']}")
-            p = {k: float(fila[k]) for k in CALIBRADAS}
+            # Un parametros.csv anterior a H5 no tiene kappa: se toma inf (H5 desactivada).
+            p = {k: float(fila[k] if k != "kappa" else (fila.get(k) or "inf")) for k in CALIBRADAS}
             if any(math.isnan(v) for v in p.values()):
                 raise ValueError("parámetro NaN")
             validar_parametros(p)

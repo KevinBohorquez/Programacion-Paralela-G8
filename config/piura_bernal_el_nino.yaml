@@ -1,5 +1,5 @@
 # T10 | Configuración calibrada: piura_bernal / el_nino.
-# Generado por scripts/run/generar_configs.py desde data/processed/parametros.csv (commit 1f9e7a2).
+# Generado por scripts/run/generar_configs.py desde data/processed/parametros.csv (commit e9d1999).
 # Calibración: scripts/run/calibrar.py (temporada por zona, Thom); años del grupo = 17.
 # Claves no calibradas copiadas de config/sintetico.yaml.
 estacion: piura_bernal
@@ -12,5 +12,6 @@ p01: 0.078125
 p11: 0.397436
 alfa: 0.471399
 theta: 17.227313
+kappa: 1.269355
 capacidad: 6
 umbral: 50
