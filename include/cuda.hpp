@@ -68,7 +68,9 @@ struct EjecucionCuda {
 };
 
 // Inicializa el contexto CUDA (fuera del tiempo medido). Lanza std::runtime_error si no hay GPU.
-void inicializar_cuda();
+// Con espera_bloqueante, el hilo que espera a la GPU duerme en lugar de girar (cudaDeviceScheduleBlockingSync):
+// así el trabajador GPU de EXT2 no ocupa un núcleo de CPU mientras corre el kernel.
+void inicializar_cuda(bool espera_bloqueante = false);
 
 // "gpu=<nombre>;cc=<x.y>;sm=<n>;cuda_rt=<x.y>;driver=<x.y>" del dispositivo 0.
 std::string descripcion_gpu();

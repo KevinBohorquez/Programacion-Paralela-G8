@@ -79,11 +79,12 @@ std::string version(int v) { return std::to_string(v / 1000) + "." + std::to_str
 
 }  // namespace
 
-void inicializar_cuda() {
+void inicializar_cuda(bool espera_bloqueante) {
     int n = 0;
     comprobar(cudaGetDeviceCount(&n), "cudaGetDeviceCount");
     if (n == 0) throw std::runtime_error("no hay GPU CUDA disponible");
     comprobar(cudaSetDevice(0), "cudaSetDevice");
+    if (espera_bloqueante) comprobar(cudaSetDeviceFlags(cudaDeviceScheduleBlockingSync), "cudaSetDeviceFlags");
     comprobar(cudaFree(nullptr), "creación del contexto");
 }
 

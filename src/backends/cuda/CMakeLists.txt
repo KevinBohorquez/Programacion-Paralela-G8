@@ -62,3 +62,35 @@ if(Python3_FOUND)
   set_tests_properties(v2_cuda_ejecutables PROPERTIES LABELS "cuda" TIMEOUT 900
                        ENVIRONMENT "PP_CUDA_BIN_DIR=${CMAKE_BINARY_DIR}/src/backends")
 endif()
+
+# EXT2 (T41): la GPU como trabajador MPI del esquema dinámico E2. Necesita -DPP_BUILD_MPI=ON.
+# V1 (bit a bit frente a la referencia secuencial, --verificar) y V3 (suma = N, cobertura de la cola)
+# con 2 procesos (maestro + solo GPU), 3 y 4 (maestro + CPU + GPU), y un caso con bloques grandes.
+if(TARGET pp_mpi_esquemas)
+  add_executable(pp_mpi_dinamico_gpu trabajador_mpi.cpp)
+  target_link_libraries(pp_mpi_dinamico_gpu PRIVATE pp_mpi_esquemas pp_cuda_lib)
+
+  set(EXT2_EXTRA "")
+  execute_process(COMMAND ${MPIEXEC_EXECUTABLE} --version OUTPUT_VARIABLE EXT2_MPI_VERSION ERROR_QUIET)
+  if(EXT2_MPI_VERSION MATCHES "Open MPI|OpenRTE")
+    set(EXT2_EXTRA --oversubscribe --bind-to none)
+  endif()
+  set(EXT2_CASOS
+      "np2|2|--n,10007,--dias,30,--lote,100"
+      "np3|3|--n,10007,--dias,30,--lote,100,--kappa,2"
+      "np4|4|--n,10007,--dias,30,--lote,100,--bloques,4,--hilos-por-bloque,128"
+      "np4_lote_grande|4|--n,300007,--lote,62500")
+  foreach(caso IN LISTS EXT2_CASOS)
+    string(REPLACE "|" ";" partes "${caso}")
+    string(REPLACE "," ";" partes "${partes}")
+    list(GET partes 0 nombre)
+    list(GET partes 1 np)
+    list(REMOVE_AT partes 0 1)
+    add_test(NAME ext2_${nombre}
+             COMMAND ${MPIEXEC_EXECUTABLE} ${MPIEXEC_NUMPROC_FLAG} ${np} ${EXT2_EXTRA}
+                     $<TARGET_FILE:pp_mpi_dinamico_gpu> --config ${PROJECT_SOURCE_DIR}/config/sintetico.yaml
+                     ${partes} --verificar --silencioso --salida ${CMAKE_BINARY_DIR}/pruebas/ext2_${nombre}.csv)
+    set_tests_properties(ext2_${nombre} PROPERTIES LABELS "cuda;ext2" TIMEOUT 300
+                         PASS_REGULAR_EXPRESSION "estado=OK.*v1_referencia=OK")
+  endforeach()
+endif()

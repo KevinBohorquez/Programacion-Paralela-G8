@@ -5,7 +5,8 @@
 #   wsl -d Ubuntu-24.04 -- bash scripts/cuda/compilar_wsl.sh            # configura y compila build/cuda
 #   wsl -d Ubuntu-24.04 -- bash scripts/cuda/compilar_wsl.sh --probar   # además corre V2 (ctest -L cuda)
 #
-# Variables opcionales: CMAKE (ruta de cmake), NVCC (ruta de nvcc), BUILD_DIR (por defecto build/cuda).
+# Variables opcionales: CMAKE (ruta de cmake), NVCC (ruta de nvcc), BUILD_DIR (por defecto build/cuda),
+# PP_MPI (ON/OFF; por defecto ON si hay mpicxx: compila pp_mpi_dinamico_gpu de EXT2).
 set -euo pipefail
 cd "$(dirname "$0")/../.."
 
@@ -15,7 +16,11 @@ BUILD_DIR="${BUILD_DIR:-build/cuda}"
 CTEST="$(dirname "$CMAKE")/ctest"
 export PATH="$(dirname "$NVCC"):$PATH"
 
-"$CMAKE" -S . -B "$BUILD_DIR" -DCMAKE_BUILD_TYPE=Release -DPP_BUILD_CUDA=ON -DCMAKE_CUDA_COMPILER="$NVCC"
+# MPI (EXT2, T41) se activa si hay mpicxx; se puede forzar con PP_MPI=ON|OFF.
+PP_MPI="${PP_MPI:-$(command -v mpicxx >/dev/null && echo ON || echo OFF)}"
+
+"$CMAKE" -S . -B "$BUILD_DIR" -DCMAKE_BUILD_TYPE=Release -DPP_BUILD_CUDA=ON -DCMAKE_CUDA_COMPILER="$NVCC" \
+  -DPP_BUILD_MPI="$PP_MPI"
 "$CMAKE" --build "$BUILD_DIR" -j "$(nproc)"
 
 if [[ "${1:-}" == "--probar" ]]; then
