@@ -51,12 +51,14 @@ Pares `clave: valor` sin anidar; `#` inicia un comentario. Ejemplo en [`config/e
 | `hilos` | entero | 1 | `≥ 0`; 0 deja `OMP_NUM_THREADS`. Solo OpenMP e híbrido. |
 | `schedule` | `static` \| `dynamic` \| `guided`, con `:chunk` opcional | vacío | Vacío respeta `OMP_SCHEDULE`. Solo OpenMP e híbrido. |
 | `lote` (`B`) | entero | 62 500 | `> 0`. Solo `pp_mpi_dinamico`. |
+| `bloques` | entero | 0 | `≥ 0`. Solo `pp_cuda`: bloques de la grilla; 0 = los que caben a la vez en la GPU (SM × bloques activos por SM). |
+| `hilos_por_bloque` | entero | 256 | Múltiplo de 32 entre 32 y 1024. Solo `pp_cuda`. |
 | `repeticion` | entero | 1 | `≥ 0`; 0 = calentamiento. |
 | `salida` | ruta | vacía | Vacía = no escribe CSV. El directorio debe existir. |
 
 ## 4. Línea de comandos
 
-Todos los ejecutables aceptan las mismas opciones (`--ayuda` las lista). Cada clave del YAML tiene su bandera (`--n`, `--semilla` o `--seed`, `--config-id`, `--capacidad`, `--umbral`, `--dias`, `--p01`, `--p11`, `--alfa`, `--theta`, `--kappa`, `--estacion`, `--regimen`, `--hilos`, `--schedule`, `--lote`, `--repeticion`, `--salida`) más:
+Todos los ejecutables aceptan las mismas opciones (`--ayuda` las lista). Cada clave del YAML tiene su bandera (`--n`, `--semilla` o `--seed`, `--config-id`, `--capacidad`, `--umbral`, `--dias`, `--p01`, `--p11`, `--alfa`, `--theta`, `--kappa`, `--estacion`, `--regimen`, `--hilos`, `--schedule`, `--lote`, `--bloques`, `--hilos-por-bloque`, `--repeticion`, `--salida`) más:
 
 ```text
 <ejecutable> [--config archivo.yaml] [opciones] [--calentamiento] [--verificar] [--silencioso]
@@ -67,6 +69,7 @@ Todos los ejecutables aceptan las mismas opciones (`--ayuda` las lista). Cada cl
 - `--silencioso`: no imprime el resumen.
 - `--progreso`: escribe líneas de avance `[prog]` en `stderr` (formato en `docs/contrato-sala-control.md` §1); sin la opción la salida no cambia.
 - Los ejecutables MPI se lanzan con `mpirun -np P`; el número de procesos lo fija `mpirun`.
+- `pp_cuda` (EXT1, `-DPP_BUILD_CUDA=ON`, compilado en WSL con `scripts/cuda/compilar_wsl.sh`) usa el mismo núcleo que la CPU (`include/nucleo_hd.hpp`), con un hilo por escenario y lanzamientos de a lo sumo 2²⁰ escenarios para no superar el *watchdog* de Windows. Escribe `hilos = 1` y la grilla en `bloques` e `hilos_por_bloque`.
 - **Códigos de salida:** `0` correcto; `2` error de argumentos, configuración, E/S o MPI; `3` falló una verificación (suma ≠ N en `pp_openmp` y MPI, o V1 en MPI).
 
 ## 5. CSV de resultados
@@ -97,7 +100,7 @@ La columna `kappa` (H5) se agregó después, también **al final**. Los lectores
 | `commit`, `cpu` | texto | Hash corto de Git y modelo de CPU del nodo del rango 0. |
 | `nucleos_fisicos`, `nucleos_logicos` | entero | Del nodo del rango 0. |
 | `hist512` | 512 enteros separados por `;` | `hist[0] … hist[511]`; su suma es `n`. |
-| `hardware` | texto | `host=<nombre>;ram_gb=<GiB>` del nodo del rango 0 (`gethostname`, `MemTotal` de `/proc/meminfo`). |
+| `hardware` | texto | `host=<nombre>;ram_gb=<GiB>` del nodo del rango 0 (`gethostname`, `MemTotal` de `/proc/meminfo`). En `pp_cuda` se agrega `;gpu=<nombre>;cc=<x.y>;sm=<n>;cuda_rt=<x.y>;driver=<x.y>`. |
 | `nodos` | entero | Nodos distintos según `MPI_Get_processor_name`; 1 sin MPI. |
 | `distribucion` | texto | Procesos por nodo, `host:p;host:p` en orden del primer rango de cada nodo (p. ej. `pc1:8;pc2:8`); `host:1` sin MPI. |
 | `bloques`, `hilos_por_bloque` | entero o vacío | Grilla CUDA (bloques e hilos por bloque); **vacías** en los backends de CPU. |

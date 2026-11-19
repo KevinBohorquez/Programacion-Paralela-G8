@@ -45,6 +45,8 @@ struct Configuracion {
     std::string schedule = "";  // vacío = respetar OMP_SCHEDULE
     std::string salida = "";    // ruta del CSV (vacío = no escribir)
     uint64_t lote = 62500;      // tamaño de bloque de la cola (solo mpi_dinamico)
+    int bloques = 0;            // solo CUDA: bloques de la grilla (0 = los que caben a la vez en la GPU)
+    int hilos_por_bloque = 256; // solo CUDA: hilos por bloque (múltiplo de 32, hasta 1024)
     int repeticion = 1;         // 0 = calentamiento; 1..5 = medidas
     bool calentamiento = false;
     bool verificar = false;     // MPI: comparar con la referencia secuencial (V1)

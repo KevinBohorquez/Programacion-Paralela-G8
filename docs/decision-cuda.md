@@ -74,6 +74,8 @@ No se publican cifras de GPU hasta que V2 y V8 pasen.
 
 | Elemento | Estado |
 | --- | --- |
-| T38 kernel CUDA, T39 reducción y pruebas, T40 barrido de bloques, T41 integración CPU + GPU | En desarrollo |
-| Archivos `src/backends/cuda/*`, `include/cuda.hpp`, `scripts/bench/medir_cuda.py`, `tests/concurrency/test_cuda.py` | Marcadores de una línea; todavía no contienen código. |
-| Compilación | `PP_BUILD_CUDA` vale `OFF` por defecto en `CMakeLists.txt`; `src/backends/cuda/CMakeLists.txt` todavía no define objetivos. |
+| T38 kernel CUDA | **Hecho (19/11/2026, rama `lita-cuda`).** Núcleo compartido CPU/GPU en `include/nucleo_hd.hpp` (`__host__ __device__`; la CPU sigue idéntica bit a bit), kernel con un hilo por escenario, paso de grilla, lotes de 2²⁰ escenarios y reducción de k y del histograma en memoria compartida (`src/backends/cuda/kernel.cu`), ejecutable `pp_cuda` y prueba `v2_cuda` en CTest. |
+| V2 | **Pasa.** En la RTX 4060 (CC 8.9, CUDA 13.3, `-fmad=false`), con 4 casos (κ = ∞, κ = 2, α > 1 con κ = 0,7 y Tumbes El Tigre normal) × 3 grillas (48×256, 2×128, 16×512) y N = 10⁶: k y las 512 clases del histograma son **idénticos** a la CPU (diferencia relativa 0). Escenario por escenario, amax coincide bit a bit en ≈ 85 % y difiere como máximo en 4·10⁻¹² relativo (log/cos/pow de la GPU). Evidencia: `results/validacion/t38_v2_cuda.txt`. Con N = 10⁷ en Tumbes El Tigre normal, `pp_cuda` da el mismo k que X6 H5 en CPU (3 038 980). |
+| T39 reducción y V8, T40 barrido X5, T41 integración CPU + GPU | Pendientes. Memcheck sobre `pp_cuda` (N = 2·10⁴) da 0 errores, pero V8 completo (memcheck y racecheck) es T39. No se publican tiempos de GPU hasta cerrar V8. |
+| Archivos `src/backends/cuda/reduccion.cu`, `trabajador_mpi.cpp`, `scripts/bench/medir_cuda.py`, `tests/concurrency/test_cuda.py` | Marcadores de T39–T41. |
+| Compilación | `PP_BUILD_CUDA` vale `OFF` por defecto. Con `ON` necesita `nvcc`; la imagen Docker no trae CUDA, así que se compila en WSL con `scripts/cuda/compilar_wsl.sh` (`--probar` corre V2). |
