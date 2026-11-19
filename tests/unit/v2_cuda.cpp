@@ -12,6 +12,7 @@
 #include <cstdio>
 #include <exception>
 #include <limits>
+#include <stdexcept>
 #include <string>
 #include <vector>
 
@@ -87,6 +88,37 @@ int main(int argc, char** argv) {
             }
             std::printf("[V2] caso=%s amax_bit_a_bit=%llu/%llu max_dif_rel_amax=%.3g\n", c.nombre.c_str(),
                         static_cast<unsigned long long>(iguales), static_cast<unsigned long long>(n_amax), max_rel);
+        }
+        // Bordes de la reducción y de los lotes (T39): más hilos que escenarios, bloques sin trabajo,
+        // 32 y el máximo de hilos por bloque y cortes de lote en LOTE_GPU + 1 y 1,5 LOTE_GPU. Igualdad exacta con la CPU.
+        struct Borde { uint64_t n; int bloques; int hpb; };
+        // El máximo de hilos por bloque lo fijan los registros del kernel (menos de 1024 en CC 8.9).
+        const int hmax = pp::max_hilos_por_bloque();
+        std::printf("[V2] registros_por_hilo=%d max_hilos_por_bloque=%d\n", pp::registros_por_hilo(), hmax);
+        const Borde bordes[] = {{1, 0, 256}, {1000, 64, 32}, {777, 200, hmax}, {pp::LOTE_GPU + 1, 16, hmax},
+                                {3 * pp::LOTE_GPU / 2, 0, 32}};
+        const pp::Parametros pb = casos[1].p;
+        for (const Borde& b : bordes) {
+            pp::Acumulador cpu;
+            for (uint64_t j = 0; j < b.n; ++j) cpu.agregar(pp::simular_escenario(pb, clave, base + j));
+            const pp::EjecucionCuda gpu = pp::simular_cuda(pb, clave, base, b.n, b.bloques, b.hpb);
+            const bool pasa = gpu.acc == cpu;
+            ok = ok && pasa;
+            std::printf("[V2] borde n=%llu grilla=%dx%d lanzamientos=%d k_cpu=%llu k_gpu=%llu hist_igual=%s %s\n",
+                        static_cast<unsigned long long>(b.n), gpu.bloques, gpu.hilos_por_bloque, gpu.lanzamientos,
+                        static_cast<unsigned long long>(cpu.k), static_cast<unsigned long long>(gpu.acc.k),
+                        pasa ? "si" : "no", pasa ? "OK" : "FALLA");
+        }
+        // Pedir más hilos por bloque de los que admite el kernel debe dar un error claro, no un fallo de lanzamiento.
+        if (hmax < 1024) {
+            bool error_claro = false;
+            try {
+                pp::simular_cuda(pb, clave, base, 1000, 0, 1024);
+            } catch (const std::runtime_error& e) {
+                error_claro = std::string(e.what()).find("hilos_por_bloque=1024") != std::string::npos;
+            }
+            ok = ok && error_claro;
+            std::printf("[V2] hilos_por_bloque=1024 rechazado con mensaje claro: %s\n", error_claro ? "OK" : "FALLA");
         }
         std::printf("[V2] estado=%s\n", ok ? "OK" : "FALLA");
         return ok ? 0 : 3;

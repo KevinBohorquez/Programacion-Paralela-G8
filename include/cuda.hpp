@@ -35,6 +35,11 @@ std::string descripcion_gpu();
 // Bloques que caben a la vez en la GPU (SM × bloques activos por SM) con `hilos_por_bloque`.
 int bloques_residentes(int hilos_por_bloque);
 
+// Máximo de hilos por bloque con que se puede lanzar el kernel en esta GPU (lo limitan los registros
+// por hilo; con 94 registros en CC 8.9 queda por debajo de 1024) y registros por hilo del kernel.
+int max_hilos_por_bloque();
+int registros_por_hilo();
+
 // Simula los escenarios globales [base, base + n) en la GPU y devuelve k, n e histograma.
 // `avance(hechos)` se llama tras cada lote, si se pasa (sala de control).
 EjecucionCuda simular_cuda(const Parametros& p, uint64_t clave, uint64_t base, uint64_t n, int bloques,

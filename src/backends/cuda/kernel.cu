@@ -2,9 +2,9 @@
 // del conteo y del histograma en memoria compartida.
 //
 // Cada hilo recorre escenarios con paso de grilla (grid-stride) dentro de un lote [inicio, fin) y llama
-// a pp::hd::simular_escenario, el mismo código de los backends de CPU (include/nucleo_hd.hpp). Cada
-// bloque acumula k y las 512 clases en memoria compartida y las suma a la memoria global al final.
-// Se compila con -fmad=false (contrato V2). La revisión de la reducción y V8 son T39.
+// a pp::hd::simular_escenario, el mismo código de los backends de CPU (include/nucleo_hd.hpp). La
+// reducción de k y del histograma (memoria compartida y luego global) está en reduccion.cuh (T39).
+// Se compila con -fmad=false (contrato V2).
 #include <cuda_runtime.h>
 
 #include <algorithm>
@@ -14,6 +14,7 @@
 
 #include "cuda.hpp"
 #include "nucleo_hd.hpp"
+#include "reduccion.cuh"
 
 namespace pp {
 
@@ -25,24 +26,17 @@ void comprobar(cudaError_t e, const char* que) {
 
 __global__ void kernel_escenarios(Parametros p, uint64_t clave, uint64_t base, uint64_t inicio, uint64_t fin,
                                   unsigned long long* hist_global, unsigned long long* k_global) {
-    __shared__ unsigned int hist[NBINS];
-    __shared__ unsigned int k_bloque;
-    for (int i = threadIdx.x; i < NBINS; i += blockDim.x) hist[i] = 0u;
-    if (threadIdx.x == 0) k_bloque = 0u;
+    __shared__ cuda::ReduccionBloque red;
+    cuda::iniciar(red);
     __syncthreads();
 
-    // Un lote tiene a lo sumo LOTE_GPU escenarios, así que los contadores de 32 bits no desbordan.
     const uint64_t paso = static_cast<uint64_t>(gridDim.x) * blockDim.x;
     for (uint64_t j = inicio + static_cast<uint64_t>(blockIdx.x) * blockDim.x + threadIdx.x; j < fin; j += paso) {
         const Resultado r = hd::simular_escenario(p, clave, base + j);
-        atomicAdd(&hist[hd::clase_histograma(r.amax)], 1u);
-        if (r.inundacion) atomicAdd(&k_bloque, 1u);
+        cuda::sumar(red, hd::clase_histograma(r.amax), r.inundacion);
     }
     __syncthreads();
-
-    for (int i = threadIdx.x; i < NBINS; i += blockDim.x)
-        if (hist[i] != 0u) atomicAdd(&hist_global[i], static_cast<unsigned long long>(hist[i]));
-    if (threadIdx.x == 0 && k_bloque != 0u) atomicAdd(k_global, static_cast<unsigned long long>(k_bloque));
+    cuda::volcar(red, hist_global, k_global);
 }
 
 __global__ void kernel_amax(Parametros p, uint64_t clave, uint64_t base, uint64_t n, double* amax) {
@@ -84,8 +78,24 @@ int bloques_residentes(int hilos_por_bloque) {
     return std::max(1, por_sm) * prop.multiProcessorCount;
 }
 
+int max_hilos_por_bloque() {
+    cudaFuncAttributes a{};
+    comprobar(cudaFuncGetAttributes(&a, kernel_escenarios), "cudaFuncGetAttributes");
+    return a.maxThreadsPerBlock / 32 * 32;
+}
+
+int registros_por_hilo() {
+    cudaFuncAttributes a{};
+    comprobar(cudaFuncGetAttributes(&a, kernel_escenarios), "cudaFuncGetAttributes");
+    return a.numRegs;
+}
+
 EjecucionCuda simular_cuda(const Parametros& p, uint64_t clave, uint64_t base, uint64_t n, int bloques,
                            int hilos_por_bloque, const std::function<void(uint64_t)>& avance) {
+    if (hilos_por_bloque > max_hilos_por_bloque())
+        throw std::runtime_error("hilos_por_bloque=" + std::to_string(hilos_por_bloque) +
+                                 " supera el máximo del kernel en esta GPU (" + std::to_string(max_hilos_por_bloque()) +
+                                 "; el kernel usa " + std::to_string(registros_por_hilo()) + " registros por hilo)");
     EjecucionCuda r;
     r.hilos_por_bloque = hilos_por_bloque;
     r.bloques = bloques > 0 ? bloques : bloques_residentes(hilos_por_bloque);

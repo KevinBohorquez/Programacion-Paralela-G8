@@ -52,7 +52,7 @@ Pares `clave: valor` sin anidar; `#` inicia un comentario. Ejemplo en [`config/e
 | `schedule` | `static` \| `dynamic` \| `guided`, con `:chunk` opcional | vacío | Vacío respeta `OMP_SCHEDULE`. Solo OpenMP e híbrido. |
 | `lote` (`B`) | entero | 62 500 | `> 0`. Solo `pp_mpi_dinamico`. |
 | `bloques` | entero | 0 | `≥ 0`. Solo `pp_cuda`: bloques de la grilla; 0 = los que caben a la vez en la GPU (SM × bloques activos por SM). |
-| `hilos_por_bloque` | entero | 256 | Múltiplo de 32 entre 32 y 1024. Solo `pp_cuda`. |
+| `hilos_por_bloque` | entero | 256 | Múltiplo de 32 entre 32 y 1024. Solo `pp_cuda`. Además no puede superar el máximo del kernel en la GPU (640 en la RTX 4060, por los registros por hilo); si lo supera, `pp_cuda` termina con código 2. |
 | `repeticion` | entero | 1 | `≥ 0`; 0 = calentamiento. |
 | `salida` | ruta | vacía | Vacía = no escribe CSV. El directorio debe existir. |
 

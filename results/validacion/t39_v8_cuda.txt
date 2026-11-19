@@ -1,0 +1,14 @@
+# T39 | V8 (memoria y carreras en la GPU con compute-sanitizer) | 2026-11-19 08:32 | rama lita-cuda, base 1bb297429f26 (+ cambios de T39 sin commit)
+# GPU: NVIDIA GeForce RTX 4060, 621.01 · Version 2026.2.1.0 (build 38334959) (public-release)
+# Criterio: 0 errores en memcheck (con --leak-check full), racecheck, initcheck y synccheck (CTest: ctest -L v8).
+
+[V8] herramienta=memcheck caso=auto (--n 20000) codigo=0 | ========= ERROR SUMMARY: 0 errors
+[V8] herramienta=memcheck caso=ociosos (--n 777 --bloques 200 --hilos-por-bloque 512) codigo=0 | ========= ERROR SUMMARY: 0 errors
+[V8] herramienta=racecheck caso=auto (--n 20000) codigo=0 | ========= RACECHECK SUMMARY: 0 hazards displayed (0 errors, 0 warnings)
+[V8] herramienta=racecheck caso=ociosos (--n 777 --bloques 200 --hilos-por-bloque 512) codigo=0 | ========= RACECHECK SUMMARY: 0 hazards displayed (0 errors, 0 warnings)
+[V8] herramienta=initcheck caso=auto (--n 20000) codigo=0 | ========= ERROR SUMMARY: 0 errors
+[V8] herramienta=initcheck caso=ociosos (--n 777 --bloques 200 --hilos-por-bloque 512) codigo=0 | ========= ERROR SUMMARY: 0 errors
+[V8] herramienta=synccheck caso=auto (--n 20000) codigo=0 | ========= ERROR SUMMARY: 0 errors
+[V8] herramienta=synccheck caso=ociosos (--n 777 --bloques 200 --hilos-por-bloque 512) codigo=0 | ========= ERROR SUMMARY: 0 errors
+
+# Control negativo (kernels defectuosos a propósito, fuera del repositorio): memcheck detecta una escritura fuera de rango (37 errores, código 9) y racecheck una lectura de memoria compartida escrita por otro warp sin __syncthreads() (1 hazard, código 9). Así, «0 errores» arriba no es un falso negativo de la herramienta.
