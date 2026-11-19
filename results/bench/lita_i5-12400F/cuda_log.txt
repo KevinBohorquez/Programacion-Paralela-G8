@@ -1,0 +1,42 @@
+# T40 · X5 · 2026-11-19T08:49:20-05:00
+# {'cpu': '12th Gen Intel(R) Core(TM) i5-12400F', 'nucleos_fisicos': 6, 'nucleos_logicos': 12, 'ram_gb': 7.7, 'gpu': 'gpu=NVIDIA GeForce RTX 4060;cc=8.9;sm=24;cuda_rt=13.3;driver=13.5', 'commit': 'a79c998ec713', 'fecha': '2026-11-19T08:49:20-05:00', 'so': 'Linux-6.18.58.1-microsoft-standard-WSL2-x86_64-with-glibc2.39', 'n': 10000000, 'semilla': 20261015, 'config': 'sintetico.yaml'}
+serial: /mnt/d/PROGRAMACIÓN_PARALELA/Programacion-Paralela-G8/build/cuda/src/backends/serial/pp_serial --config /mnt/d/PROGRAMACIÓN_PARALELA/Programacion-Paralela-G8/config/sintetico.yaml --n 10000000 --semilla 20261015 --config-id 0
+  tiempos=['29.8944', '29.8594', '30.5144', '31.0678', '30.5439'] media=30.3760 cv=1.666%
+openmp: /mnt/d/PROGRAMACIÓN_PARALELA/Programacion-Paralela-G8/build/cuda/src/backends/openmp/pp_openmp --config /mnt/d/PROGRAMACIÓN_PARALELA/Programacion-Paralela-G8/config/sintetico.yaml --n 10000000 --semilla 20261015 --config-id 0 --hilos 6 --schedule static
+  tiempos=['6.4905', '6.3114', '6.5357', '6.6388', '6.4787'] media=6.4910 cv=1.827%
+cuda 2x128: /mnt/d/PROGRAMACIÓN_PARALELA/Programacion-Paralela-G8/build/cuda/src/backends/cuda/pp_cuda --config /mnt/d/PROGRAMACIÓN_PARALELA/Programacion-Paralela-G8/config/sintetico.yaml --n 10000000 --semilla 20261015 --config-id 0 --bloques 2 --hilos-por-bloque 128
+  tiempos=['34.2489', '34.2708', '34.4518', '34.4425', '34.3798'] media=34.3587 cv=0.276%
+cuda 4x128: /mnt/d/PROGRAMACIÓN_PARALELA/Programacion-Paralela-G8/build/cuda/src/backends/cuda/pp_cuda --config /mnt/d/PROGRAMACIÓN_PARALELA/Programacion-Paralela-G8/config/sintetico.yaml --n 10000000 --semilla 20261015 --config-id 0 --bloques 4 --hilos-por-bloque 128
+  tiempos=['17.1332', '17.2984', '17.0424', '17.3305', '17.1664'] media=17.1942 cv=0.694%
+cuda 8x128: /mnt/d/PROGRAMACIÓN_PARALELA/Programacion-Paralela-G8/build/cuda/src/backends/cuda/pp_cuda --config /mnt/d/PROGRAMACIÓN_PARALELA/Programacion-Paralela-G8/config/sintetico.yaml --n 10000000 --semilla 20261015 --config-id 0 --bloques 8 --hilos-por-bloque 128
+  tiempos=['8.7533', '8.5841', '8.5272', '8.6896', '8.6357'] media=8.6380 cv=1.022%
+cuda 16x128: /mnt/d/PROGRAMACIÓN_PARALELA/Programacion-Paralela-G8/build/cuda/src/backends/cuda/pp_cuda --config /mnt/d/PROGRAMACIÓN_PARALELA/Programacion-Paralela-G8/config/sintetico.yaml --n 10000000 --semilla 20261015 --config-id 0 --bloques 16 --hilos-por-bloque 128
+  tiempos=['4.3283', '4.3844', '4.3277', '4.2734', '4.2569'] media=4.3142 cv=1.174%
+cuda 2x256: /mnt/d/PROGRAMACIÓN_PARALELA/Programacion-Paralela-G8/build/cuda/src/backends/cuda/pp_cuda --config /mnt/d/PROGRAMACIÓN_PARALELA/Programacion-Paralela-G8/config/sintetico.yaml --n 10000000 --semilla 20261015 --config-id 0 --bloques 2 --hilos-por-bloque 256
+  tiempos=['34.2015', '34.1724', '34.1399', '34.1249', '34.0973'] media=34.1472 cv=0.119%
+cuda 4x256: /mnt/d/PROGRAMACIÓN_PARALELA/Programacion-Paralela-G8/build/cuda/src/backends/cuda/pp_cuda --config /mnt/d/PROGRAMACIÓN_PARALELA/Programacion-Paralela-G8/config/sintetico.yaml --n 10000000 --semilla 20261015 --config-id 0 --bloques 4 --hilos-por-bloque 256
+  tiempos=['17.0256', '17.2842', '17.1366', '17.1361', '17.2190'] media=17.1603 cv=0.569%
+cuda 8x256: /mnt/d/PROGRAMACIÓN_PARALELA/Programacion-Paralela-G8/build/cuda/src/backends/cuda/pp_cuda --config /mnt/d/PROGRAMACIÓN_PARALELA/Programacion-Paralela-G8/config/sintetico.yaml --n 10000000 --semilla 20261015 --config-id 0 --bloques 8 --hilos-por-bloque 256
+  tiempos=['8.6248', '8.5264', '8.5192', '8.7133', '8.5519'] media=8.5871 cv=0.954%
+cuda 16x256: /mnt/d/PROGRAMACIÓN_PARALELA/Programacion-Paralela-G8/build/cuda/src/backends/cuda/pp_cuda --config /mnt/d/PROGRAMACIÓN_PARALELA/Programacion-Paralela-G8/config/sintetico.yaml --n 10000000 --semilla 20261015 --config-id 0 --bloques 16 --hilos-por-bloque 256
+  tiempos=['4.2467', '4.2499', '4.2526', '4.2490', '4.2472'] media=4.2491 cv=0.056%
+cuda 2x512: /mnt/d/PROGRAMACIÓN_PARALELA/Programacion-Paralela-G8/build/cuda/src/backends/cuda/pp_cuda --config /mnt/d/PROGRAMACIÓN_PARALELA/Programacion-Paralela-G8/config/sintetico.yaml --n 10000000 --semilla 20261015 --config-id 0 --bloques 2 --hilos-por-bloque 512
+  tiempos=['34.3101', '34.1438', '34.1084', '34.0860', '34.0736'] media=34.1444 cv=0.282%
+cuda 4x512: /mnt/d/PROGRAMACIÓN_PARALELA/Programacion-Paralela-G8/build/cuda/src/backends/cuda/pp_cuda --config /mnt/d/PROGRAMACIÓN_PARALELA/Programacion-Paralela-G8/config/sintetico.yaml --n 10000000 --semilla 20261015 --config-id 0 --bloques 4 --hilos-por-bloque 512
+  tiempos=['17.0081', '17.0849', '17.1243', '17.0652', '17.2553'] media=17.1076 cv=0.541%
+cuda 8x512: /mnt/d/PROGRAMACIÓN_PARALELA/Programacion-Paralela-G8/build/cuda/src/backends/cuda/pp_cuda --config /mnt/d/PROGRAMACIÓN_PARALELA/Programacion-Paralela-G8/config/sintetico.yaml --n 10000000 --semilla 20261015 --config-id 0 --bloques 8 --hilos-por-bloque 512
+  tiempos=['8.5239', '8.5050', '8.6681', '8.6060', '8.5182'] media=8.5643 cv=0.821%
+cuda 16x512: /mnt/d/PROGRAMACIÓN_PARALELA/Programacion-Paralela-G8/build/cuda/src/backends/cuda/pp_cuda --config /mnt/d/PROGRAMACIÓN_PARALELA/Programacion-Paralela-G8/config/sintetico.yaml --n 10000000 --semilla 20261015 --config-id 0 --bloques 16 --hilos-por-bloque 512
+  tiempos=['4.2459', '4.2465', '4.2679', '4.2570', '4.2401'] media=4.2515 cv=0.260%
+cuda 24x128: /mnt/d/PROGRAMACIÓN_PARALELA/Programacion-Paralela-G8/build/cuda/src/backends/cuda/pp_cuda --config /mnt/d/PROGRAMACIÓN_PARALELA/Programacion-Paralela-G8/config/sintetico.yaml --n 10000000 --semilla 20261015 --config-id 0 --bloques 24 --hilos-por-bloque 128
+  tiempos=['2.8958', '2.8765', '2.8644', '2.8555', '2.8499'] media=2.8684 cv=0.638%
+cuda autox128: /mnt/d/PROGRAMACIÓN_PARALELA/Programacion-Paralela-G8/build/cuda/src/backends/cuda/pp_cuda --config /mnt/d/PROGRAMACIÓN_PARALELA/Programacion-Paralela-G8/config/sintetico.yaml --n 10000000 --semilla 20261015 --config-id 0 --bloques 0 --hilos-por-bloque 128
+  tiempos=['2.8365', '2.9522', '2.9115', '2.8853', '2.8673'] media=2.8906 cv=1.521%
+cuda 24x256: /mnt/d/PROGRAMACIÓN_PARALELA/Programacion-Paralela-G8/build/cuda/src/backends/cuda/pp_cuda --config /mnt/d/PROGRAMACIÓN_PARALELA/Programacion-Paralela-G8/config/sintetico.yaml --n 10000000 --semilla 20261015 --config-id 0 --bloques 24 --hilos-por-bloque 256
+  tiempos=['2.8411', '2.8375', '2.8356', '2.8696', '2.9388'] media=2.8645 cv=1.527%
+cuda autox256: /mnt/d/PROGRAMACIÓN_PARALELA/Programacion-Paralela-G8/build/cuda/src/backends/cuda/pp_cuda --config /mnt/d/PROGRAMACIÓN_PARALELA/Programacion-Paralela-G8/config/sintetico.yaml --n 10000000 --semilla 20261015 --config-id 0 --bloques 0 --hilos-por-bloque 256
+  tiempos=['2.8623', '2.8499', '2.8429', '2.8390', '2.8357'] media=2.8460 cv=0.370%
+cuda 24x512: /mnt/d/PROGRAMACIÓN_PARALELA/Programacion-Paralela-G8/build/cuda/src/backends/cuda/pp_cuda --config /mnt/d/PROGRAMACIÓN_PARALELA/Programacion-Paralela-G8/config/sintetico.yaml --n 10000000 --semilla 20261015 --config-id 0 --bloques 24 --hilos-por-bloque 512
+  tiempos=['2.9267', '2.8947', '2.8724', '2.8585', '2.8467'] media=2.8798 cv=1.102%
+cuda autox512: /mnt/d/PROGRAMACIÓN_PARALELA/Programacion-Paralela-G8/build/cuda/src/backends/cuda/pp_cuda --config /mnt/d/PROGRAMACIÓN_PARALELA/Programacion-Paralela-G8/config/sintetico.yaml --n 10000000 --semilla 20261015 --config-id 0 --bloques 0 --hilos-por-bloque 512
+  tiempos=['2.8363', '2.8347', '2.9141', '2.9027', '2.8737'] media=2.8723 cv=1.277%
