@@ -62,7 +62,7 @@ def tabla(filas: list[dict]) -> list[dict]:
         hist = comun.parse_hist(f.get("hist512", ""))
         salida.append({"estacion": est, "regimen": reg, "capacidad": c, "umbral": u, "n": n, "k": k,
                        "p_hat": k / n, "wilson_inf": inf, "wilson_sup": sup,
-                       "p_hist": comun.excedencia_hist(hist, u) if hist else "", "nota": comun.NOTA_V6})
+                       "p_hist": comun.excedencia_hist(hist, u) if hist else "", "nota": comun.nota_v6(f)})
     return salida
 
 
@@ -144,11 +144,12 @@ def figuras(t: list[dict], destino: Path) -> list[Path]:
 
 
 def analizar(salida: Path, tablas: Path, destino_figuras: Path) -> dict:
-    t = tabla(comun.leer_resultados(salida))
+    filas = comun.leer_resultados(salida)
+    t = tabla(filas)
     comun.escribir_tabla(Path(tablas) / "sensibilidad.csv", t, CAMPOS)
     comun.escribir_markdown(Path(tablas) / "sensibilidad.md",
                             "Sensibilidad de P(Amax > U) al umbral U y al régimen (X7)", t, CAMPOS[:-1],
-                            [comun.NOTA_V6, "p_hist: la misma probabilidad leída de hist512 (control)."])
+                            [comun.nota_v6(filas[0] if filas else None), "p_hist: la misma probabilidad leída de hist512 (control)."])
     return {"tabla": t, "figuras": figuras(t, destino_figuras) if t else []}
 
 

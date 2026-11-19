@@ -130,7 +130,7 @@ def tabla_riesgo(filas_x6: list[dict], filas_boot: list[dict]) -> list[dict]:
             if f.get("hist512") else "",
             "banda_inf": b[0] if b else "", "banda_med": b[1] if b else "",
             "banda_sup": b[2] if b else "", "replicas": b[3] if b else "",
-            "n_boot": n_boot.get(clave, ""), "nota": comun.NOTA_V6})
+            "n_boot": n_boot.get(clave, ""), "nota": comun.nota_v6(f)})
     return tabla
 
 
@@ -276,7 +276,7 @@ def analizar(filas_x6: list[dict], filas_boot: list[dict], tablas: Path, figuras
     tabla = tabla_riesgo(filas_x6, filas_boot)
     comp = comparacion_enso(tabla)
     tablas = Path(tablas)
-    notas = [comun.NOTA_V6,
+    notas = [comun.nota_v6(filas_x6[0] if filas_x6 else None),
              "IC de Wilson al 95 % = error Monte Carlo; banda = percentiles 2,5–97,5 de p̂ entre réplicas "
              "bootstrap de los parámetros (incertidumbre epistémica)."]
     comun.escribir_tabla(tablas / "riesgo.csv", tabla, CAMPOS_RIESGO)

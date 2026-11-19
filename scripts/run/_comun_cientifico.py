@@ -37,6 +37,18 @@ CAPACIDADES_X6 = (2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 15, 20, 25, 30)
 NOTA_V6 = ("V6 (validación contra datos observados) falla en estadísticos de cola (sd -32 %, "
            "p99 -42 %) en 16/16 grupos: el modelo subestima los extremos y estas probabilidades "
            "pueden subestimar el riesgo hasta que la ola D recalibre.")
+NOTA_V6_H5 = ("Modelo con escala aleatoria por temporada (H5, kappa calibrado por grupo): V6 frente a lo "
+              "observado pasa en 16/16 grupos (7 estadísticos y KS); ver docs/validacion-v6.md.")
+
+
+def nota_v6(fila: dict | None) -> str:
+    """Nota de validación según el modelo de la fila: con kappa finito (H5) o sin H5 (kappa = inf)."""
+    if fila is None:
+        return NOTA_V6
+    try:
+        return NOTA_V6_H5 if math.isfinite(float(parametro(fila, "kappa"))) else NOTA_V6
+    except (TypeError, ValueError):
+        return NOTA_V6
 ENCABEZADO = (
     "backend,estacion,regimen,config_id,semilla,n,k,p_hat,wilson_inf,wilson_sup,dias,capacidad,umbral,"
     "p01,p11,alfa,theta,hilos,procesos,repeticion,calentamiento,schedule,afinidad,tiempo_s,commit,cpu,"
