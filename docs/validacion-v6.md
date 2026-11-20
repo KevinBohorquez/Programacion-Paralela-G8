@@ -246,6 +246,12 @@ media, rachas), sigue mandando el 10 %.
   En Puerto Pizarro (49 % y 36 % de registros enteros), Miraflores (20 % y 19 %) y Chosica normal
   (19 %), además, el observador redondeó a milímetros enteros. Con el modelo vigente, el KS solo pasa en
   tres grupos con pocas temporadas (7–16). H5 y H6 lo mejoran (§«Comparación con el criterio de V6»).
+- **El valor p de KS es conservador.** El bootstrap paramétrico simula cada réplica con los α y θ de
+  `parametros.csv` y no los vuelve a estimar sobre la réplica. Como esos parámetros se ajustaron a los
+  mismos datos observados, lo observado queda más cerca del modelo que una muestra independiente
+  (efecto de tipo Lilliefors): la distribución nula de D resulta más ancha de lo debido y el valor p,
+  más alto. El KS rechaza menos de lo que debería, así que los tres grupos que lo pasan pueden estar
+  aprobando con holgura indebida; los rechazos, en cambio, siguen siendo válidos.
 - *Xfail* estricto significa que, si un cambio del modelo hace pasar un grupo, la prueba falla con
   XPASS. Así se obliga a actualizar la lista `FALLOS_CONOCIDOS_*` y este documento.
 
