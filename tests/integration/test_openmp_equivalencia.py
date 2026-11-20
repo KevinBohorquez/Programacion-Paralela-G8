@@ -96,3 +96,18 @@ def test_entrada_invalida_falla_con_codigo_distinto_de_cero(tmp_path):
     assert r.returncode != 0 and "error" in r.stderr
     r = subprocess.run([str(OPENMP), "--config", str(CONFIG), "--schedule", "inventado"], capture_output=True, text=True)
     assert r.returncode != 0
+
+
+@pytest.mark.parametrize("opcion,valor", [
+    ("--bloques", "4294967296"),            # 2^32: truncado a int sería 0 (grilla automática)
+    ("--bloques", "2147483648"),            # INT_MAX + 1
+    ("--hilos-por-bloque", "4294967328"),   # 2^32 + 32: truncado a int sería 32, un valor válido
+    ("--hilos", "4294967300"),
+])
+def test_entero_fuera_de_rango_de_int_se_rechaza(opcion, valor):
+    """La lectura de opciones es común a todos los ejecutables: un entero que no cabe en int se rechaza
+    con código 2 en vez de truncarse en silencio (bloques e hilos por bloque de pp_cuda incluidos)."""
+    r = subprocess.run([str(SERIAL), "--config", str(CONFIG), "--n", "10", opcion, valor],
+                       capture_output=True, text=True, timeout=60)
+    assert r.returncode == 2, f"{opcion} {valor}: código {r.returncode}"
+    assert "fuera de rango" in r.stderr and opcion[2:].replace("-", "_") in r.stderr, r.stderr
