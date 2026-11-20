@@ -30,7 +30,7 @@ def _celda(ref, valor):
     return f'<c r="{ref}" t="inlineStr"><is><t>{valor}</t></is></c>'
 
 
-def tareas_base(ultima=58):
+def tareas_base(ultima=61):
     """Una fila por tarea, con responsables rotando entre R1–R6 y revisor distinto."""
     filas = []
     for n in range(1, ultima + 1):
@@ -72,7 +72,12 @@ class ValidarCronograma(unittest.TestCase):
         self.assertEqual(responsables["R5"], 1)
         self.assertEqual(responsables["Todos"], 1)
 
-    def test_libro_completo_t01_t58_es_valido(self):
+    def test_cronograma_versionado_incluye_las_nuevas_mediciones(self):
+        errores, _ = vc.validate(ROOT / "cronograma" / "cronograma-interno.xlsx")
+        self.assertFalse([e for e in errores if "T59" in e or "T60" in e or "T61" in e], errores)
+        self.assertEqual(vc.RANGE, "T01–T61")
+
+    def test_libro_completo_t01_t61_es_valido(self):
         errores, _ = self.validar(tareas_base())
         self.assertEqual(errores, [])
 
@@ -83,13 +88,13 @@ class ValidarCronograma(unittest.TestCase):
         self.assertEqual(errores, [])
         self.assertEqual(responsables["Todos"], 1)
 
-    def test_rechaza_id_fuera_de_t01_t58(self):
-        errores, _ = self.validar(tareas_base(59))
-        self.assertIn("ID fuera de T01–T58: T59", errores)
+    def test_rechaza_id_fuera_de_t01_t61(self):
+        errores, _ = self.validar(tareas_base(62))
+        self.assertIn("ID fuera de T01–T61: T62", errores)
 
     def test_detecta_tarea_faltante(self):
-        errores, _ = self.validar(tareas_base(57))
-        self.assertIn("Falta T58", errores)
+        errores, _ = self.validar(tareas_base(60))
+        self.assertIn("Falta T61", errores)
 
     def test_cada_rol_necesita_al_menos_una_tarea(self):
         filas = tareas_base()
