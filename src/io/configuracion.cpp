@@ -64,6 +64,7 @@ bool asignar(Configuracion& c, const std::string& k, const std::string& v) {
     else if (k == "p11") c.params.p11 = a_double(k, v);
     else if (k == "alfa") c.params.alfa = a_double(k, v);
     else if (k == "theta") c.params.theta = a_double(k, v);
+    else if (k == "kappa") c.params.kappa = a_double(k, v);
     else if (k == "capacidad") c.params.capacidad = a_double(k, v);
     else if (k == "umbral") c.params.umbral = a_double(k, v);
     else if (k == "dias") c.params.dias = static_cast<int>(a_uint64(k, v));
@@ -77,7 +78,8 @@ void ayuda() {
         "  --n N               escenarios de la configuración (por defecto 1000000)\n"
         "  --semilla S         semilla global de 64 bits (alias: --seed)\n"
         "  --config-id c       identificador de configuración; índice global = c*N + j\n"
-        "  --p01 --p11 --alfa --theta --capacidad --umbral --dias   parámetros del modelo\n"
+        "  --p01 --p11 --alfa --theta --kappa --capacidad --umbral --dias   parámetros del modelo\n"
+        "                      (kappa: escala por temporada H5; inf o ausente = desactivada)\n"
         "  --estacion X --regimen Y   etiquetas de la configuración (van al CSV)\n"
         "  --hilos T           hilos OpenMP (solo pp_openmp)\n"
         "  --schedule S        static|dynamic|guided[:chunk]; vacío usa OMP_SCHEDULE\n"
@@ -147,6 +149,7 @@ void validar(const Configuracion& c) {
     if (p.dias <= 0) throw std::runtime_error("dias debe ser > 0");
     if (!prob(p.p01) || !prob(p.p11)) throw std::runtime_error("p01 y p11 deben estar en [0,1]");
     if (!(p.alfa > 0.0) || !(p.theta > 0.0)) throw std::runtime_error("alfa y theta deben ser > 0");
+    if (!(p.kappa > 0.0)) throw std::runtime_error("kappa debe ser > 0 (o inf para desactivarla)");
     if (p.capacidad < 0.0 || p.umbral < 0.0) throw std::runtime_error("capacidad y umbral deben ser >= 0");
     if (c.lote == 0) throw std::runtime_error("lote debe ser > 0");
     if (c.hilos < 0) throw std::runtime_error("hilos debe ser >= 0");

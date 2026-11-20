@@ -1,5 +1,5 @@
 # T10 | Configuración calibrada: tumbes_puertopizarro / el_nino.
-# Generado por scripts/run/generar_configs.py desde data/processed/parametros.csv (commit 1f9e7a2).
+# Generado por scripts/run/generar_configs.py desde data/processed/parametros.csv (commit e9d1999).
 # Calibración: scripts/run/calibrar.py (temporada por zona, Thom); años del grupo = 17.
 # Claves no calibradas copiadas de config/sintetico.yaml.
 estacion: tumbes_puertopizarro
@@ -12,5 +12,6 @@ p01: 0.222297
 p11: 0.392661
 alfa: 0.688265
 theta: 22.558363
+kappa: 2.747625
 capacidad: 6
 umbral: 50

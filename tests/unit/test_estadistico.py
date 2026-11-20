@@ -171,28 +171,16 @@ def temporada_de(estacion):
     return meses, sum(calendar.monthrange(2001, m)[1] for m in meses)  # 2001: año no bisiesto
 
 
-# Grupos que NO pasan con el modelo vigente (Markov + gamma i.i.d., parámetros de T10). Son limitaciones
-# del modelo documentadas en docs/validacion-v6.md, no errores de código. Se marcan como xfail ESTRICTO:
-# si un cambio del modelo o de la calibración los hace pasar, la prueba falla con XPASS y obliga a
-# actualizar esta lista y el documento. Diagnóstico completo en results/validacion/diagnostico_v6.log.
-FALLOS_CONOCIDOS_ESTADISTICOS = {
-    ("piura_chulucanas", "normal"): "cola ligera: p99 -41 %, fuera del IC bootstrap",
-    ("tumbes_eltigre", "normal"): "cola ligera: desviación -22 % y p99 -21 %, fuera del IC bootstrap",
-    ("tumbes_puertopizarro", "normal"): "cola ligera: desviación -32 %, fuera del IC bootstrap",
-}
-_KS = ("forma del cuerpo: lo observado tiene más montos pequeños (<= 1-3 mm) que la gamma, "
-       "D = 0,10-0,20 con montos registrados a 0,1 mm")
-FALLOS_CONOCIDOS_KS = {
-    ("lambayeque_lambayeque", "el_nino"): _KS, ("lambayeque_lambayeque", "normal"): _KS,
-    ("lima_canete", "normal"): _KS,
-    ("piura_bernal", "el_nino"): _KS, ("piura_bernal", "normal"): _KS,
-    ("piura_chulucanas", "el_nino"): _KS, ("piura_chulucanas", "normal"): _KS,
-    ("piura_miraflores", "el_nino"): _KS + "; además 20 % de registros enteros (redondeo del observador)",
-    ("piura_miraflores", "normal"): _KS + "; además 19 % de registros enteros (redondeo del observador)",
-    ("tumbes_eltigre", "el_nino"): _KS, ("tumbes_eltigre", "normal"): _KS,
-    ("tumbes_puertopizarro", "el_nino"): _KS + "; además 49 % de registros enteros (redondeo del observador)",
-    ("tumbes_puertopizarro", "normal"): _KS + "; además 36 % de registros enteros (redondeo del observador)",
-}
+# Grupos que NO pasan con el modelo vigente (Markov + gamma + escala por temporada H5, parámetros de T10).
+# Serían limitaciones del modelo documentadas en docs/validacion-v6.md, no errores de código, y se marcan
+# como xfail ESTRICTO: si un cambio del modelo o de la calibración los hace pasar, la prueba falla con
+# XPASS y obliga a actualizar esta lista y el documento.
+# Con H5 (kappa calibrado por grupo) los 16 grupos pasan los estadísticos y KS, y las listas quedan vacías.
+# Sin H5 (kappa = inf) fallaban 3 grupos en estadísticos (cola ligera: desviación y p99 de El Tigre normal,
+# Puerto Pizarro normal y Chulucanas normal) y 13 en KS (forma del cuerpo, D = 0,10-0,20); el detalle
+# está en results/validacion/diagnostico_v6.log y en docs/validacion-v6.md.
+FALLOS_CONOCIDOS_ESTADISTICOS: dict = {}
+FALLOS_CONOCIDOS_KS: dict = {}
 
 
 def grupos_calibrados(conocidos=None):
@@ -202,7 +190,8 @@ def grupos_calibrados(conocidos=None):
     with PARAMETROS.open(newline="", encoding="utf-8") as f:
         filas = list(csv.DictReader(f))
     return [pytest.param(fila["estacion"], fila["regimen"],
-                         {k: float(fila[k]) for k in ("p01", "p11", "alfa", "theta")},
+                         {**{k: float(fila[k]) for k in ("p01", "p11", "alfa", "theta")},
+                          "kappa": float(fila.get("kappa") or "inf")},
                          id=f"{fila['estacion']}-{fila['regimen']}",
                          marks=[pytest.mark.xfail(strict=True, raises=AssertionError,
                                                   reason=conocidos[(fila["estacion"], fila["regimen"])])]
@@ -300,13 +289,19 @@ def registrar(montos):
 
 def montos_modelo(params, dias, temporadas, rng):
     """Montos de 'temporadas' temporadas del modelo Markov + gamma con el día previo seco, como
-    simular_escenario. La parte 1 de V6 comprueba que pp_v6_generador produce exactamente este modelo."""
+    simular_escenario; con kappa finito (H5) los montos de cada temporada se multiplican por
+    M ~ Gamma(kappa, 1/kappa). La parte 1 de V6 comprueba que pp_v6_generador produce este modelo.
+    Con kappa infinito consume los mismos números aleatorios que antes de H5."""
     estado = np.zeros(temporadas, bool)
-    lluviosos = 0
+    lluviosos = np.zeros(temporadas, int)
     for _ in range(dias):
         estado = rng.random(temporadas) < np.where(estado, params["p11"], params["p01"])
-        lluviosos += int(estado.sum())
-    return rng.gamma(params["alfa"], params["theta"], lluviosos)
+        lluviosos += estado
+    montos = rng.gamma(params["alfa"], params["theta"], int(lluviosos.sum()))
+    kappa = params.get("kappa", math.inf)
+    if math.isfinite(kappa):
+        montos *= np.repeat(rng.gamma(kappa, 1.0 / kappa, temporadas), lluviosos)
+    return montos
 
 
 def ks_bootstrap(montos_obs, muestra_sim, params, dias, temporadas, b=B_KS, semilla=SEMILLA):

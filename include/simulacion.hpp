@@ -7,6 +7,7 @@
 #pragma once
 
 #include <cstdint>
+#include <limits>
 
 namespace pp {
 
@@ -21,6 +22,9 @@ struct Parametros {
     double capacidad = 0.0; // C: drenaje evacuable por día (mm/día)
     double umbral = 0.0;    // U: umbral crítico de acumulación (mm)
     int dias = 120;         // D: días de la temporada
+    // H5: escala aleatoria por temporada M ~ Gamma(kappa, 1/kappa) (media 1) que multiplica todos los
+    // montos de la temporada. Infinito = desactivada: no se sortea M y el modelo es el de antes.
+    double kappa = std::numeric_limits<double>::infinity();
 };
 
 struct Resultado {
@@ -49,6 +53,13 @@ bool ocurre_lluvia(const Parametros& p, uint64_t clave, uint64_t idx, uint32_t d
 
 // Lámina de un día lluvioso ~ gamma(alfa, theta).
 double monto_gamma(const Parametros& p, uint64_t clave, uint64_t idx, uint32_t dia);
+
+// "Día" del contador Philox reservado para el sorteo de M (H5): ningún día real llega a este valor,
+// así que no comparte números con la ocurrencia ni con los montos diarios. CUDA usa el mismo contador.
+constexpr uint32_t DIA_TEMPORADA = 0xFFFFFFFFu;
+
+// Factor de intensidad M de la temporada del escenario `idx`: 1.0 si kappa es infinito.
+double factor_temporada(const Parametros& p, uint64_t clave, uint64_t idx);
 
 // ---- Balance hídrico (recursión de Lindley) ----
 // A_t = max(0, A_{t-1} + R_t - C)

@@ -7,6 +7,13 @@ los 7 estadísticos pasan en 13/16 grupos y KS en 3/16. Los grupos que no pasan 
 hipótesis H5 (escala aleatoria por temporada, pasa los 16 grupos) y H6 (gamma truncada en 0,1 mm) como **propuesta de cambio del modelo, pendiente de
 decisión del equipo** (§«H5»). Hasta que se decida, el modelo y la calibración no cambian.
 
+**Con κ en el generador C++ (rama `lita-h5-kappa`, 19/11/2026): estadísticos 16/16, KS 16/16.** La
+prueba V6 real (B = 999, 20 000 temporadas por grupo, `pp_v6_generador` con κ de `parametros.csv`)
+confirma el diagnóstico en numpy: los 16 *xfail* pasan a XPASS y las listas de fallos conocidos quedan
+vacías en esa rama. Es un resultado en parte dentro de muestra (κ iguala el CV observado, así que la
+desviación pasa por construcción); el p99 y el KS son la evidencia informativa. Detalle en
+§«Comparación con el criterio de V6». En `master` sigue el modelo sin H5.
+
 ## Resumen
 
 - V6 contra el modelo (sintético) pasa: el generador produce exactamente la cadena de Markov + gamma
@@ -325,8 +332,19 @@ Lectura:
    las lluvias están cerca de la resolución: en Lima Cañete, con una media de 0,4 mm, D = 0,43. También
    desplaza la media más de 10 % en 3 grupos, porque la verosimilitud truncada no conserva la media
    observada. Queda como alternativa, no como recomendación.
-4. Estas cifras salen de la réplica en numpy del diagnóstico. Se confirmarán con la prueba V6 y B = 999
-   cuando κ esté en el núcleo y en `pp_v6_generador`.
+4. Estas cifras salen de la réplica en numpy del diagnóstico. **Confirmación con la prueba real** (rama
+   `lita-h5-kappa`, κ en el núcleo y en `pp_v6_generador`, B = 999): **estadísticos 16/16, KS 16/16**.
+   D media del KS = 0,101 (numpy: 0,096), D máxima = 0,207 y valor p mínimo = 0,011, por encima del
+   umbral con Bonferroni (0,05 / 8 = 0,00625). En el generador, con κ finito, la muestra de referencia
+   del KS toma un monto por temporada, porque los montos de una misma temporada comparten M y ya no son
+   independientes; el bootstrap paramétrico del KS sortea M por temporada igual que el núcleo.
+5. **El 16/16 de H5 es en parte dentro de muestra.** κ se calcula para igualar el CV observado de cada
+   grupo, y la media ya la fija αθ, así que la desviación («sd») pasa por construcción y no es evidencia
+   de ajuste. La evidencia informativa está en lo que κ no ajusta directamente: el p99 y el KS (este
+   último, con el valor p conservador descrito en §«Criterio estadístico», porque tampoco se reestiman α,
+   θ ni κ en cada réplica). Además, α es el de Thom ajustado a todos los montos del grupo y se reutiliza
+   como forma dentro de la temporada; con M aleatorio esa forma ya no es la marginal, así que es una
+   aproximación de tipo momentos, no una estimación de máxima verosimilitud del modelo H5.
 
 **Recomendación:** adoptar H5 (`escala_temporada`, κ en forma cerrada) y mantener la gamma de Thom. H6
 queda documentada como alternativa para el cuerpo de la distribución.
@@ -349,6 +367,11 @@ cambia** el modelo, la calibración, `data/processed/*` ni `config/*.yaml`:
 
 Desde el 19/11/2026, `v6_observado` está activa en CTest con el criterio estadístico, y los fallos
 conocidos se marcan como *xfail* estricto (ver `CMakeLists.txt` y §«Criterio estadístico»).
+
+H5 está implementada en la rama `lita-h5-kappa` (núcleo, configuración y CSV, calibración y V6), a la
+espera de la revisión de Ashley (núcleo), Angela (calibración) y David (contrato) y de la aprobación
+del equipo. Con κ = ∞ el modelo es idéntico bit a bit al actual, pero en esa rama los YAML de `config/`
+ya llevan κ calibrado, así que X6, X7 y el bootstrap deben volver a correrse si se fusiona.
 
 ## Impacto en el riesgo X6
 

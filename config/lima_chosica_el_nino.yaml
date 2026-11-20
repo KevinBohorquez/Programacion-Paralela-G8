@@ -1,5 +1,5 @@
 # T10 | Configuración calibrada: lima_chosica / el_nino.
-# Generado por scripts/run/generar_configs.py desde data/processed/parametros.csv (commit 1f9e7a2).
+# Generado por scripts/run/generar_configs.py desde data/processed/parametros.csv (commit e9d1999).
 # Calibración: scripts/run/calibrar.py (temporada por zona, Thom); años del grupo = 7.
 # Claves no calibradas copiadas de config/sintetico.yaml.
 estacion: lima_chosica
@@ -12,5 +12,6 @@ p01: 0.064267
 p11: 0.137931
 alfa: 0.735904
 theta: 3.80016
+kappa: 0.658842
 capacidad: 6
 umbral: 50

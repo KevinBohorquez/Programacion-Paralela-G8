@@ -1,0 +1,150 @@
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/lima_chosica_normal.yaml --capacidad 6 --umbral 30 --n 10000000 --hilos 6 --salida results/cientifico/x7_h5.csv
+backend=openmp hilos=6 schedule=dynamic:1 semilla=20261015 config_id=3
+n=10000000 k=442 p_hat=4.4199999999999997e-05 wilson=[4.0267086015803068e-05, 4.8517025760215409e-05]
+tiempo_s=4.3894286649999996 cpu="12th Gen Intel(R) Core(TM) i5-12400F" fisicos=6 logicos=12 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/lima_chosica_normal.yaml --capacidad 6 --umbral 50 --n 10000000 --hilos 6 --salida results/cientifico/x7_h5.csv
+backend=openmp hilos=6 schedule=dynamic:1 semilla=20261015 config_id=3
+n=10000000 k=5 p_hat=4.9999999999999998e-07 wilson=[2.135701320662649e-07, 1.1705752182894112e-06]
+tiempo_s=4.4082426259999998 cpu="12th Gen Intel(R) Core(TM) i5-12400F" fisicos=6 logicos=12 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/lima_chosica_normal.yaml --capacidad 6 --umbral 80 --n 10000000 --hilos 6 --salida results/cientifico/x7_h5.csv
+backend=openmp hilos=6 schedule=dynamic:1 semilla=20261015 config_id=3
+n=10000000 k=0 p_hat=0 wilson=[0, 3.8414573450141057e-07]
+tiempo_s=4.341931904 cpu="12th Gen Intel(R) Core(TM) i5-12400F" fisicos=6 logicos=12 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_bernal_normal.yaml --capacidad 6 --umbral 30 --n 10000000 --hilos 6 --salida results/cientifico/x7_h5.csv
+backend=openmp hilos=6 schedule=dynamic:1 semilla=20261015 config_id=9
+n=10000000 k=159596 p_hat=0.015959600000000001 wilson=[0.01588211354330625, 0.016037458340803723]
+tiempo_s=4.2619467259999997 cpu="12th Gen Intel(R) Core(TM) i5-12400F" fisicos=6 logicos=12 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_bernal_normal.yaml --capacidad 6 --umbral 50 --n 10000000 --hilos 6 --salida results/cientifico/x7_h5.csv
+backend=openmp hilos=6 schedule=dynamic:1 semilla=20261015 config_id=9
+n=10000000 k=33016 p_hat=0.0033016 wilson=[0.0032662359939435474, 0.0033373456151998401]
+tiempo_s=4.2519279320000001 cpu="12th Gen Intel(R) Core(TM) i5-12400F" fisicos=6 logicos=12 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_bernal_normal.yaml --capacidad 6 --umbral 80 --n 10000000 --hilos 6 --salida results/cientifico/x7_h5.csv
+backend=openmp hilos=6 schedule=dynamic:1 semilla=20261015 config_id=9
+n=10000000 k=4782 p_hat=0.00047820000000000002 wilson=[0.00046484022996873525, 0.00049194354836878582]
+tiempo_s=4.2437938429999997 cpu="12th Gen Intel(R) Core(TM) i5-12400F" fisicos=6 logicos=12 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_miraflores_normal.yaml --capacidad 6 --umbral 30 --n 10000000 --hilos 6 --salida results/cientifico/x7_h5.csv
+backend=openmp hilos=6 schedule=dynamic:1 semilla=20261015 config_id=1
+n=10000000 k=797666 p_hat=0.079766599999999993 wilson=[0.079598839374197317, 0.079934683487538905]
+tiempo_s=4.2658467670000002 cpu="12th Gen Intel(R) Core(TM) i5-12400F" fisicos=6 logicos=12 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_miraflores_normal.yaml --capacidad 6 --umbral 50 --n 10000000 --hilos 6 --salida results/cientifico/x7_h5.csv
+backend=openmp hilos=6 schedule=dynamic:1 semilla=20261015 config_id=1
+n=10000000 k=320587 p_hat=0.032058700000000002 wilson=[0.031949699010922185, 0.032168060504386607]
+tiempo_s=4.221780302 cpu="12th Gen Intel(R) Core(TM) i5-12400F" fisicos=6 logicos=12 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_miraflores_normal.yaml --capacidad 6 --umbral 80 --n 10000000 --hilos 6 --salida results/cientifico/x7_h5.csv
+backend=openmp hilos=6 schedule=dynamic:1 semilla=20261015 config_id=1
+n=10000000 k=103642 p_hat=0.0103642 wilson=[0.010301617597199518, 0.010427158585808543]
+tiempo_s=4.2803216669999999 cpu="12th Gen Intel(R) Core(TM) i5-12400F" fisicos=6 logicos=12 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_eltigre_normal.yaml --capacidad 6 --umbral 30 --n 10000000 --hilos 6 --salida results/cientifico/x7_h5.csv
+backend=openmp hilos=6 schedule=dynamic:1 semilla=20261015 config_id=7
+n=10000000 k=4880430 p_hat=0.488043 wilson=[0.48773319576122481, 0.48835281342523645]
+tiempo_s=8.747902002 cpu="12th Gen Intel(R) Core(TM) i5-12400F" fisicos=6 logicos=12 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_eltigre_normal.yaml --capacidad 6 --umbral 50 --n 10000000 --hilos 6 --salida results/cientifico/x7_h5.csv
+backend=openmp hilos=6 schedule=dynamic:1 semilla=20261015 config_id=7
+n=10000000 k=3038980 p_hat=0.303898 wilson=[0.30361300738706715, 0.30418314327642654]
+tiempo_s=8.6875922200000009 cpu="12th Gen Intel(R) Core(TM) i5-12400F" fisicos=6 logicos=12 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_eltigre_normal.yaml --capacidad 6 --umbral 80 --n 10000000 --hilos 6 --salida results/cientifico/x7_h5.csv
+backend=openmp hilos=6 schedule=dynamic:1 semilla=20261015 config_id=7
+n=10000000 k=1637591 p_hat=0.16375909999999999 wilson=[0.16352986978850637, 0.16398858854250864]
+tiempo_s=8.8203897799999993 cpu="12th Gen Intel(R) Core(TM) i5-12400F" fisicos=6 logicos=12 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_puertopizarro_normal.yaml --capacidad 6 --umbral 30 --n 10000000 --hilos 6 --salida results/cientifico/x7_h5.csv
+backend=openmp hilos=6 schedule=dynamic:1 semilla=20261015 config_id=5
+n=10000000 k=3347923 p_hat=0.33479229999999999 wilson=[0.33449987120115504, 0.33508485572651153]
+tiempo_s=6.7637163640000004 cpu="12th Gen Intel(R) Core(TM) i5-12400F" fisicos=6 logicos=12 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_puertopizarro_normal.yaml --capacidad 6 --umbral 50 --n 10000000 --hilos 6 --salida results/cientifico/x7_h5.csv
+backend=openmp hilos=6 schedule=dynamic:1 semilla=20261015 config_id=5
+n=10000000 k=1966270 p_hat=0.196627 wilson=[0.19638078033323661, 0.19687345274565124]
+tiempo_s=6.7023521089999996 cpu="12th Gen Intel(R) Core(TM) i5-12400F" fisicos=6 logicos=12 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_puertopizarro_normal.yaml --capacidad 6 --umbral 80 --n 10000000 --hilos 6 --salida results/cientifico/x7_h5.csv
+backend=openmp hilos=6 schedule=dynamic:1 semilla=20261015 config_id=5
+n=10000000 k=1006063 p_hat=0.1006063 wilson=[0.10042001489803827, 0.10079289195273423]
+tiempo_s=6.6868011540000003 cpu="12th Gen Intel(R) Core(TM) i5-12400F" fisicos=6 logicos=12 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/lima_chosica_el_nino.yaml --capacidad 6 --umbral 30 --n 10000000 --hilos 6 --salida results/cientifico/x7_h5.csv
+backend=openmp hilos=6 schedule=dynamic:1 semilla=20261015 config_id=2
+n=10000000 k=412005 p_hat=0.041200500000000001 wilson=[0.041077489610092277, 0.041323862881649562]
+tiempo_s=4.2913170300000001 cpu="12th Gen Intel(R) Core(TM) i5-12400F" fisicos=6 logicos=12 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/lima_chosica_el_nino.yaml --capacidad 6 --umbral 50 --n 10000000 --hilos 6 --salida results/cientifico/x7_h5.csv
+backend=openmp hilos=6 schedule=dynamic:1 semilla=20261015 config_id=2
+n=10000000 k=146333 p_hat=0.0146333 wilson=[0.014559061347703605, 0.014707911555391346]
+tiempo_s=4.2486002090000001 cpu="12th Gen Intel(R) Core(TM) i5-12400F" fisicos=6 logicos=12 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/lima_chosica_el_nino.yaml --capacidad 6 --umbral 80 --n 10000000 --hilos 6 --salida results/cientifico/x7_h5.csv
+backend=openmp hilos=6 schedule=dynamic:1 semilla=20261015 config_id=2
+n=10000000 k=41645 p_hat=0.0041644999999999998 wilson=[0.004124776203354415, 0.0042046047428302633]
+tiempo_s=4.3259996039999997 cpu="12th Gen Intel(R) Core(TM) i5-12400F" fisicos=6 logicos=12 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_bernal_el_nino.yaml --capacidad 6 --umbral 30 --n 10000000 --hilos 6 --salida results/cientifico/x7_h5.csv
+backend=openmp hilos=6 schedule=dynamic:1 semilla=20261015 config_id=8
+n=10000000 k=3601760 p_hat=0.360176 wilson=[0.35987852035513951, 0.36047358707044691]
+tiempo_s=5.2359289589999998 cpu="12th Gen Intel(R) Core(TM) i5-12400F" fisicos=6 logicos=12 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_bernal_el_nino.yaml --capacidad 6 --umbral 50 --n 10000000 --hilos 6 --salida results/cientifico/x7_h5.csv
+backend=openmp hilos=6 schedule=dynamic:1 semilla=20261015 config_id=8
+n=10000000 k=2272667 p_hat=0.22726669999999999 wilson=[0.22700706959951303, 0.22752653993915464]
+tiempo_s=5.1223246910000002 cpu="12th Gen Intel(R) Core(TM) i5-12400F" fisicos=6 logicos=12 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_bernal_el_nino.yaml --capacidad 6 --umbral 80 --n 10000000 --hilos 6 --salida results/cientifico/x7_h5.csv
+backend=openmp hilos=6 schedule=dynamic:1 semilla=20261015 config_id=8
+n=10000000 k=1254919 p_hat=0.12549189999999999 wilson=[0.12528672073395899, 0.12569736699741926]
+tiempo_s=5.1441715759999997 cpu="12th Gen Intel(R) Core(TM) i5-12400F" fisicos=6 logicos=12 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_miraflores_el_nino.yaml --capacidad 6 --umbral 30 --n 10000000 --hilos 6 --salida results/cientifico/x7_h5.csv
+backend=openmp hilos=6 schedule=dynamic:1 semilla=20261015 config_id=0
+n=10000000 k=7146925 p_hat=0.71469249999999995 wilson=[0.71441254244537844, 0.71497229260820538]
+tiempo_s=6.3015908549999997 cpu="12th Gen Intel(R) Core(TM) i5-12400F" fisicos=6 logicos=12 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_miraflores_el_nino.yaml --capacidad 6 --umbral 50 --n 10000000 --hilos 6 --salida results/cientifico/x7_h5.csv
+backend=openmp hilos=6 schedule=dynamic:1 semilla=20261015 config_id=0
+n=10000000 k=4971881 p_hat=0.49718810000000002 wilson=[0.49687820852416997, 0.49749799363618896]
+tiempo_s=6.2687598299999996 cpu="12th Gen Intel(R) Core(TM) i5-12400F" fisicos=6 logicos=12 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/piura_miraflores_el_nino.yaml --capacidad 6 --umbral 80 --n 10000000 --hilos 6 --salida results/cientifico/x7_h5.csv
+backend=openmp hilos=6 schedule=dynamic:1 semilla=20261015 config_id=0
+n=10000000 k=2832919 p_hat=0.28329189999999999 wilson=[0.28301270554576707, 0.28357126094921747]
+tiempo_s=6.2965026460000004 cpu="12th Gen Intel(R) Core(TM) i5-12400F" fisicos=6 logicos=12 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_eltigre_el_nino.yaml --capacidad 6 --umbral 30 --n 10000000 --hilos 6 --salida results/cientifico/x7_h5.csv
+backend=openmp hilos=6 schedule=dynamic:1 semilla=20261015 config_id=6
+n=10000000 k=7435325 p_hat=0.74353250000000004 wilson=[0.74326175261565552, 0.74380306028040244]
+tiempo_s=11.343140841 cpu="12th Gen Intel(R) Core(TM) i5-12400F" fisicos=6 logicos=12 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_eltigre_el_nino.yaml --capacidad 6 --umbral 50 --n 10000000 --hilos 6 --salida results/cientifico/x7_h5.csv
+backend=openmp hilos=6 schedule=dynamic:1 semilla=20261015 config_id=6
+n=10000000 k=6030314 p_hat=0.6030314 wilson=[0.60272811374261481, 0.60333460709923958]
+tiempo_s=11.292210289 cpu="12th Gen Intel(R) Core(TM) i5-12400F" fisicos=6 logicos=12 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_eltigre_el_nino.yaml --capacidad 6 --umbral 80 --n 10000000 --hilos 6 --salida results/cientifico/x7_h5.csv
+backend=openmp hilos=6 schedule=dynamic:1 semilla=20261015 config_id=6
+n=10000000 k=4611004 p_hat=0.46110040000000002 wilson=[0.46079145677015948, 0.4614093731160715]
+tiempo_s=11.331785912000001 cpu="12th Gen Intel(R) Core(TM) i5-12400F" fisicos=6 logicos=12 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_puertopizarro_el_nino.yaml --capacidad 6 --umbral 30 --n 10000000 --hilos 6 --salida results/cientifico/x7_h5.csv
+backend=openmp hilos=6 schedule=dynamic:1 semilla=20261015 config_id=4
+n=10000000 k=8066620 p_hat=0.80666199999999999 wilson=[0.80641711542072358, 0.80690664897347797]
+tiempo_s=8.0833156699999993 cpu="12th Gen Intel(R) Core(TM) i5-12400F" fisicos=6 logicos=12 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_puertopizarro_el_nino.yaml --capacidad 6 --umbral 50 --n 10000000 --hilos 6 --salida results/cientifico/x7_h5.csv
+backend=openmp hilos=6 schedule=dynamic:1 semilla=20261015 config_id=4
+n=10000000 k=6620284 p_hat=0.66202839999999996 wilson=[0.66173516309660829, 0.66232151241835424]
+tiempo_s=8.0919316939999995 cpu="12th Gen Intel(R) Core(TM) i5-12400F" fisicos=6 logicos=12 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0
+$ build/docker/src/backends/openmp/pp_openmp --config /work/config/tumbes_puertopizarro_el_nino.yaml --capacidad 6 --umbral 80 --n 10000000 --hilos 6 --salida results/cientifico/x7_h5.csv
+backend=openmp hilos=6 schedule=dynamic:1 semilla=20261015 config_id=4
+n=10000000 k=4967905 p_hat=0.49679050000000002 wilson=[0.49648061016078909, 0.49710039230504249]
+tiempo_s=8.1367025650000002 cpu="12th Gen Intel(R) Core(TM) i5-12400F" fisicos=6 logicos=12 OMP_PROC_BIND=close;OMP_PLACES=cores
+[codigo_salida] 0

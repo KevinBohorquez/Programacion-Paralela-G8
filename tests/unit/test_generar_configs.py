@@ -59,7 +59,7 @@ def test_escribir_configs_contrato_y_omite_invalidas(gen, tmp_path):
         dict(estacion="est_a", regimen="normal", n_anios="30", p01="0.1", p11="0.4", alfa="0.7", theta="9.0",
              estado_validacion="OK"),
         dict(estacion="est_a", regimen="el_nino", n_anios="2", p01="0.3", p11="0.6", alfa="0.6", theta="20.0",
-             estado_validacion="OK"),
+             kappa="2.5", estado_validacion="OK"),
         dict(estacion="est_b", regimen="normal", n_anios="30", p01="nan", p11="0.4", alfa="0.7", theta="9.0",
              estado_validacion="OK"),
         dict(estacion="est_b", regimen="el_nino", n_anios="30", p01="0.1", p11="1.4", alfa="0.7", theta="9.0",
@@ -76,7 +76,10 @@ def test_escribir_configs_contrato_y_omite_invalidas(gen, tmp_path):
     pares = dict(l.split(": ", 1) for l in texto.splitlines() if l and not l.startswith("#"))
     assert set(pares) <= gen.CLAVES_CONTRATO and "salida" not in pares
     assert pares["config_id"] == "0" and pares["dias"] == "122" and pares["p11"] == "0.6"
-    assert (tmp_path / "est_a_normal.yaml").read_text(encoding="utf-8").count("config_id: 1") == 1
+    assert pares["kappa"] == "2.5"
+    normal = (tmp_path / "est_a_normal.yaml").read_text(encoding="utf-8")
+    assert normal.count("config_id: 1") == 1
+    assert "kappa: inf" in normal  # fila sin kappa (parametros.csv anterior a H5): H5 desactivada
 
 
 def test_configs_versionadas_cumplen_el_contrato(gen):

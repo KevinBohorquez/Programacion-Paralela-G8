@@ -177,6 +177,27 @@ def estimar_gamma(montos_lluvia: list[float]) -> tuple[float, float]:
     return alfa, theta
 
 
+def estimar_kappa(montos_lluvia: list[float], alfa: float) -> float:
+    """H5: kappa de la escala por temporada M ~ Gamma(kappa, 1/kappa) que, junto con la gamma
+    (alfa, theta) dentro de la temporada, iguala el CV observado de los montos:
+        CV^2 = (1 + 1/kappa)(1 + 1/alfa) - 1   =>   1/kappa = (CV^2 + 1)/(1 + 1/alfa) - 1.
+    Devuelve inf si el CV observado no supera el de la gamma (no hay heterogeneidad entre años).
+    Usa la varianza muestral (n - 1), igual que la V6 y el diagnóstico."""
+    n = len(montos_lluvia)
+    if n < 3:
+        return math.inf
+    media = sum(montos_lluvia) / n
+    if media <= 0:
+        return math.inf
+    var = sum((x - media) ** 2 for x in montos_lluvia) / (n - 1)
+    cv2 = var / media ** 2
+    inv = (cv2 + 1.0) / (1.0 + 1.0 / alfa) - 1.0
+    return 1.0 / inv if inv > 1e-12 else math.inf
+
+
+def texto_kappa(kappa: float):
+    return round(kappa, 6) if math.isfinite(kappa) else "inf"
+
 def remuestrear_anios(
     anios: list[tuple[int, list[float | None]]], rng: random.Random
 ) -> list[float | None]:
@@ -213,6 +234,7 @@ def main() -> int:
         p01, p11 = estimar_markov(serie)
         montos_lluvia = [v for v in serie if v is not None and v >= UMBRAL_LLUVIA_MM]
         alfa, theta = estimar_gamma(montos_lluvia)
+        kappa = estimar_kappa(montos_lluvia, alfa)
         n_dias = len(serie)
         n_faltantes = sum(1 for v in serie if v is None)
         n_anios = len(anios)
@@ -222,7 +244,7 @@ def main() -> int:
         estado = "OK" if finito and en_rango else "FALLA"
         lineas_log.append(
             f"[{id_est}/{regimen}] n_anios={n_anios} n_dias={n_dias} faltantes={n_faltantes} "
-            f"p01={p01:.4f} p11={p11:.4f} alfa={alfa:.4f} theta={theta:.4f} estado={estado}"
+            f"p01={p01:.4f} p11={p11:.4f} alfa={alfa:.4f} theta={theta:.4f} kappa={kappa:.4f} estado={estado}"
         )
 
         filas_parametros.append(
@@ -236,6 +258,7 @@ def main() -> int:
                 "p11": round(p11, 6),
                 "alfa": round(alfa, 6),
                 "theta": round(theta, 6),
+                "kappa": texto_kappa(kappa),
                 "semilla_remuestreo": args.semilla,
                 "n_bootstrap": N_BOOTSTRAP,
                 "estado_validacion": estado,
@@ -248,6 +271,7 @@ def main() -> int:
             p01_b, p11_b = estimar_markov(muestra)
             montos_b = [v for v in muestra if v is not None and v >= UMBRAL_LLUVIA_MM]
             alfa_b, theta_b = estimar_gamma(montos_b)
+            kappa_b = estimar_kappa(montos_b, alfa_b)
             filas_bootstrap.append(
                 {
                     "estacion": id_est,
@@ -258,20 +282,21 @@ def main() -> int:
                     "p11": round(p11_b, 6),
                     "alfa": round(alfa_b, 6),
                     "theta": round(theta_b, 6),
+                    "kappa": texto_kappa(kappa_b),
                 }
             )
 
     with PARAMETROS_CSV.open("w", newline="", encoding="utf-8") as out:
         campos = [
             "estacion", "regimen", "n_anios", "n_dias", "n_dias_lluvia", "p01", "p11", "alfa", "theta",
-            "semilla_remuestreo", "n_bootstrap", "estado_validacion",
+            "kappa", "semilla_remuestreo", "n_bootstrap", "estado_validacion",
         ]
         escritor = csv.DictWriter(out, fieldnames=campos)
         escritor.writeheader()
         escritor.writerows(filas_parametros)
 
     with BOOTSTRAP_CSV.open("w", newline="", encoding="utf-8") as out:
-        campos = ["estacion", "regimen", "replica", "semilla_remuestreo", "p01", "p11", "alfa", "theta"]
+        campos = ["estacion", "regimen", "replica", "semilla_remuestreo", "p01", "p11", "alfa", "theta", "kappa"]
         escritor = csv.DictWriter(out, fieldnames=campos)
         escritor.writeheader()
         escritor.writerows(filas_bootstrap)

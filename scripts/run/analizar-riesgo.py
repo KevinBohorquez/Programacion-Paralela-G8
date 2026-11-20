@@ -69,7 +69,7 @@ def generar_plan_bootstrap(configs: list[Path], filas_boot: list[dict], k: int, 
         for f in replicas:
             rep = f"{int(f['replica']):03d}"
             datos = dict(base)
-            datos.update({p: f[p] for p in comun.PARAMETROS})
+            datos.update({p: f[p] for p in comun.PARAMETROS if f.get(p) not in (None, "")})
             yaml = comun.escribir_yaml_plano(
                 destino / f"{est}_{reg}_b{rep}.yaml", datos,
                 f"Réplica bootstrap {f['replica']} de {est}/{reg} (generado por analizar-riesgo.py "
@@ -84,7 +84,7 @@ def banda_bootstrap(filas: list[dict], niveles=(2.5, 50.0, 97.5)) -> dict:
     grupos = defaultdict(dict)
     for i, f in enumerate(filas):
         clave = (f["estacion"], f["regimen"], comun.num(f["capacidad"]), comun.num(f["umbral"]))
-        params = tuple(f.get(p) for p in comun.PARAMETROS)
+        params = tuple(comun.parametro(f, p) for p in comun.PARAMETROS)
         replica = tuple(comun.num(x) for x in params) if all(params) else i
         previo = grupos[clave].get(replica)
         if previo is None or int(f["n"]) >= int(previo["n"]):
@@ -130,7 +130,7 @@ def tabla_riesgo(filas_x6: list[dict], filas_boot: list[dict]) -> list[dict]:
             if f.get("hist512") else "",
             "banda_inf": b[0] if b else "", "banda_med": b[1] if b else "",
             "banda_sup": b[2] if b else "", "replicas": b[3] if b else "",
-            "n_boot": n_boot.get(clave, ""), "nota": comun.NOTA_V6})
+            "n_boot": n_boot.get(clave, ""), "nota": comun.nota_v6(f)})
     return tabla
 
 
@@ -276,7 +276,7 @@ def analizar(filas_x6: list[dict], filas_boot: list[dict], tablas: Path, figuras
     tabla = tabla_riesgo(filas_x6, filas_boot)
     comp = comparacion_enso(tabla)
     tablas = Path(tablas)
-    notas = [comun.NOTA_V6,
+    notas = [comun.nota_v6(filas_x6[0] if filas_x6 else None),
              "IC de Wilson al 95 % = error Monte Carlo; banda = percentiles 2,5–97,5 de p̂ entre réplicas "
              "bootstrap de los parámetros (incertidumbre epistémica)."]
     comun.escribir_tabla(tablas / "riesgo.csv", tabla, CAMPOS_RIESGO)
