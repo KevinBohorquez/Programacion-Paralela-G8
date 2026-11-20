@@ -1,4 +1,4 @@
-﻿# T25 | Responsable: Miguel | Despliegue y comprobación de Swarm.
+﻿# T25 | Responsable: David | Despliegue y comprobación de Swarm.
 <#
 .SYNOPSIS
   Despliega docker/swarm-stack.yaml en tres equipos (Docker Swarm) y recoge los CSV de E1/E2.
@@ -25,7 +25,7 @@
 .EXAMPLE
   .\scripts\deploy\desplegar_swarm.ps1 -Accion iniciar -IpManager 192.168.1.10
 .EXAMPLE
-  .\scripts\deploy\desplegar_swarm.ps1 -Accion todo -Nodos pc-miguel,pc-lita,pc-david -Repo /srv/pp-g8 -WhatIf
+  .\scripts\deploy\desplegar_swarm.ps1 -Accion todo -Nodos pc-referencia,pc-lita,pc-david -Repo /srv/pp-g8 -WhatIf
 #>
 [CmdletBinding(SupportsShouldProcess = $true, ConfirmImpact = 'Medium')]
 param(

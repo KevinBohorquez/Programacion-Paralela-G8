@@ -1,4 +1,4 @@
-# T22 | Responsable: Miguel | Ejecución Compose de MPI E1 y E2.
+# T22 | Responsable: Ashley | Ejecución Compose de MPI E1 y E2.
 # E1 (pp_mpi_estatico) y E2 (pp_mpi_dinamico) con los mismos procesos y carga, repartidos entre
 # varios contenedores: nodo1 compila UNA vez en el volumen compartido `binarios` (mismo camino en
 # todos), espera el sshd de los demás y lanza mpirun por ssh (mensajes por TCP, sin memoria compartida).

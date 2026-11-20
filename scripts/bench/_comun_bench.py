@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# T26,T32 | Responsable: Miguel | Utilidades compartidas por ejecutar_barridos.py y comparar_mpi_heterogeneo.py.
+# T26,T32 | Responsable: Lita | Utilidades compartidas por ejecutar_barridos.py y comparar_mpi_heterogeneo.py.
 """Captura de metadatos (CPU, GPU, red, commit), lectura robusta del CSV del simulador,
 interpretación de las líneas [verif] de los backends MPI y cálculos de reparto por rango/nodo.
 

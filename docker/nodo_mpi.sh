@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# T22,T25 | Responsable: Miguel | Papel de un nodo en docker/compose.yaml y docker/swarm-stack.yaml.
+# T22,T25 | Responsable: Ashley, David | Papel de un nodo en docker/compose.yaml y docker/swarm-stack.yaml.
 #   nodo_mpi.sh trabajador   compila (si PP_COMPILAR=1) y deja sshd en primer plano
 #   nodo_mpi.sh lanzador     compila, espera a los trabajadores por ssh y mide E1 y E2 con mpirun
 # Variables (todas opcionales):

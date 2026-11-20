@@ -1,4 +1,4 @@
-# T51 | Responsable: Miguel | Demostración en clúster con salida precalculada de respaldo.
+# T51 | Responsable: equipo | Demostración en clúster con salida precalculada de respaldo.
 <#
 .SYNOPSIS
   Demostración de la exposición: demo web y corrida MPI E1/E2 en el clúster de contenedores, con un
@@ -29,7 +29,7 @@
 .EXAMPLE
   .\scripts\run\demo-cluster.ps1 -Accion todo -Destino compose -N 2000000 -Procesos 2,3
 .EXAMPLE
-  .\scripts\run\demo-cluster.ps1 -Accion todo -Destino swarm -Nodos pc-miguel,pc-lita,pc-david -Repo /srv/pp-g8 -HostsMpi nodo1:8,nodo2:4,nodo3:4 -Procesos 4,8,16
+  .\scripts\run\demo-cluster.ps1 -Accion todo -Destino swarm -Nodos pc-referencia,pc-lita,pc-david -Repo /srv/pp-g8 -HostsMpi nodo1:8,nodo2:4,nodo3:4 -Procesos 4,8,16
 .EXAMPLE
   .\scripts\run\demo-cluster.ps1 -Accion mostrar -Destino compose
 #>

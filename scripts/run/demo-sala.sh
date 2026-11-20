@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Responsable: Miguel | Lanzador de la sala de control (equivalente a demo-sala.ps1, para Linux y macOS).
+# Responsable: equipo | Lanzador de la sala de control (equivalente a demo-sala.ps1, para Linux y macOS).
 #
 # Uso: scripts/run/demo-sala.sh <accion> [--simular] [--parar] [--nombre N] [--velocidad V]
 #   preparar  construye pp-g8 si falta, compila build/docker (Release, MPI) y lista los contenedores

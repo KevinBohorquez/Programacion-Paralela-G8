@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# T05 | Responsable: Miguel | Genera la evidencia del hola híbrido (se ejecuta en el anfitrión:
+# T05 | Responsable: Ashley | Genera la evidencia del hola híbrido (se ejecuta en el anfitrión:
 # Git Bash en Windows o bash en Linux, desde cualquier carpeta del repositorio).
 #   bash docker/hello_hibrido.sh
 # Escribe results/evidencia/t05_hello_hibrido.log (un contenedor) y

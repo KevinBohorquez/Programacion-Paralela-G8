@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# T32 | Responsable: Lita (infraestructura: Miguel) | Comparación MPI estático/dinámico sobre nodos heterogéneos.
+# T32 | Responsable: Lita | Comparación MPI estático/dinámico sobre nodos heterogéneos.
 """Compara E1 (pp_mpi_estatico) y E2 (pp_mpi_dinamico) con los MISMOS procesos, carga y semilla
 repartidos entre varios nodos, usando ejecutar_barridos.py como biblioteca.
 
