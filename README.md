@@ -78,14 +78,14 @@ python3 scripts/run/generar_configs.py
 
 | Rol | Integrante | Responsabilidad principal |
 | --- | --- | --- |
-| R1 | David | Integración, MPI, coordinación y entregas |
-| R2 | Angela | Series SENAMHI, calibración y análisis de riesgo |
-| R3 | Ashley | Núcleo secuencial, OpenMP, pruebas y CI |
+| R1 | David | Integración, MPI, clúster MPI entre PC, coordinación y entregas |
+| R2 | Angela | Series SENAMHI, calibración, análisis de riesgo y campañas X3, X6 y X8 |
+| R3 | Ashley | Núcleo secuencial, OpenMP, pruebas y CI, imagen Docker y medición secuencial |
 | R4 | Lita | Pruebas de correctitud, barridos de recursos y extensión CUDA |
-| R5 | Miguel | Docker, clúster, automatización y mediciones |
+| R5 | Miguel | Verificación final de la entrega |
 | R6 | Rhamses | Documentación, gráficos, informe y exposición |
 
-Los roles se asignaron en el orden en que se proporcionaron los nombres. Cualquier cambio de responsables debe reflejarse en ambos cronogramas y en los planes.
+Los roles se asignaron en el orden en que se proporcionaron los nombres. El reparto final de tareas por integrante está en el [plan hasta la semana 15](docs/plan-desarrollo-semana-15.md#especificación-por-integrante). Cualquier cambio de responsables debe reflejarse en ambos cronogramas y en los planes.
 
 ## Flujo de contribución (T03)
 
