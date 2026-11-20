@@ -10,7 +10,9 @@ decisión del equipo** (§«H5»). Hasta que se decida, el modelo y la calibraci
 **Con κ en el generador C++ (rama `lita-h5-kappa`, 19/11/2026): estadísticos 16/16, KS 16/16.** La
 prueba V6 real (B = 999, 20 000 temporadas por grupo, `pp_v6_generador` con κ de `parametros.csv`)
 confirma el diagnóstico en numpy: los 16 *xfail* pasan a XPASS y las listas de fallos conocidos quedan
-vacías en esa rama. Detalle en §«Comparación con el criterio de V6». En `master` sigue el modelo sin H5.
+vacías en esa rama. Es un resultado en parte dentro de muestra (κ iguala el CV observado, así que la
+desviación pasa por construcción); el p99 y el KS son la evidencia informativa. Detalle en
+§«Comparación con el criterio de V6». En `master` sigue el modelo sin H5.
 
 ## Resumen
 
@@ -336,6 +338,13 @@ Lectura:
    umbral con Bonferroni (0,05 / 8 = 0,00625). En el generador, con κ finito, la muestra de referencia
    del KS toma un monto por temporada, porque los montos de una misma temporada comparten M y ya no son
    independientes; el bootstrap paramétrico del KS sortea M por temporada igual que el núcleo.
+5. **El 16/16 de H5 es en parte dentro de muestra.** κ se calcula para igualar el CV observado de cada
+   grupo, y la media ya la fija αθ, así que la desviación («sd») pasa por construcción y no es evidencia
+   de ajuste. La evidencia informativa está en lo que κ no ajusta directamente: el p99 y el KS (este
+   último, con el valor p conservador descrito en §«Criterio estadístico», porque tampoco se reestiman α,
+   θ ni κ en cada réplica). Además, α es el de Thom ajustado a todos los montos del grupo y se reutiliza
+   como forma dentro de la temporada; con M aleatorio esa forma ya no es la marginal, así que es una
+   aproximación de tipo momentos, no una estimación de máxima verosimilitud del modelo H5.
 
 **Recomendación:** adoptar H5 (`escala_temporada`, κ en forma cerrada) y mantener la gamma de Thom. H6
 queda documentada como alternativa para el cuerpo de la distribución.
