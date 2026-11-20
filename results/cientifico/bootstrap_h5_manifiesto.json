@@ -1,7 +1,7 @@
 {
   "experimento": "bootstrap",
   "salida": "results/cientifico/bootstrap_h5.csv",
-  "nota": "V6 (validación contra datos observados) falla en estadísticos de cola (sd -32 %, p99 -42 %) en 16/16 grupos: el modelo subestima los extremos y estas probabilidades pueden subestimar el riesgo hasta que la ola D recalibre.",
+  "nota": "Modelo con escala aleatoria por temporada (H5, kappa calibrado por grupo): V6 frente a lo observado pasa en 16/16 grupos (7 estadísticos y KS); ver docs/validacion-v6.md.",
   "semillas": {
     "lima_chosica/normal": {
       "semilla": "20261015",

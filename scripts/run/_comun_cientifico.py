@@ -49,6 +49,13 @@ def nota_v6(fila: dict | None) -> str:
         return NOTA_V6_H5 if math.isfinite(float(parametro(fila, "kappa"))) else NOTA_V6
     except (TypeError, ValueError):
         return NOTA_V6
+
+
+def nota_v6_plan(plan) -> str:
+    """Nota de validación de una corrida completa. Si algún punto usa kappa finito, la corrida es del
+    modelo H5: con H5, kappa = inf en un grupo o una réplica es un resultado válido de la calibración."""
+    notas = [nota_v6(p.params) for p in plan]
+    return NOTA_V6_H5 if NOTA_V6_H5 in notas else NOTA_V6
 ENCABEZADO = (
     "backend,estacion,regimen,config_id,semilla,n,k,p_hat,wilson_inf,wilson_sup,dias,capacidad,umbral,"
     "p01,p11,alfa,theta,hilos,procesos,repeticion,calentamiento,schedule,afinidad,tiempo_s,commit,cpu,"
@@ -370,8 +377,9 @@ def ejecutar_plan(plan: list[Punto], *, salida: Path, logs: Path, manifiesto: Pa
     logs.mkdir(parents=True, exist_ok=True)
     manifiesto.parent.mkdir(parents=True, exist_ok=True)
     datos = json.loads(manifiesto.read_text(encoding="utf-8")) if manifiesto.exists() else {
-        "experimento": experimento, "salida": salida.as_posix(), "nota": NOTA_V6, "semillas": {},
+        "experimento": experimento, "salida": salida.as_posix(), "nota": "", "semillas": {},
         "sesiones": [], "puntos": []}
+    datos["nota"] = nota_v6_plan(plan)  # según el modelo de la corrida (con o sin H5)
     for p in plan:
         datos["semillas"][f"{p.estacion}/{p.regimen}"] = {"semilla": p.semilla, "config_id": p.config_id}
     env = entorno_simulador()

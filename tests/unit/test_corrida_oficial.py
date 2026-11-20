@@ -26,11 +26,12 @@ comun = importlib.import_module("_comun_cientifico")
 x6 = cargar("corrida_oficial", "corrida-oficial.py")
 
 
-def escribir_config(ruta, estacion, regimen, config_id, capacidad=6, umbral=50, p01=0.05):
+def escribir_config(ruta, estacion, regimen, config_id, capacidad=6, umbral=50, p01=0.05, kappa=None):
     ruta.write_text(
         f"# prueba\nestacion: {estacion}\nregimen: {regimen}\nconfig_id: {config_id}\n"
         f"semilla: 777\nn: 1000\ndias: 120\np01: {p01}\np11: 0.3\nalfa: 0.7\ntheta: 5.5\n"
-        f"capacidad: {capacidad}\numbral: {umbral}\n", encoding="utf-8")
+        f"capacidad: {capacidad}\numbral: {umbral}\n" + (f"kappa: {kappa}\n" if kappa is not None else ""),
+        encoding="utf-8")
     return ruta
 
 
@@ -96,6 +97,19 @@ class CorridaOficialTests(unittest.TestCase):
         self.assertIn("commit", datos["sesiones"][0])
         self.assertIn("cpu", datos["sesiones"][0]["hardware"])
         self.assertIn("V6", datos["nota"])
+
+    def test_nota_del_manifiesto_segun_el_modelo_de_la_corrida(self):
+        plan = x6.generar_plan([self.cfg_a], [6], n=1000)  # sin kappa: modelo sin H5
+        self.ejecutar(plan, comun.RunnerFalso())
+        self.assertEqual(json.loads(self.manifiesto.read_text(encoding="utf-8"))["nota"], comun.NOTA_V6)
+
+        self.manifiesto.unlink()
+        self.salida.unlink()
+        cfg_h5 = escribir_config(self.dir / "h5_normal.yaml", "a", "normal", 0, kappa=3.2)
+        cfg_inf = escribir_config(self.dir / "h5_el_nino.yaml", "a", "el_nino", 1, kappa="inf")
+        plan_h5 = x6.generar_plan([cfg_h5, cfg_inf], [6], n=1000)  # H5 con kappa = inf en un grupo
+        self.ejecutar(plan_h5, comun.RunnerFalso())
+        self.assertEqual(json.loads(self.manifiesto.read_text(encoding="utf-8"))["nota"], comun.NOTA_V6_H5)
 
     def test_dry_run_no_ejecuta_ni_escribe(self):
         plan = x6.generar_plan([self.cfg_a], [2, 6], n=1000)
