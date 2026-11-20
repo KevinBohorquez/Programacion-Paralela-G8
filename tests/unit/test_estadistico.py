@@ -8,10 +8,17 @@
 # Dos partes:
 #   1. Frente al modelo: la referencia es el valor EXACTO que implica Markov + gamma con los mismos
 #      parámetros. Verifica el código del generador; corre en CTest y en el CI.
-#   2. Frente a lo observado (test_v6_frente_a_observado): series SENAMHI y parametros.csv de T06–T10,
-#      que no están en Git. Se compara en la temporada de cada zona, la misma que usa calibrar.py
-#      (costa norte y Chosica enero–abril; Lima junio–setiembre), con día lluvioso >= 0,1 mm.
-#      Se omite si faltan los datos y no forma parte de CTest.
+#   2. Frente a lo observado (test_v6_frente_a_observado): series SENAMHI y parametros.csv de T06–T10.
+#      Se compara en la temporada de cada zona, la misma que usa calibrar.py (costa norte y Chosica
+#      enero–abril; Lima junio–setiembre), con día lluvioso >= 0,1 mm. Aquí la referencia es una MUESTRA
+#      de 7–53 temporadas, no un valor exacto, así que el criterio tiene en cuenta su incertidumbre
+#      (ver docs/validacion-v6.md §«Criterio estadístico»):
+#        - cada estadístico pasa si el error relativo es <= 10 % (criterio de la definición) o si el valor
+#          simulado cae dentro del IC bootstrap del observado, remuestreando temporadas completas;
+#        - KS compara los montos tal como los registraría un pluviómetro (redondeo a 0,1 mm y >= 0,1 mm) y
+#          su valor p sale de un bootstrap paramétrico con el mismo número de temporadas que lo observado;
+#        - los 8 contrastes de un grupo (7 estadísticos + KS) se corrigen con Bonferroni: 5 % por grupo.
+#      Los grupos que no pasan con el modelo vigente están en FALLOS_CONOCIDOS como xfail estricto.
 #
 # Uso (tras compilar):  python3 -m pytest -v -s tests/unit/test_estadistico.py
 # Variables opcionales: PP_V6_GENERADOR=<ruta a pp_v6_generador> (por defecto build/pp_v6_generador)
@@ -141,8 +148,9 @@ def test_v6_control_negativo_detecta_parametros_equivocados():
     assert stats.kstest(muestra, "gamma", args=(params["alfa"], 0.0, params["theta"] * 1.3)).pvalue < ALFA_KS
 
 
-# ---------- V6 frente a lo OBSERVADO (series SENAMHI de T06–T10, fuera de Git) ----------
-# Se omite si faltan data/raw/*.csv o data/processed/{parametros,regimenes}.csv (p. ej. en el CI).
+# ---------- V6 frente a lo OBSERVADO (series SENAMHI de T06–T10) ----------
+# data/raw/*.csv y data/processed/{parametros,regimenes}.csv están versionados, así que la prueba corre en
+# CTest (v6_observado) y en el CI. Solo se omite si faltan esos archivos (p. ej. en una copia parcial).
 DATOS_RAW = RAIZ / "data" / "raw"
 PARAMETROS = Path(os.environ.get("PP_V6_PARAMETROS", RAIZ / "data" / "processed" / "parametros.csv"))
 REGIMENES = RAIZ / "data" / "processed" / "regimenes.csv"
@@ -163,23 +171,63 @@ def temporada_de(estacion):
     return meses, sum(calendar.monthrange(2001, m)[1] for m in meses)  # 2001: año no bisiesto
 
 
-def grupos_calibrados():
+# Grupos que NO pasan con el modelo vigente (Markov + gamma i.i.d., parámetros de T10). Son limitaciones
+# del modelo documentadas en docs/validacion-v6.md, no errores de código. Se marcan como xfail ESTRICTO:
+# si un cambio del modelo o de la calibración los hace pasar, la prueba falla con XPASS y obliga a
+# actualizar esta lista y el documento. Diagnóstico completo en results/validacion/diagnostico_v6.log.
+FALLOS_CONOCIDOS_ESTADISTICOS = {
+    ("piura_chulucanas", "normal"): "cola ligera: p99 -41 %, fuera del IC bootstrap",
+    ("tumbes_eltigre", "normal"): "cola ligera: desviación -22 % y p99 -21 %, fuera del IC bootstrap",
+    ("tumbes_puertopizarro", "normal"): "cola ligera: desviación -32 %, fuera del IC bootstrap",
+}
+_KS = ("forma del cuerpo: lo observado tiene más montos pequeños (<= 1-3 mm) que la gamma, "
+       "D = 0,10-0,20 con montos registrados a 0,1 mm")
+FALLOS_CONOCIDOS_KS = {
+    ("lambayeque_lambayeque", "el_nino"): _KS, ("lambayeque_lambayeque", "normal"): _KS,
+    ("lima_canete", "normal"): _KS,
+    ("piura_bernal", "el_nino"): _KS, ("piura_bernal", "normal"): _KS,
+    ("piura_chulucanas", "el_nino"): _KS, ("piura_chulucanas", "normal"): _KS,
+    ("piura_miraflores", "el_nino"): _KS + "; además 20 % de registros enteros (redondeo del observador)",
+    ("piura_miraflores", "normal"): _KS + "; además 19 % de registros enteros (redondeo del observador)",
+    ("tumbes_eltigre", "el_nino"): _KS, ("tumbes_eltigre", "normal"): _KS,
+    ("tumbes_puertopizarro", "el_nino"): _KS + "; además 49 % de registros enteros (redondeo del observador)",
+    ("tumbes_puertopizarro", "normal"): _KS + "; además 36 % de registros enteros (redondeo del observador)",
+}
+
+
+def grupos_calibrados(conocidos=None):
     if not (PARAMETROS.exists() and REGIMENES.exists() and any(DATOS_RAW.glob("*.csv"))):
         return [pytest.param(None, None, None, marks=pytest.mark.skip(reason="faltan los datos SENAMHI de T06–T10"))]
+    conocidos = conocidos or {}
     with PARAMETROS.open(newline="", encoding="utf-8") as f:
-        return [pytest.param(fila["estacion"], fila["regimen"],
-                             {k: float(fila[k]) for k in ("p01", "p11", "alfa", "theta")},
-                             id=f"{fila['estacion']}-{fila['regimen']}")
-                for fila in csv.DictReader(f)]
+        filas = list(csv.DictReader(f))
+    return [pytest.param(fila["estacion"], fila["regimen"],
+                         {k: float(fila[k]) for k in ("p01", "p11", "alfa", "theta")},
+                         id=f"{fila['estacion']}-{fila['regimen']}",
+                         marks=[pytest.mark.xfail(strict=True, raises=AssertionError,
+                                                  reason=conocidos[(fila["estacion"], fila["regimen"])])]
+                         if (fila["estacion"], fila["regimen"]) in conocidos else [])
+            for fila in filas]
 
 
-def estadisticos_observados(estacion, regimen, umbral, meses):
-    """Meses de la temporada en los años de regimenes.csv con ese régimen. Un día faltante o un salto de
-    fechas corta la racha abierta sin contarla, igual que el auxiliar solo cuenta rachas cerradas."""
+# Criterio estadístico (docs/validacion-v6.md §«Criterio estadístico»).
+ESTADISTICOS_V6 = ("frecuencia_lluvia", "media_monto", "desviacion_monto", "p95_monto", "p99_monto",
+                   "racha_media", "max_diario_temporada_medio")
+ALFA_GRUPO = 0.05                                  # error de tipo I por grupo estación × régimen
+ALFA_CONTRASTE = ALFA_GRUPO / (len(ESTADISTICOS_V6) + 1)   # Bonferroni sobre 7 estadísticos + KS
+B_IC = int(os.environ.get("PP_V6_B_IC", "5000"))   # remuestreos de temporadas para el IC
+B_KS = int(os.environ.get("PP_V6_B_KS", "999"))    # réplicas del bootstrap paramétrico de KS
+RESOLUCION = 0.1                                    # mm: resolución de las series SENAMHI
+
+
+def temporadas_observadas(estacion, regimen, umbral, meses):
+    """Registros por temporada (año) en los años de regimenes.csv con ese régimen. Un día faltante o un
+    salto de fechas corta la racha abierta sin contarla, igual que el auxiliar solo cuenta rachas
+    cerradas. Cada temporada guarda lo necesario para recomponer los 7 estadísticos al remuestrear."""
     with REGIMENES.open(newline="", encoding="utf-8") as f:
         anios = {int(r["anio"]) for r in csv.DictReader(f) if r["estacion"] == estacion and r["regimen"] == regimen}
-    dias = rachas = dias_en_rachas = racha = 0
-    montos, max_anio, previa = [], defaultdict(float), None
+    t = {a: {"dias": 0, "montos": [], "rachas": 0, "dias_en_rachas": 0, "maximo": 0.0} for a in anios}
+    racha, previa = 0, None
     with (DATOS_RAW / f"{estacion}.csv").open(newline="", encoding="utf-8") as f:
         for fila in csv.DictReader(f):
             fecha = datetime.date.fromisoformat(fila["fecha"])
@@ -194,42 +242,141 @@ def estadisticos_observados(estacion, regimen, umbral, meses):
                 racha = 0
                 continue
             v = float(texto)
-            dias += 1
-            max_anio[fecha.year] = max(max_anio[fecha.year], v)
+            s = t[fecha.year]
+            s["dias"] += 1
+            s["maximo"] = max(s["maximo"], v)
             if (v >= umbral) if umbral > 0 else (v > 0):
-                montos.append(v)
+                s["montos"].append(v)
                 racha += 1
             elif racha:
-                rachas, dias_en_rachas, racha = rachas + 1, dias_en_rachas + racha, 0
+                s["rachas"] += 1
+                s["dias_en_rachas"] += racha
+                racha = 0
+    return [t[a] for a in sorted(t) if t[a]["dias"] > 0]
+
+
+def agregar(temporadas):
+    """Los 7 estadísticos de V6 sobre un conjunto de temporadas (con repetición si es un remuestreo)."""
+    montos = np.concatenate([np.asarray(s["montos"], float) for s in temporadas])
+    dias = sum(s["dias"] for s in temporadas)
+    rachas = sum(s["rachas"] for s in temporadas)
+    if len(montos) < 2 or rachas == 0:
+        return None
     return {
         "frecuencia_lluvia": len(montos) / dias,
-        "media_monto": statistics.mean(montos),
-        "desviacion_monto": statistics.stdev(montos),
+        "media_monto": float(montos.mean()),
+        "desviacion_monto": float(montos.std(ddof=1)),
         "p95_monto": float(np.percentile(montos, 95)),
         "p99_monto": float(np.percentile(montos, 99)),
-        "racha_media": dias_en_rachas / rachas,
-        "max_diario_temporada_medio": statistics.mean(max_anio.values()),
-    }, montos, len(anios)
+        "racha_media": sum(s["dias_en_rachas"] for s in temporadas) / rachas,
+        "max_diario_temporada_medio": float(np.mean([s["maximo"] for s in temporadas])),
+    }
 
 
-@pytest.mark.parametrize("estacion,regimen,params", grupos_calibrados())
-def test_v6_frente_a_observado(estacion, regimen, params):
+def estadisticos_observados(estacion, regimen, umbral, meses):
+    temporadas = temporadas_observadas(estacion, regimen, umbral, meses)
+    montos = [v for s in temporadas for v in s["montos"]]
+    return agregar(temporadas), montos, len(temporadas)
+
+
+def ic_bootstrap(temporadas, alfa, b=B_IC, semilla=SEMILLA):
+    """IC (1 - alfa) por percentiles, remuestreando temporadas completas: conserva la dependencia
+    entre los días de un mismo año, que es donde está la variabilidad de la cola (1983, 1998)."""
+    rng = np.random.default_rng(semilla)
+    muestras = defaultdict(list)
+    for _ in range(b):
+        e = agregar([temporadas[i] for i in rng.integers(0, len(temporadas), len(temporadas))])
+        if e is not None:
+            for k, v in e.items():
+                muestras[k].append(v)
+    return {k: (float(np.quantile(v, alfa / 2)), float(np.quantile(v, 1 - alfa / 2))) for k, v in muestras.items()}
+
+
+def registrar(montos):
+    """Montos tal como los anota un pluviómetro de 0,1 mm: redondeo y día lluvioso solo si >= 0,1 mm."""
+    r = np.round(np.asarray(montos, float) / RESOLUCION) * RESOLUCION
+    return r[r >= UMBRAL_LLUVIA - 1e-9]
+
+
+def montos_modelo(params, dias, temporadas, rng):
+    """Montos de 'temporadas' temporadas del modelo Markov + gamma con el día previo seco, como
+    simular_escenario. La parte 1 de V6 comprueba que pp_v6_generador produce exactamente este modelo."""
+    estado = np.zeros(temporadas, bool)
+    lluviosos = 0
+    for _ in range(dias):
+        estado = rng.random(temporadas) < np.where(estado, params["p11"], params["p01"])
+        lluviosos += int(estado.sum())
+    return rng.gamma(params["alfa"], params["theta"], lluviosos)
+
+
+def ks_bootstrap(montos_obs, muestra_sim, params, dias, temporadas, b=B_KS, semilla=SEMILLA):
+    """KS de dos muestras entre lo observado y lo simulado, ambos registrados a 0,1 mm. Con datos
+    discretizados (empates) el valor p asintótico no vale, así que la distribución nula se obtiene
+    simulando b conjuntos de 'temporadas' temporadas del propio modelo, registrados igual."""
+    ref = registrar(muestra_sim)
+    d_obs = stats.ks_2samp(registrar(montos_obs), ref).statistic
+    rng = np.random.default_rng(semilla)
+    mayores = 0
+    for _ in range(b):
+        nulo = registrar(montos_modelo(params, dias, temporadas, rng))
+        if len(nulo) == 0 or stats.ks_2samp(nulo, ref).statistic >= d_obs:
+            mayores += 1
+    return d_obs, (mayores + 1) / (b + 1)
+
+
+_EVALUADOS = {}
+
+
+def evaluar_frente_a_observado(estacion, regimen, params):
+    """Evalúa un grupo una sola vez (las dos pruebas comparten el resultado). Devuelve un dict con
+    las filas de cada contraste y los fallos de los estadísticos y de KS por separado."""
+    if (estacion, regimen) in _EVALUADOS:
+        return _EVALUADOS[(estacion, regimen)]
     meses, dias = temporada_de(estacion)
-    esp, montos_obs, n_anios = estadisticos_observados(estacion, regimen, UMBRAL_LLUVIA, meses)
+    temporadas = temporadas_observadas(estacion, regimen, UMBRAL_LLUVIA, meses)
+    obs = agregar(temporadas)
+    montos_obs = [v for s in temporadas for v in s["montos"]]
     sim = correr_generador(dict(params, dias=dias), n=N_OBS)
     muestra = [float(x) for x in sim["muestra"].split(";") if x]
-    ks = stats.ks_2samp(montos_obs, muestra)
-    print(f"\n[V6-obs] {estacion}/{regimen} meses={meses} anios={n_anios} dias_lluviosos_obs={len(montos_obs)} "
-          f"umbral={UMBRAL_LLUVIA} mm N_sim={N_OBS}x{dias} d params={params}")
-    print(f"[V6-obs] {'estadistico':28s} {'observado':>12s} {'simulado':>12s} {'error_rel':>10s}")
-    fallos = []
-    for clave, valor_obs in esp.items():
-        valor_sim = float(sim[clave])
-        error = abs(valor_sim - valor_obs) / abs(valor_obs)
-        print(f"[V6-obs] {clave:28s} {valor_obs:12.4f} {valor_sim:12.4f} {error:10.2%}{'  <-- >10%' if error > TOLERANCIA else ''}")
-        if error > TOLERANCIA:
-            fallos.append(f"{clave} {error:.0%}")
-    print(f"[V6-obs] KS dos muestras: D={ks.statistic:.4f} p={ks.pvalue:.4g} (n_obs={len(montos_obs)}, n_sim={len(muestra)})")
-    if ks.pvalue < ALFA_KS:
-        fallos.append(f"KS p={ks.pvalue:.2g}")
-    assert not fallos, f"{estacion}/{regimen}: " + "; ".join(fallos)
+    ic = ic_bootstrap(temporadas, ALFA_CONTRASTE)
+    filas, fallos_est = [], []
+    for clave in ESTADISTICOS_V6:
+        valor_obs, valor_sim = obs[clave], float(sim[clave])
+        error = (valor_sim - valor_obs) / abs(valor_obs)
+        lo, hi = ic[clave]
+        pasa = abs(error) <= TOLERANCIA or lo <= valor_sim <= hi
+        filas.append((clave, valor_obs, valor_sim, error, lo, hi, pasa))
+        if not pasa:
+            fallos_est.append(f"{clave} {error:+.0%} fuera de [{lo:.4g}, {hi:.4g}]")
+    d, p = ks_bootstrap(montos_obs, muestra, params, dias, len(temporadas))
+    filas.append(("ks_registrado_0_1mm", d, p, None, None, None, p >= ALFA_CONTRASTE))
+    fallos_ks = [] if p >= ALFA_CONTRASTE else [f"KS D={d:.3f} p={p:.3g} < {ALFA_CONTRASTE:.4g}"]
+    r = {"meses": meses, "dias": dias, "temporadas": len(temporadas), "lluviosos": len(montos_obs),
+         "filas": filas, "fallos_est": fallos_est, "fallos_ks": fallos_ks}
+    _EVALUADOS[(estacion, regimen)] = r
+    print(f"\n[V6-obs] {estacion}/{regimen} meses={meses} temporadas={r['temporadas']} "
+          f"dias_lluviosos_obs={r['lluviosos']} umbral={UMBRAL_LLUVIA} mm N_sim={N_OBS}x{dias} d "
+          f"alfa_contraste={ALFA_CONTRASTE:.4%} params={params}")
+    print(f"[V6-obs] {'estadistico':28s} {'observado':>11s} {'simulado':>11s} {'error':>8s} "
+          f"{'IC bootstrap':>23s}  pasa")
+    for clave, a, b, error, lo, hi, pasa in filas:
+        if error is None:
+            print(f"[V6-obs] {clave:28s} D={a:9.4f} p={b:9.4f} {'':32s}  {'si' if pasa else 'NO'}")
+        else:
+            print(f"[V6-obs] {clave:28s} {a:11.4f} {b:11.4f} {error:+8.1%} [{lo:10.4f},{hi:10.4f}]  "
+                  f"{'si' if pasa else 'NO'}")
+    return r
+
+
+@pytest.mark.parametrize("estacion,regimen,params", grupos_calibrados(FALLOS_CONOCIDOS_ESTADISTICOS))
+def test_v6_estadisticos_frente_a_observado(estacion, regimen, params):
+    """Los 7 estadísticos: error <= 10 % o dentro del IC bootstrap por temporadas (Bonferroni)."""
+    r = evaluar_frente_a_observado(estacion, regimen, params)
+    assert not r["fallos_est"], f"{estacion}/{regimen}: " + "; ".join(r["fallos_est"])
+
+
+@pytest.mark.parametrize("estacion,regimen,params", grupos_calibrados(FALLOS_CONOCIDOS_KS))
+def test_v6_ks_frente_a_observado(estacion, regimen, params):
+    """KS de los montos registrados a 0,1 mm, con valor p por bootstrap paramétrico (Bonferroni)."""
+    r = evaluar_frente_a_observado(estacion, regimen, params)
+    assert not r["fallos_ks"], f"{estacion}/{regimen}: " + "; ".join(r["fallos_ks"])

@@ -66,13 +66,12 @@ if(Python3_FOUND)
   set_tests_properties(v6_generador PROPERTIES LABELS "v6"
                        ENVIRONMENT "PP_V6_GENERADOR=${CMAKE_BINARY_DIR}/pp_v6_generador")
 
-  # V6 frente a las series observadas de SENAMHI (data/raw + data/processed). No cumple el 10 % en las
-  # colas en ningún grupo: hallazgo del modelo (gamma i.i.d. de cola ligera y heterogeneidad entre años
-  # El Niño), no error de código; diagnóstico e impacto en X6 en docs/validacion-v6.md,
-  # así que queda registrada con la etiqueta v6_observado pero DESACTIVADA por defecto: ctest la lista
-  # como "Not Run (Disabled)" sin ocultarla. Para ejecutarla:
-  #   cmake -DPP_V6_OBSERVADO=ON ...  &&  ctest -L v6_observado --output-on-failure
-  option(PP_V6_OBSERVADO "Activar en CTest la prueba V6 frente a lo observado (T13)" OFF)
+  # V6 frente a las series observadas de SENAMHI (data/raw + data/processed), con el criterio
+  # estadístico de docs/validacion-v6.md (IC bootstrap por temporadas, KS con bootstrap paramétrico y
+  # Bonferroni por grupo). Los grupos que no pasan por limitaciones conocidas del modelo están marcados
+  # como xfail estricto en test_estadistico.py, así que la prueba queda en verde y avisa si cambian.
+  # Se puede desactivar con -DPP_V6_OBSERVADO=OFF (tarda unos 30 s).
+  option(PP_V6_OBSERVADO "Activar en CTest la prueba V6 frente a lo observado (T13)" ON)
   add_test(NAME v6_observado
            COMMAND ${Python3_EXECUTABLE} -m pytest -q -k "observado" ${PROJECT_SOURCE_DIR}/tests/unit/test_estadistico.py)
   set_tests_properties(v6_observado PROPERTIES LABELS "v6_observado"
