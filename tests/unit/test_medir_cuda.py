@@ -57,3 +57,10 @@ def test_rangos_de_e2_y_estado():
 
 def test_rangos_sin_verif():
     assert medir_cpu_gpu.rangos("nada") == ({}, "")
+
+
+def test_comando_log_con_rutas_relativas():
+    # T58: el registro no debe guardar rutas absolutas del equipo que midió.
+    for mod in (medir_cuda, medir_cpu_gpu):
+        cmd = [mod.RAIZ / "build" / "cuda" / "pp_cuda", "--config", str(mod.RAIZ / "config" / "sintetico.yaml"), "--n", "10"]
+        assert mod.comando_log(cmd) == "build/cuda/pp_cuda --config config/sintetico.yaml --n 10"

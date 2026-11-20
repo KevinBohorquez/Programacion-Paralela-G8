@@ -25,6 +25,23 @@ void comprobar(cudaError_t e, const char* que) {
     if (e != cudaSuccess) throw std::runtime_error(std::string("CUDA (") + que + "): " + cudaGetErrorString(e));
 }
 
+// Memoria de la GPU con dueño (T58): se libera en el destructor, así que si una reserva o cualquier
+// llamada posterior lanza una excepción, los buffers ya reservados se liberan en orden inverso.
+template <typename T>
+class BufferGpu {
+public:
+    BufferGpu(std::size_t elementos, const char* que) {
+        comprobar(cudaMalloc(&p_, elementos * sizeof(T)), que);
+    }
+    ~BufferGpu() { cudaFree(p_); }
+    BufferGpu(const BufferGpu&) = delete;
+    BufferGpu& operator=(const BufferGpu&) = delete;
+    T* get() const { return p_; }
+
+private:
+    T* p_ = nullptr;
+};
+
 __global__ void kernel_escenarios(Parametros p, uint64_t clave, uint64_t base, uint64_t inicio, uint64_t fin,
                                   unsigned long long* hist_global, unsigned long long* k_global) {
     __shared__ cuda::ReduccionBloque red;
@@ -92,8 +109,8 @@ std::string descripcion_gpu() {
     cudaDeviceProp prop{};
     comprobar(cudaGetDeviceProperties(&prop, 0), "cudaGetDeviceProperties");
     int rt = 0, drv = 0;
-    cudaRuntimeGetVersion(&rt);
-    cudaDriverGetVersion(&drv);
+    comprobar(cudaRuntimeGetVersion(&rt), "cudaRuntimeGetVersion");
+    comprobar(cudaDriverGetVersion(&drv), "cudaDriverGetVersion");
     std::string nombre = prop.name;
     std::replace(nombre.begin(), nombre.end(), ';', ' ');
     return "gpu=" + nombre + ";cc=" + std::to_string(prop.major) + "." + std::to_string(prop.minor) +
@@ -147,9 +164,10 @@ MotorCuda::MotorCuda(int bloques, int hilos_por_bloque) : hilos_por_bloque_(hilo
                                  "; el kernel usa " + std::to_string(registros_por_hilo()) + " registros por hilo)");
     bloques_ = bloques > 0 ? bloques : bloques_residentes(hilos_por_bloque);
     comprobar(cudaMalloc(&d_hist_, NBINS * sizeof(unsigned long long)), "cudaMalloc hist");
-    if (cudaMalloc(&d_k_, sizeof(unsigned long long)) != cudaSuccess) {
-        cudaFree(d_hist_);
-        throw std::runtime_error("CUDA (cudaMalloc k): sin memoria");
+    const cudaError_t e = cudaMalloc(&d_k_, sizeof(unsigned long long));
+    if (e != cudaSuccess) {
+        cudaFree(d_hist_);  // el destructor no corre si el constructor lanza
+        comprobar(e, "cudaMalloc k");
     }
 }
 
@@ -191,29 +209,28 @@ OcupacionObservada observar_ocupacion(const Parametros& p, uint64_t clave, uint6
     MotorCuda motor(bloques, hilos_por_bloque);  // valida hilos_por_bloque y resuelve bloques = 0
     const int b = motor.bloques();
     const uint64_t m = std::min(n, lote_gpu(b, hilos_por_bloque));  // un solo lanzamiento
-    unsigned long long *d_hist = nullptr, *d_k = nullptr, *d_ini = nullptr, *d_fin = nullptr;
-    unsigned int* d_sm = nullptr;
-    comprobar(cudaMalloc(&d_hist, NBINS * sizeof(unsigned long long)), "cudaMalloc");
-    comprobar(cudaMalloc(&d_k, sizeof(unsigned long long)), "cudaMalloc");
-    comprobar(cudaMalloc(&d_ini, b * sizeof(unsigned long long)), "cudaMalloc");
-    comprobar(cudaMalloc(&d_fin, b * sizeof(unsigned long long)), "cudaMalloc");
-    comprobar(cudaMalloc(&d_sm, b * sizeof(unsigned int)), "cudaMalloc");
-    std::vector<unsigned int> sm(b);
-    std::vector<unsigned long long> ini(b), fin(b);
-    try {
-        comprobar(cudaMemset(d_hist, 0, NBINS * sizeof(unsigned long long)), "cudaMemset");
-        comprobar(cudaMemset(d_k, 0, sizeof(unsigned long long)), "cudaMemset");
-        kernel_instrumentado<<<b, hilos_por_bloque>>>(p, clave, base, 0, m, d_hist, d_k, d_sm, d_ini, d_fin);
+    const std::size_t nb = static_cast<std::size_t>(b);
+    std::vector<unsigned int> sm;
+    std::vector<unsigned long long> ini, fin;
+    {
+        BufferGpu<unsigned long long> d_hist(NBINS, "cudaMalloc hist"), d_k(1, "cudaMalloc k");
+        BufferGpu<unsigned long long> d_ini(nb, "cudaMalloc t_ini"), d_fin(nb, "cudaMalloc t_fin");
+        BufferGpu<unsigned int> d_sm(nb, "cudaMalloc smid");
+        sm.resize(nb);
+        ini.resize(nb);
+        fin.resize(nb);
+        comprobar(cudaMemset(d_hist.get(), 0, NBINS * sizeof(unsigned long long)), "cudaMemset");
+        comprobar(cudaMemset(d_k.get(), 0, sizeof(unsigned long long)), "cudaMemset");
+        kernel_instrumentado<<<b, hilos_por_bloque>>>(p, clave, base, 0, m, d_hist.get(), d_k.get(), d_sm.get(),
+                                                      d_ini.get(), d_fin.get());
         comprobar(cudaGetLastError(), "lanzamiento de kernel_instrumentado");
         comprobar(cudaDeviceSynchronize(), "cudaDeviceSynchronize");
-        comprobar(cudaMemcpy(sm.data(), d_sm, b * sizeof(unsigned int), cudaMemcpyDeviceToHost), "cudaMemcpy");
-        comprobar(cudaMemcpy(ini.data(), d_ini, b * sizeof(unsigned long long), cudaMemcpyDeviceToHost), "cudaMemcpy");
-        comprobar(cudaMemcpy(fin.data(), d_fin, b * sizeof(unsigned long long), cudaMemcpyDeviceToHost), "cudaMemcpy");
-    } catch (...) {
-        cudaFree(d_hist); cudaFree(d_k); cudaFree(d_ini); cudaFree(d_fin); cudaFree(d_sm);
-        throw;
-    }
-    cudaFree(d_hist); cudaFree(d_k); cudaFree(d_ini); cudaFree(d_fin); cudaFree(d_sm);
+        comprobar(cudaMemcpy(sm.data(), d_sm.get(), nb * sizeof(unsigned int), cudaMemcpyDeviceToHost), "cudaMemcpy");
+        comprobar(cudaMemcpy(ini.data(), d_ini.get(), nb * sizeof(unsigned long long), cudaMemcpyDeviceToHost),
+                  "cudaMemcpy");
+        comprobar(cudaMemcpy(fin.data(), d_fin.get(), nb * sizeof(unsigned long long), cudaMemcpyDeviceToHost),
+                  "cudaMemcpy");
+    }  // los buffers se liberan aquí, también si algo lanzó una excepción
 
     // Por SM: barrido de eventos (inicio +1, fin −1) para el máximo de bloques simultáneos.
     std::vector<std::vector<std::pair<unsigned long long, int>>> eventos(256);
@@ -252,23 +269,16 @@ EjecucionCuda simular_cuda(const Parametros& p, uint64_t clave, uint64_t base, u
 
 std::vector<double> amax_cuda(const Parametros& p, uint64_t clave, uint64_t base, uint64_t n) {
     std::vector<double> out(n);
-    double* d = nullptr;
-    comprobar(cudaMalloc(&d, n * sizeof(double)), "cudaMalloc amax");
-    try {
-        const int hpb = 256;
-        for (uint64_t inicio = 0; inicio < n; inicio += LOTE_GPU) {
-            const uint64_t m = std::min(n - inicio, static_cast<uint64_t>(LOTE_GPU));
-            const int bloques = static_cast<int>((m + hpb - 1) / hpb);
-            kernel_amax<<<bloques, hpb>>>(p, clave, base + inicio, m, d + inicio);
-            comprobar(cudaGetLastError(), "lanzamiento de kernel_amax");
-        }
-        comprobar(cudaDeviceSynchronize(), "cudaDeviceSynchronize");
-        comprobar(cudaMemcpy(out.data(), d, n * sizeof(double), cudaMemcpyDeviceToHost), "cudaMemcpy amax");
-    } catch (...) {
-        cudaFree(d);
-        throw;
+    BufferGpu<double> d(n, "cudaMalloc amax");
+    const int hpb = 256;
+    for (uint64_t inicio = 0; inicio < n; inicio += LOTE_GPU) {
+        const uint64_t m = std::min(n - inicio, static_cast<uint64_t>(LOTE_GPU));
+        const int bloques = static_cast<int>((m + hpb - 1) / hpb);
+        kernel_amax<<<bloques, hpb>>>(p, clave, base + inicio, m, d.get() + inicio);
+        comprobar(cudaGetLastError(), "lanzamiento de kernel_amax");
     }
-    cudaFree(d);
+    comprobar(cudaDeviceSynchronize(), "cudaDeviceSynchronize");
+    comprobar(cudaMemcpy(out.data(), d.get(), n * sizeof(double), cudaMemcpyDeviceToHost), "cudaMemcpy amax");
     return out;
 }
 

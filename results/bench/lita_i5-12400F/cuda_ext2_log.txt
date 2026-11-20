@@ -1,21 +1,21 @@
 # T41 · EXT2 · 2026-11-19T09:22:43-05:00
 # {'cpu': '12th Gen Intel(R) Core(TM) i5-12400F', 'nucleos_fisicos': 6, 'nucleos_logicos': 12, 'ram_gb': 7.7, 'gpu': 'gpu=NVIDIA GeForce RTX 4060;cc=8.9;sm=24;cuda_rt=13.3;driver=13.5', 'mpi': 'mpirun (Open MPI) 4.1.6', 'commit': 'b88d25ec8569', 'fecha': '2026-11-19T09:22:43-05:00', 'so': 'Linux-6.18.58.1-microsoft-standard-WSL2-x86_64-with-glibc2.39', 'n': 10000000, 'semilla': 20261015, 'lote': 62500, 'grilla_gpu': '24x128', 'config': 'sintetico.yaml'}
-serial: /mnt/d/PROGRAMACIÓN_PARALELA/Programacion-Paralela-G8/build/cuda/src/backends/serial/pp_serial --config /mnt/d/PROGRAMACIÓN_PARALELA/Programacion-Paralela-G8/config/sintetico.yaml --n 10000000 --semilla 20261015 --lote 62500
+serial: build/cuda/src/backends/serial/pp_serial --config config/sintetico.yaml --n 10000000 --semilla 20261015 --lote 62500
   tiempos=['28.9276', '28.6751', '28.6376', '28.7425', '28.5874'] media=28.7140 cv=0.46% fraccion_gpu=0.000 V1=ok V3=ok
-cuda_sin_mpi: /mnt/d/PROGRAMACIÓN_PARALELA/Programacion-Paralela-G8/build/cuda/src/backends/cuda/pp_cuda --config /mnt/d/PROGRAMACIÓN_PARALELA/Programacion-Paralela-G8/config/sintetico.yaml --n 10000000 --semilla 20261015 --lote 62500 --bloques 24 --hilos-por-bloque 128
+cuda_sin_mpi: build/cuda/src/backends/cuda/pp_cuda --config config/sintetico.yaml --n 10000000 --semilla 20261015 --lote 62500 --bloques 24 --hilos-por-bloque 128
   tiempos=['2.8319', '2.8286', '2.8275', '2.8281', '2.9197'] media=2.8472 cv=1.43% fraccion_gpu=1.000 V1=ok V3=ok
-cpu: mpirun --bind-to none -np 6 /mnt/d/PROGRAMACIÓN_PARALELA/Programacion-Paralela-G8/build/cuda/src/backends/mpi/pp_mpi_dinamico --config /mnt/d/PROGRAMACIÓN_PARALELA/Programacion-Paralela-G8/config/sintetico.yaml --n 10000000 --semilla 20261015 --lote 62500
+cpu: mpirun --bind-to none -np 6 build/cuda/src/backends/mpi/pp_mpi_dinamico --config config/sintetico.yaml --n 10000000 --semilla 20261015 --lote 62500
   tiempos=['7.4919', '7.4563', '7.6452', '7.6469', '7.6142'] media=7.5709 cv=1.19% fraccion_gpu=0.000 V1=ok V3=ok
   rangos (bloques, n_local): {0: (160, 0), 1: (31, 1937500), 2: (32, 2000000), 3: (32, 2000000), 4: (32, 2000000), 5: (33, 2062500)}
-gpu: mpirun --bind-to none -np 2 /mnt/d/PROGRAMACIÓN_PARALELA/Programacion-Paralela-G8/build/cuda/src/backends/cuda/pp_mpi_dinamico_gpu --config /mnt/d/PROGRAMACIÓN_PARALELA/Programacion-Paralela-G8/config/sintetico.yaml --n 10000000 --semilla 20261015 --lote 62500 --bloques 24 --hilos-por-bloque 128
+gpu: mpirun --bind-to none -np 2 build/cuda/src/backends/cuda/pp_mpi_dinamico_gpu --config config/sintetico.yaml --n 10000000 --semilla 20261015 --lote 62500 --bloques 24 --hilos-por-bloque 128
   tiempos=['2.9461', '2.9955', '3.0488', '3.0073', '2.9842'] media=2.9964 cv=1.24% fraccion_gpu=1.000 V1=ok V3=ok
   rangos (bloques, n_local): {0: (160, 0), 1: (160, 10000000)}
   contexto CUDA creado antes de MPI_Init en 0.137598 s (fuera del tiempo)
-cpu_gpu: mpirun --bind-to none -np 6 /mnt/d/PROGRAMACIÓN_PARALELA/Programacion-Paralela-G8/build/cuda/src/backends/cuda/pp_mpi_dinamico_gpu --config /mnt/d/PROGRAMACIÓN_PARALELA/Programacion-Paralela-G8/config/sintetico.yaml --n 10000000 --semilla 20261015 --lote 62500 --bloques 24 --hilos-por-bloque 128
+cpu_gpu: mpirun --bind-to none -np 6 build/cuda/src/backends/cuda/pp_mpi_dinamico_gpu --config config/sintetico.yaml --n 10000000 --semilla 20261015 --lote 62500 --bloques 24 --hilos-por-bloque 128
   tiempos=['2.3837', '2.3141', '2.4232', '2.3728', '2.3487'] media=2.3685 cv=1.71% fraccion_gpu=0.750 V1=ok V3=ok
   rangos (bloques, n_local): {0: (160, 0), 1: (10, 625000), 2: (10, 625000), 3: (10, 625000), 4: (10, 625000), 5: (120, 7500000)}
   contexto CUDA creado antes de MPI_Init en 0.178891 s (fuera del tiempo)
-cpu_gpu_mas1: mpirun --bind-to none --oversubscribe -np 7 /mnt/d/PROGRAMACIÓN_PARALELA/Programacion-Paralela-G8/build/cuda/src/backends/cuda/pp_mpi_dinamico_gpu --config /mnt/d/PROGRAMACIÓN_PARALELA/Programacion-Paralela-G8/config/sintetico.yaml --n 10000000 --semilla 20261015 --lote 62500 --bloques 24 --hilos-por-bloque 128
+cpu_gpu_mas1: mpirun --bind-to none --oversubscribe -np 7 build/cuda/src/backends/cuda/pp_mpi_dinamico_gpu --config config/sintetico.yaml --n 10000000 --semilla 20261015 --lote 62500 --bloques 24 --hilos-por-bloque 128
   tiempos=['2.3975', '2.2104', '2.1848', '2.2743', '2.3105'] media=2.2755 cv=3.72% fraccion_gpu=0.713 V1=ok V3=ok
   rangos (bloques, n_local): {0: (160, 0), 1: (9, 562500), 2: (9, 562500), 3: (9, 562500), 4: (10, 625000), 5: (9, 562500), 6: (114, 7125000)}
   contexto CUDA creado antes de MPI_Init en 0.165771 s (fuera del tiempo)

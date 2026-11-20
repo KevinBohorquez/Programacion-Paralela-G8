@@ -35,6 +35,12 @@ import tempfile
 from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parents[2]
+
+
+def comando_log(cmd):
+    """Comando para el registro, con las rutas relativas a la raíz del repositorio (T58)."""
+    raiz = str(RAIZ) + "/"
+    return " ".join(str(c).replace(raiz, "") for c in cmd)
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import _comun_bench as cb  # noqa: E402
 
@@ -71,7 +77,7 @@ def medir(nombre, cmd, reps, entorno, log):
     tiempos = [float(f["tiempo_s"]) for f in filas]
     media = statistics.mean(tiempos)
     sd = statistics.stdev(tiempos) if len(tiempos) > 1 else 0.0
-    log.write(f"{nombre}: {' '.join(cmd)}\n  tiempos={['%.4f' % t for t in tiempos]} media={media:.4f} cv={sd / media:.3%}\n")
+    log.write(f"{nombre}: {comando_log(cmd)}\n  tiempos={['%.4f' % t for t in tiempos]} media={media:.4f} cv={sd / media:.3%}\n")
     print(f"{nombre:28s} media={media:8.4f}s cv={sd / media:6.2%} k={filas[0]['k']}", flush=True)
     return cal, filas, tiempos
 
