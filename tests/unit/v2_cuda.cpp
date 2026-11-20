@@ -34,10 +34,31 @@ pp::Parametros parametros(double p01, double p11, double alfa, double theta, dou
     return p;
 }
 
+// T58: si falla un cudaMalloc intermedio, la memoria ya reservada debe liberarse. Con INT_MAX bloques,
+// observar_ocupacion reserva el histograma y k (pequeños) y luego pide 16 GiB para las marcas de tiempo,
+// que no caben en la GPU. Debe lanzar la excepción; que no quede memoria sin liberar lo comprueba
+// compute-sanitizer --leak-check full (CTest v8_memcheck_fallo_reserva).
+bool fallo_reserva_lanza_excepcion() {
+    pp::Parametros p = parametros(0.15, 0.60, 0.70, 9.0, std::numeric_limits<double>::infinity(), 6.0, 50.0);
+    try {
+        pp::observar_ocupacion(p, 1, 0, 1, std::numeric_limits<int>::max(), 128);
+    } catch (const std::runtime_error& e) {
+        const bool es_malloc = std::string(e.what()).find("cudaMalloc") != std::string::npos;
+        std::printf("[V2] fallo de reserva intermedia: excepcion=%s (%s)\n", es_malloc ? "OK" : "FALLA", e.what());
+        return es_malloc;
+    }
+    std::printf("[V2] fallo de reserva intermedia: no lanzó excepción FALLA\n");
+    return false;
+}
+
 }  // namespace
 
 int main(int argc, char** argv) {
     try {
+        if (argc > 1 && std::string(argv[1]) == "--fallo-reserva") {
+            pp::inicializar_cuda();
+            return fallo_reserva_lanza_excepcion() ? 0 : 3;
+        }
         const uint64_t n = argc > 1 ? std::stoull(argv[1]) : 1000000ull;
         const uint64_t n_amax = std::min<uint64_t>(n, 200000ull);
         const double inf = std::numeric_limits<double>::infinity();
@@ -120,6 +141,7 @@ int main(int argc, char** argv) {
             ok = ok && error_claro;
             std::printf("[V2] hilos_por_bloque=1024 rechazado con mensaje claro: %s\n", error_claro ? "OK" : "FALLA");
         }
+        ok = fallo_reserva_lanza_excepcion() && ok;
         std::printf("[V2] estado=%s\n", ok ? "OK" : "FALLA");
         return ok ? 0 : 3;
     } catch (const std::exception& e) {

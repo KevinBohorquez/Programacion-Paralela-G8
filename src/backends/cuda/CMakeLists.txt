@@ -50,6 +50,13 @@ if(PP_COMPUTE_SANITIZER)
       set_tests_properties(v8_${herramienta}_${nombre} PROPERTIES LABELS "cuda;v8" TIMEOUT 900)
     endforeach()
   endforeach()
+  # T58: un cudaMalloc que falla a mitad de las reservas no debe dejar memoria sin liberar. pp_v2_cuda
+  # --fallo-reserva provoca ese fallo; --report-api-errors no evita contar como error el propio
+  # cudaErrorMemoryAllocation esperado, así que solo una fuga hace fallar la prueba.
+  add_test(NAME v8_memcheck_fallo_reserva
+           COMMAND ${PP_COMPUTE_SANITIZER} --tool memcheck --leak-check full --report-api-errors no
+                   --error-exitcode 9 $<TARGET_FILE:pp_v2_cuda> --fallo-reserva)
+  set_tests_properties(v8_memcheck_fallo_reserva PROPERTIES LABELS "cuda;v8" TIMEOUT 300)
 else()
   message(WARNING "No se encontró compute-sanitizer: las pruebas V8 no se registran.")
 endif()

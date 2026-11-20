@@ -34,6 +34,12 @@ import tempfile
 from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parents[2]
+
+
+def comando_log(cmd):
+    """Comando para el registro, con las rutas relativas a la raíz del repositorio (T58)."""
+    raiz = str(RAIZ) + "/"
+    return " ".join(str(c).replace(raiz, "") for c in cmd)
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import _comun_bench as cb  # noqa: E402
 
@@ -193,7 +199,7 @@ def main():
                     mensajes_e2=mensajes if procs > 1 else "", t_contexto_gpu_s=t_ctx.group(1) if t_ctx else "",
                     k=ref["k"], equivalente_serial=int(equivalente), v3_ok=int(v3), **meta)
         resumen.append(fila)
-        log.write(f"{var}: {' '.join(cmd)}\n  tiempos={['%.4f' % t for t in tiempos]} media={media:.4f} "
+        log.write(f"{var}: {comando_log(cmd)}\n  tiempos={['%.4f' % t for t in tiempos]} media={media:.4f} "
                   f"cv={sd / media:.2%} fraccion_gpu={n_gpu / n:.3f} V1={'ok' if equivalente else 'FALLA'} "
                   f"V3={'ok' if v3 else 'FALLA'}\n")
         if procs > 1:
