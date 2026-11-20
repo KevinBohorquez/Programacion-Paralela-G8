@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""T34 | Responsable: Miguel | Corrida científica oficial X6 en CPU.
+"""T34 | Responsable: Angela | Corrida científica oficial X6 en CPU.
 
 Corre el simulador para cada configuración estación × régimen (config/<estacion>_<regimen>.yaml, 10
 archivos) y cada capacidad C de una grilla (más la C de la propia configuración), con el umbral

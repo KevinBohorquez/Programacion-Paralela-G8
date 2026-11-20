@@ -1,4 +1,4 @@
-# T25 | Responsable: Miguel | Configuración Swarm de tres equipos.
+# T25 | Responsable: David | Configuración Swarm de tres equipos.
 # Un servicio por equipo físico (restricción por etiqueta de nodo pp_nodo=1|2|3) en una red overlay.
 # Cada nodo compila el MISMO commit en su volumen local /opt/pp (mismo camino en los tres) a partir
 # del repositorio clonado en PP_REPO; nodo2 y nodo3 dejan sshd; nodo1 (lanzador) espera a ambos

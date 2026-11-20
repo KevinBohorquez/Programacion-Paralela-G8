@@ -1,4 +1,4 @@
-﻿# Responsable: Miguel | Lanzador de la sala de control de la demo en vivo (docs/demo-sala-control.md).
+﻿# Responsable: equipo | Lanzador de la sala de control de la demo en vivo (docs/demo-sala-control.md).
 <#
 .SYNOPSIS
   Prepara, inicia, graba y reproduce la sala de control (scripts/demo/sala_control.py), que corre

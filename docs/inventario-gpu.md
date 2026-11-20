@@ -9,7 +9,7 @@ Este inventario registra lo comprobado con comandos en los equipos disponibles. 
 | Equipo | Integrante | GPU | Memoria | CC | SM | Controlador | CUDA Toolkit (`nvcc`) | Acceso desde Linux | Fecha |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | PC de Lita: Windows 11 Pro (compilación 26300), i5-12400F 6C/12T, 15,8 GB RAM | Lita | NVIDIA GeForce RTX 4060 (AD107), modo **WDDM**, también muestra el escritorio | 8188 MiB | 8.9 (Ada Lovelace) | **24** (medido) | 621.01 (CUDA 13.5 como máximo) | **CUDA 13.3** en WSL Ubuntu-24.04 (`/usr/local/cuda`); CUDA 13.4 también instalado en Windows | Sí: WSL2 Ubuntu 24.04.5, kernel 6.18.58.1, ve la GPU por `/usr/lib/wsl/lib` | 19/11/2026 |
-| PC de Miguel: Core Ultra 9 275HX (8P + 16E) | Miguel | NVIDIA GeForce RTX 5090 Laptop, modo WDDM, muestra el escritorio | 24 GB | 12.0 (Blackwell) | Sin medir | 617.42 | No instalado en el anfitrión | Sin comprobar | 26/10/2026 (consulta de Miguel, tomada de `decision-cuda.md`) |
+| [PC de referencia](guia-reproduccion.md#pc-de-referencia) (equipo de Miguel): Core Ultra 9 275HX (8P + 16E, 24 hilos), 63 GB de RAM, Windows 11 + WSL2 + Docker Desktop | Miguel | NVIDIA GeForce RTX 5090 Laptop, modo WDDM, muestra el escritorio | 24 GB | 12.0 (Blackwell) | Sin medir | 617.42 | No instalado en el anfitrión | Sin comprobar | 26/10/2026 (consulta tomada de `decision-cuda.md`) |
 | Equipos de Angela, Ashley, David y Rhamses | — | Sin dato | — | — | — | — | — | — | Pendiente: cada uno ejecuta el §2 y agrega su fila o anota «sin GPU NVIDIA» |
 
 ## 2. Comandos ejecutados y salida resumida (PC de Lita, 19/11/2026)
@@ -69,7 +69,7 @@ El mismo ejecutable pasa `compute-sanitizer --tool memcheck` («ERROR SUMMARY: 0
 | Distribución WSL | Ubuntu (anotada como 26.04) | Ubuntu-24.04 (24.04.5 LTS), la que usa el proyecto |
 | SM | 24, según la ficha técnica | 24, medido con `cudaGetDeviceProperties` |
 | Docker | No instalado | Docker Desktop 29.8.2 |
-| RTX 5090 Laptop de Miguel | No figuraba | Agregada con su consulta del 26/10 |
+| RTX 5090 Laptop de la PC de referencia | No figuraba | Agregada con su consulta del 26/10 |
 
 ## 5. Decisión preliminar y alternativa CPU
 
@@ -80,4 +80,4 @@ El mismo ejecutable pasa `compute-sanitizer --tool memcheck` («ERROR SUMMARY: 0
 | **EXT1** (kernel CUDA, reducción, V2/V8, barrido X5) | En desarrollo | CUDA Toolkit en WSL y `nvcc` compilando un caso de prueba | **Cumplido.** Se puede empezar T38. |
 | **EXT2** (GPU como trabajador MPI en E2) | En desarrollo, después de EXT1 | EXT1 validada con V2/V8 | Pendiente de EXT1. Puede ejecutarse en este mismo equipo (CPU + GPU) sin el clúster de T25. |
 
-**Alternativa CPU:** si EXT1 no pasa V2 y V8, no se publican cifras de GPU y **todas las campañas (X1–X3, X6, X7) siguen en CPU** con los backends secuencial, OpenMP, MPI E1/E2 e híbrido, que no dependen de la GPU. La RTX 5090 de Miguel queda como respaldo: necesitaría CUDA 12.8 o posterior (CC 12.0) y no se usa mientras la 4060 esté operativa, para no mezclar hardware en X5.
+**Alternativa CPU:** si EXT1 no pasa V2 y V8, no se publican cifras de GPU y **todas las campañas (X1–X3, X6, X7) siguen en CPU** con los backends secuencial, OpenMP, MPI E1/E2 e híbrido, que no dependen de la GPU. La RTX 5090 Laptop de la PC de referencia queda como respaldo: necesitaría CUDA 12.8 o posterior (CC 12.0) y no se usa mientras la 4060 esté operativa, para no mezclar hardware en X5.

@@ -40,6 +40,19 @@ En PowerShell: sin `MSYS_NO_PATHCONV`, con `"${PWD}:/work"` y `$(git rev-parse -
 | Semilla | `20261015` en calibración, mediciones y corridas científicas. |
 | Ruta del repositorio | Contiene espacios y tildes: siempre entre comillas. |
 
+### PC de referencia
+
+Las mediciones versionadas (T1, OpenMP oficial, X1–X3) y la verificación final de la entrega (T57) se ejecutan en la **PC de referencia**, que es el equipo de Miguel:
+
+| Componente | Valor |
+| --- | --- |
+| CPU | Intel Core Ultra 9 275HX: 8 núcleos P + 16 E, 24 hilos (sin SMT) |
+| Memoria | 63 GB de RAM |
+| GPU | NVIDIA GeForce RTX 5090 Laptop |
+| Sistema | Windows 11 con WSL2 y Docker Desktop |
+
+El resto de la documentación la llama «PC de referencia» y remite a esta sección.
+
 ### Variables de entorno
 
 | Variable | La lee | Para qué |
@@ -291,7 +304,7 @@ Con `-Destino swarm` delega en `desplegar_swarm.ps1 -Accion todo` y necesita `-N
 
 ## 10. Duraciones esperadas
 
-Equipo de referencia: Intel Core Ultra 9 275HX, Docker Desktop sobre WSL2 con 24 vCPU.
+PC de referencia (§2): Intel Core Ultra 9 275HX, Docker Desktop sobre WSL2 con 24 vCPU.
 
 | Paso | Duración | Fuente |
 | --- | --- | --- |

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# T16 | Responsable: Lita (borrador preparado junto con T15; revisión: Miguel) | Barrido OpenMP de 2, 4, 8 y 16 hilos.
+# T16 | Responsable: Lita (borrador preparado junto con T15; revisión: Ashley) | Barrido OpenMP de 2, 4, 8 y 16 hilos.
 """Mide el backend OpenMP frente a la referencia secuencial con la MISMA carga y semilla.
 
 Por cada punto (schedule x hilos): una corrida de calentamiento (no cuenta) y N repeticiones

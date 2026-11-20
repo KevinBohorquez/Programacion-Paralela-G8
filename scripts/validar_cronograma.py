@@ -16,7 +16,11 @@ MAIN = "http://schemas.openxmlformats.org/spreadsheetml/2006/main"
 REL = "http://schemas.openxmlformats.org/officeDocument/2006/relationships"
 PKG_REL = "http://schemas.openxmlformats.org/package/2006/relationships"
 ROLES = {"R1": "David", "R2": "Angela", "R3": "Ashley", "R4": "Lita", "R5": "Miguel", "R6": "Rhamses"}
-EXPECTED = {f"T{number:02d}" for number in range(1, 54)}
+TEAM = "Todos"  # tarea del equipo completo: válida, pero no cuenta para ningún rol
+LAST = 58
+EXPECTED = {f"T{number:02d}" for number in range(1, LAST + 1)}
+RANGE = f"T01–T{LAST}"
+STATES = {"No iniciado", "En curso", "En riesgo", "Completado"}  # lista de validación de la columna J
 REQUIRED = {"C": "tarea", "D": "responsable", "F": "semana inicial", "G": "semana final",
             "H": "fecha límite", "I": "criterio de terminado", "J": "estado"}
 
@@ -71,17 +75,22 @@ def validate(path: Path) -> tuple[list[str], Counter[str]]:
         records[task_id] = cells
         owner = cells.get("D", "")
         owners[owner] += 1
-        if owner not in ROLES:
+        if owner not in ROLES and owner != TEAM:
             errors.append(f"{task_id}: responsable desconocido {owner!r}")
+        reviewer = cells.get("E", "")
+        if reviewer and reviewer not in ROLES:
+            errors.append(f"{task_id}: revisor desconocido {reviewer!r}")
+        elif reviewer and reviewer == owner:
+            errors.append(f"{task_id}: el revisor coincide con el responsable {owner!r}")
         for column, label in REQUIRED.items():
             if not cells.get(column, "").strip():
                 errors.append(f"{task_id}: falta {label} (columna {column})")
-        if cells.get("J") not in {"Completado", "No iniciado", "En curso", "Bloqueado"}:
+        if cells.get("J") not in STATES:
             errors.append(f"{task_id}: estado no reconocido {cells.get('J')!r}")
     for task_id in sorted(EXPECTED - records.keys()):
         errors.append(f"Falta {task_id}")
     for task_id in sorted(records.keys() - EXPECTED):
-        errors.append(f"ID fuera de T01–T53: {task_id}")
+        errors.append(f"ID fuera de {RANGE}: {task_id}")
     for task_id, count in sorted(seen.items()):
         if count != 1:
             errors.append(f"{task_id} aparece {count} veces")
@@ -105,8 +114,9 @@ def main() -> int:
         for error in errors:
             print(f"ERROR: {error}", file=sys.stderr)
         return 1
-    print("T07 correcto: T01–T53 únicos, con responsable, semanas, fecha, estado y criterio.")
-    print("Distribución: " + ", ".join(f"{ROLES[role]} {owners[role]}" for role in ROLES))
+    print(f"T07 correcto: {RANGE} únicos, con responsable, revisor distinto, semanas, fecha, estado y criterio.")
+    print("Distribución: " + ", ".join(f"{ROLES[role]} {owners[role]}" for role in ROLES)
+          + f", {TEAM} {owners[TEAM]}")
     return 0
 
 

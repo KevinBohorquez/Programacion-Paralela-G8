@@ -44,7 +44,7 @@ D() { MSYS_NO_PATHCONV=1 docker run --rm --shm-size=1g -e PP_COMMIT="$C" -e GIT_
 | 12 | Análisis de riesgo | `D "python3 scripts/run/analizar-riesgo.py analizar"` | < 1 min |
 | 13 | Análisis y figuras finales | `D "python3 scripts/bench/analizar-rendimiento.py && python3 scripts/bench/graficar-final.py"` | < 1 min |
 
-\* Medidas en un Intel Core Ultra 9 275HX (8P + 16E, sin SMT) con Docker Desktop sobre WSL2. «—» indica que aún no hay referencia.
+\* Medidas en la PC de referencia (`docs/guia-reproduccion.md` §2): Intel Core Ultra 9 275HX (8P + 16E, sin SMT) con Docker Desktop sobre WSL2. «—» indica que aún no hay referencia.
 
 Antes de los pasos 6–8 se puede añadir `--dry-run` para ver el plan y la duración estimada sin medir.
 

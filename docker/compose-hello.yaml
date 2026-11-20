@@ -1,4 +1,4 @@
-# T05 | Responsable: Miguel | Hola híbrido MPI + OpenMP repartido en dos contenedores.
+# T05 | Responsable: Ashley | Hola híbrido MPI + OpenMP repartido en dos contenedores.
 # Uso (desde la raíz del repositorio):
 #   docker compose -f docker/compose-hello.yaml up --abort-on-container-exit --exit-code-from nodo1
 #   docker compose -f docker/compose-hello.yaml down -v

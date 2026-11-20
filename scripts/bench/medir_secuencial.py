@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# T14 | Responsable: Miguel | Medición de línea base T1 (secuencial).
+# T14 | Responsable: Ashley | Medición de línea base T1 (secuencial).
 """Mide T1: el tiempo del backend secuencial (pp_serial) con la MISMA carga y semilla que el barrido OpenMP.
 
 Protocolo (igual que scripts/bench/medir_openmp.py): una corrida de calentamiento (no cuenta) y

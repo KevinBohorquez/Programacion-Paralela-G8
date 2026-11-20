@@ -88,7 +88,7 @@ E2 con `--progreso --verificar`, N = 10007 y `--lote 1000`, 4 procesos (extracto
 **Criterio:** acta de decisión con evidencias, GPU disponible y tareas EXT activadas.
 **Evidencia pedida:** `docs/decision-cuda.md` con fecha, evidencia, decisión y tareas T38–T41 activadas o descartadas.
 
-- `docs/decision-cuda.md` está en `master`: fecha 05/11/2026, decisión (CUDA se incluye como extensión en desarrollo), GPU disponible (RTX 4060 de Lita y RTX 5090 Laptop de Miguel), plan por pasos, criterios V2/V8, restricciones (WDDM, TDR, Docker con GPU) y riesgos.
+- `docs/decision-cuda.md` está en `master`: fecha 05/11/2026, decisión (CUDA se incluye como extensión en desarrollo), GPU disponible (RTX 4060 de Lita y RTX 5090 Laptop de la PC de referencia), plan por pasos, criterios V2/V8, restricciones (WDDM, TDR, Docker con GPU) y riesgos.
 - La versión anterior de la decisión, del 26/10 (`1ee5fd0`), se reemplazó el 05/11 (`a7f481f`). El guion de S11 se alineó con el cambio.
 
 **Observaciones:**
@@ -122,20 +122,20 @@ Las tareas T23, T27 y T32 son de Lita, así que esta sección no es una revisió
 | --- | --- |
 | Modelo, memoria, controlador y entorno | ⚠️ El documento es del 15/10: controlador 572.83, «nvcc no instalado», «Docker no instalado», WSL «Ubuntu 26.04». Hoy: controlador 621.01, CUDA 13.3 en WSL Ubuntu-24.04, Docker Desktop 29.8.2. |
 | SM confirmados | ⚠️ Figura como dato de ficha técnica. Confirmado hoy con `cudaGetDeviceProperties`: 24 SM, CC 8.9, 8187 MiB, 1536 hilos/SM, máx. 24 bloques/SM, 48 KiB de memoria compartida por bloque. |
-| Otros equipos | ⚠️ Las filas de los demás integrantes dicen «Pendiente». La RTX 5090 Laptop de Miguel solo aparece en `decision-cuda.md`. |
+| Otros equipos | ⚠️ Las filas de los demás integrantes dicen «Pendiente». La RTX 5090 Laptop de la PC de referencia solo aparece en `decision-cuda.md`. |
 | Decisión con fecha y alternativa CPU | ⚠️ El §4 remite a T29 pero no dice explícitamente que, sin GPU validada, todas las campañas siguen en CPU. |
 
-**Qué hacer:** actualizar la tabla §1 y la salida §2 con los datos de hoy; agregar la fila de Miguel y «sin GPU NVIDIA» para quienes no tengan; agregar una línea con la fecha y la alternativa CPU. Dato útil para X5: con 24 SM, las configuraciones de 2/4/8/16 bloques **no llenan la GPU** (cada bloque ocupa un SM como máximo). Conviene añadir un punto de referencia con la grilla completa (por ejemplo 24 × k bloques) para no concluir que la GPU es lenta.
+**Qué hacer:** actualizar la tabla §1 y la salida §2 con los datos de hoy; agregar la fila de la PC de referencia y «sin GPU NVIDIA» para quienes no tengan; agregar una línea con la fecha y la alternativa CPU. Dato útil para X5: con 24 SM, las configuraciones de 2/4/8/16 bloques **no llenan la GPU** (cada bloque ocupa un SM como máximo). Conviene añadir un punto de referencia con la grilla completa (por ejemplo 24 × k bloques) para no concluir que la GPU es lenta.
 
 ### T27 · Medir híbrido con 2/4/8/16 núcleos — cumple; faltan dos observaciones
 
-`results/bench/hibrido.csv` (84 filas) y `hibrido_resumen.csv`: cuatro presupuestos, **todas** las factorizaciones p × t (13), igual N = 2·10⁷ y semilla, calentamiento más cinco repeticiones, k = 2 122 915 en todas (equivalencia con el serial), commit `6f6cf0bdd784` (en `master`), CPU, núcleos y sobresuscripción registrados. Figuras `results/figures/hibrido_speedup` y `hibrido_eficiencia` en PNG y SVG. Medido en el PC de Miguel (Core Ultra 9 275HX), el mismo equipo que T1, M1 y X6.
+`results/bench/hibrido.csv` (84 filas) y `hibrido_resumen.csv`: cuatro presupuestos, **todas** las factorizaciones p × t (13), igual N = 2·10⁷ y semilla, calentamiento más cinco repeticiones, k = 2 122 915 en todas (equivalencia con el serial), commit `6f6cf0bdd784` (en `master`), CPU, núcleos y sobresuscripción registrados. Figuras `results/figures/hibrido_speedup` y `hibrido_eficiencia` en PNG y SVG. Medido en la PC de referencia (Core Ultra 9 275HX), el mismo equipo que T1, M1 y X6.
 
 **Observaciones antes de marcarla completa:**
 1. **Eficiencia mayor que 1 con 2 y 4 núcleos** (1,01–1,04). La T1 de referencia (`secuencial_t1.csv`) es del 16/10, con el commit `43be549ae855`, que no está en la historia de `master`. El híbrido es del 05/11. Un speedup superlineal sostenido apunta a una base T1 de otra sesión (turbo o núcleo P/E distinto), no a un efecto real. Hay que remedir T1 en la misma sesión que M1 y M2, o declararlo en el informe.
 2. **Repetición atípica en 8x1:** la repetición 4 tarda 10,55 s frente a ≈8,3 s del resto (CV ≈ 11 %). Por la regla 4 de `AGENTS.md` es interferencia: hay que remedir ese punto o informar la mediana.
 3. **Sin afinidad fija** (`OMP_PROC_BIND=false`, `--bind-to none`) en un procesador con núcleos P y E. Está registrado, pero el informe debe decir que no se controló en qué tipo de núcleo cayó cada hilo.
-4. Marcar T27 en el cronograma y anotar que la medición se hizo en el PC de Miguel.
+4. Marcar T27 en el cronograma y anotar que la medición se hizo en la PC de referencia.
 
 ### T32 · E1 frente a E2 en CPU heterogéneas — no iniciada; el script no cubre el criterio
 

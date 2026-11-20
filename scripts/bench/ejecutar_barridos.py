@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# T26,T30,T31 | Responsable: Miguel | Ejecución parametrizada de X1, X2 y X3.
+# T26,T30,T31 | Responsable: Lita, Angela | Ejecución parametrizada de X1, X2 y X3.
 """Ejecutor parametrizable de los barridos X1 (escalabilidad fuerte), X2 (débil) y X3 (carga).
 
   x1  N fijo; recursos 1/2/4/8/16 (hilos en openmp, procesos en MPI, procesos x hilos en híbrido).

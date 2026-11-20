@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# T05 | Responsable: Miguel | Se ejecuta dentro de nodo1 (docker/compose-hello.yaml).
+# T05 | Responsable: Ashley | Se ejecuta dentro de nodo1 (docker/compose-hello.yaml).
 # Compila el hola híbrido en el volumen compartido y lanza un rango MPI por contenedor.
 set -euo pipefail
 

@@ -1,4 +1,4 @@
-# T05 | Responsable: Miguel | Imagen base reproducible del proyecto.
+# T05 | Responsable: Ashley | Imagen base reproducible del proyecto.
 # Solo aporta la cadena de herramientas: el código se monta en /work al ejecutar
 #   docker run --rm -v "<repo>:/work" -w /work pp-g8 <comando>
 # Mismo sistema y paquetes que la CI (.github/workflows/ci.yml, ubuntu-24.04).

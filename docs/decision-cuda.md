@@ -49,7 +49,7 @@ No se publican cifras de GPU hasta que V2 y V8 pasen.
 | Equipo | GPU | Modo del controlador | `nvcc` | Observación |
 | --- | --- | --- | --- | --- |
 | PC de Lita | RTX 4060, 8 GB, CC 8.9 | WDDM (también muestra el escritorio) | Pendiente de instalar en WSL | Equipo previsto para EXT1 (inventario T23, §1–§2) |
-| PC de Miguel | RTX 5090 Laptop, 24 GB, CC 12.0 (controlador 617.42) | WDDM, con la GPU mostrando el escritorio | No instalado en el anfitrión | Consulta `nvidia-smi` del 26/10/2026 |
+| [PC de referencia](guia-reproduccion.md#pc-de-referencia) | RTX 5090 Laptop, 24 GB, CC 12.0 (controlador 617.42) | WDDM, con la GPU mostrando el escritorio | No instalado en el anfitrión | Consulta `nvidia-smi` del 26/10/2026 |
 | Imagen `pp-g8` (mediciones actuales) | — | — | No incluida | Las campañas actuales son solo CPU |
 
 ## 7. Restricciones técnicas

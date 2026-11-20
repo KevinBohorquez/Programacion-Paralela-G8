@@ -1,4 +1,4 @@
-// T05 | Responsable: Miguel | Prueba mínima de MPI + OpenMP dentro de la imagen.
+// T05 | Responsable: Ashley | Prueba mínima de MPI + OpenMP dentro de la imagen.
 // Cada rango abre una región paralela; los hilos solo escriben en su casilla y el
 // rango 0 imprime todo ordenado por (rango, hilo), así la salida es determinista.
 // Compilar: mpicxx -fopenmp -O2 -o hello_hibrido docker/hello_hibrido.cpp
