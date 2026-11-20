@@ -26,6 +26,9 @@ const char* nombre_nivel(int nivel) {
     }
 }
 
+// E2 y su variante con trabajador GPU (T41, mpi_dinamico_gpu) informan bloques en lugar de intervalos.
+bool es_dinamico(const std::string& backend) { return backend.rfind("mpi_dinamico", 0) == 0; }
+
 const char* entorno_o(const char* nombre, const char* defecto) {
     const char* e = std::getenv(nombre);
     return (e && *e) ? e : defecto;
@@ -130,14 +133,14 @@ int ejecutar_mpi(int argc, char** argv, const char* backend, const Esquema& esqu
             for (int r = 0; r < procesos; ++r) {
                 const std::uint64_t* t = &todos[6 * static_cast<size_t>(r)];
                 std::cout << "[verif] rango=" << r;
-                if (cfg.backend == "mpi_dinamico") std::cout << " bloques=" << t[2];
+                if (es_dinamico(cfg.backend)) std::cout << " bloques=" << t[2];
                 else std::cout << " inicio=" << t[0] << " fin=" << t[1];
                 if (cfg.backend == "hibrido") std::cout << " hilos=" << t[5];
                 std::cout << " n_local=" << t[3] << '\n';
                 suma_local += t[3];
                 coherentes = coherentes && t[4] == 1;
             }
-            if (cfg.backend != "mpi_dinamico") {  // intervalos contiguos, sin solape ni huecos
+            if (!es_dinamico(cfg.backend)) {  // intervalos contiguos, sin solape ni huecos
                 std::uint64_t esperado = 0;
                 for (int r = 0; r < procesos; ++r) {
                     const std::uint64_t* t = &todos[6 * static_cast<size_t>(r)];
@@ -173,6 +176,10 @@ int ejecutar_mpi(int argc, char** argv, const char* backend, const Esquema& esqu
                 fila.meta.procesos = procesos;
                 fila.meta.nodos = nodos;
                 fila.meta.distribucion = distribucion;
+                if (cfg.backend == "mpi_dinamico_gpu") {  // T41: grilla del trabajador GPU (0 = automática)
+                    fila.meta.bloques = cfg.bloques;
+                    fila.meta.hilos_por_bloque = cfg.hilos_por_bloque;
+                }
                 if (!cfg.silencioso) pp::imprimir_resumen(fila);
                 if (!cfg.salida.empty()) pp::escribir_csv(cfg.salida, fila);
             }

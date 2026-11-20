@@ -1,0 +1,28 @@
+# T38/T39 | V2 (equivalencia GPU frente a CPU) | 2026-11-19 08:32 | rama lita-cuda, base 1bb297429f26 (+ cambios de T39 sin commit)
+# Comando: wsl -d Ubuntu-24.04 -- ./build/cuda/src/backends/cuda/pp_v2_cuda 1000000 (scripts/cuda/compilar_wsl.sh, -fmad=false)
+# Criterio: |k_gpu - k_cpu| / k_cpu <= 1e-6 y suma del histograma = n; amax bit a bit es solo diagnóstico.
+[V2] gpu=NVIDIA GeForce RTX 4060;cc=8.9;sm=24;cuda_rt=13.3;driver=13.5 n=1000000
+[V2] caso=sintetico_kappa_inf grilla=48x256 k_cpu=106235 k_gpu=106235 dif_rel=0 hist_igual=si clases_distintas=0 suma_hist=1000000 OK
+[V2] caso=sintetico_kappa_inf grilla=2x128 k_cpu=106235 k_gpu=106235 dif_rel=0 hist_igual=si clases_distintas=0 suma_hist=1000000 OK
+[V2] caso=sintetico_kappa_inf grilla=16x512 k_cpu=106235 k_gpu=106235 dif_rel=0 hist_igual=si clases_distintas=0 suma_hist=1000000 OK
+[V2] caso=sintetico_kappa_inf amax_bit_a_bit=171162/200000 max_dif_rel_amax=4.86e-14
+[V2] caso=sintetico_kappa_2 grilla=48x256 k_cpu=228274 k_gpu=228274 dif_rel=0 hist_igual=si clases_distintas=0 suma_hist=1000000 OK
+[V2] caso=sintetico_kappa_2 grilla=2x128 k_cpu=228274 k_gpu=228274 dif_rel=0 hist_igual=si clases_distintas=0 suma_hist=1000000 OK
+[V2] caso=sintetico_kappa_2 grilla=16x512 k_cpu=228274 k_gpu=228274 dif_rel=0 hist_igual=si clases_distintas=0 suma_hist=1000000 OK
+[V2] caso=sintetico_kappa_2 amax_bit_a_bit=170820/200000 max_dif_rel_amax=2.12e-12
+[V2] caso=alfa_mayor_1_kappa_0.7 grilla=48x256 k_cpu=306641 k_gpu=306641 dif_rel=0 hist_igual=si clases_distintas=0 suma_hist=1000000 OK
+[V2] caso=alfa_mayor_1_kappa_0.7 grilla=2x128 k_cpu=306641 k_gpu=306641 dif_rel=0 hist_igual=si clases_distintas=0 suma_hist=1000000 OK
+[V2] caso=alfa_mayor_1_kappa_0.7 grilla=16x512 k_cpu=306641 k_gpu=306641 dif_rel=0 hist_igual=si clases_distintas=0 suma_hist=1000000 OK
+[V2] caso=alfa_mayor_1_kappa_0.7 amax_bit_a_bit=174379/200000 max_dif_rel_amax=4.07e-12
+[V2] caso=tumbes_eltigre_normal grilla=48x256 k_cpu=303658 k_gpu=303658 dif_rel=0 hist_igual=si clases_distintas=0 suma_hist=1000000 OK
+[V2] caso=tumbes_eltigre_normal grilla=2x128 k_cpu=303658 k_gpu=303658 dif_rel=0 hist_igual=si clases_distintas=0 suma_hist=1000000 OK
+[V2] caso=tumbes_eltigre_normal grilla=16x512 k_cpu=303658 k_gpu=303658 dif_rel=0 hist_igual=si clases_distintas=0 suma_hist=1000000 OK
+[V2] caso=tumbes_eltigre_normal amax_bit_a_bit=168273/200000 max_dif_rel_amax=3.47e-12
+[V2] registros_por_hilo=94 max_hilos_por_bloque=640
+[V2] borde n=1 grilla=48x256 lanzamientos=1 k_cpu=1 k_gpu=1 hist_igual=si OK
+[V2] borde n=1000 grilla=64x32 lanzamientos=1 k_cpu=210 k_gpu=210 hist_igual=si OK
+[V2] borde n=777 grilla=200x640 lanzamientos=1 k_cpu=157 k_gpu=157 hist_igual=si OK
+[V2] borde n=1048577 grilla=16x640 lanzamientos=2 k_cpu=239384 k_gpu=239384 hist_igual=si OK
+[V2] borde n=1572864 grilla=480x32 lanzamientos=2 k_cpu=358811 k_gpu=358811 hist_igual=si OK
+[V2] hilos_por_bloque=1024 rechazado con mensaje claro: OK
+[V2] estado=OK

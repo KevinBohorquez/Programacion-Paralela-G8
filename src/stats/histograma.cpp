@@ -1,14 +1,13 @@
 // T12 | Responsable: Ashley | Histograma de 512 clases de 1 mm y acumulador.
 #include <cmath>
 
+#include "nucleo_hd.hpp"
 #include "resultados.hpp"
 
 namespace pp {
 
 int clase_histograma(double amax) {
-    if (!(amax > 0.0)) return 0;  // 0, negativos y NaN
-    const double f = std::floor(amax);
-    return f >= static_cast<double>(NBINS - 1) ? NBINS - 1 : static_cast<int>(f);
+    return hd::clase_histograma(amax);  // T38: compartida con el kernel CUDA (nucleo_hd.hpp)
 }
 
 void Acumulador::agregar(const Resultado& r) {

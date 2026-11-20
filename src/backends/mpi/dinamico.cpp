@@ -55,7 +55,7 @@ ResumenRango maestro(MPI_Comm comm, int procesos, const pp::Configuracion& cfg) 
     return res;
 }
 
-ResumenRango trabajador(MPI_Comm comm, const FuncionEscenario& escenario, pp::Acumulador& local) {
+ResumenRango trabajador(MPI_Comm comm, const FuncionBloque& bloque, pp::Acumulador& local) {
     ResumenRango res;
     for (;;) {
         const std::uint64_t pedido = 0;
@@ -64,7 +64,7 @@ ResumenRango trabajador(MPI_Comm comm, const FuncionEscenario& escenario, pp::Ac
         MPI_Status st;
         MPI_Recv(rango, 2, MPI_UINT64_T, 0, MPI_ANY_TAG, comm, &st);
         if (st.MPI_TAG == ETIQUETA_STOP) break;
-        for (std::uint64_t i = rango[0]; i < rango[1]; ++i) escenario(i, local);
+        bloque(rango[0], rango[1], local);
         ++res.bloques;
     }
     return res;
@@ -73,6 +73,14 @@ ResumenRango trabajador(MPI_Comm comm, const FuncionEscenario& escenario, pp::Ac
 }  // namespace
 
 ResumenRango esquema_dinamico(MPI_Comm comm, const pp::Configuracion& cfg, const FuncionEscenario& escenario, pp::Acumulador& local) {
+    const FuncionBloque recorrer = [&escenario](std::uint64_t i0, std::uint64_t i1, pp::Acumulador& acc) {
+        for (std::uint64_t i = i0; i < i1; ++i) escenario(i, acc);
+    };
+    return esquema_dinamico_bloques(comm, cfg, recorrer, local);
+}
+
+ResumenRango esquema_dinamico_bloques(MPI_Comm comm, const pp::Configuracion& cfg, const FuncionBloque& bloque,
+                                      pp::Acumulador& local) {
     int rango = 0, procesos = 1;
     MPI_Comm_rank(comm, &rango);
     MPI_Comm_size(comm, &procesos);
@@ -80,12 +88,12 @@ ResumenRango esquema_dinamico(MPI_Comm comm, const pp::Configuracion& cfg, const
     ResumenRango res;
     if (procesos == 1) {  // sin trabajadores, el rango 0 procesa todo
         if (pp::progreso_activo()) pp::reportar_bloque(0, 0, cfg.n);
-        for (std::uint64_t i = 0; i < cfg.n; ++i) escenario(i, local);
+        bloque(0, cfg.n, local);
         res.bloques = 1;
     } else if (rango == 0) {
         res = maestro(comm, procesos, cfg);
     } else {
-        res = trabajador(comm, escenario, local);
+        res = trabajador(comm, bloque, local);
     }
     res.n_local = local.n;
     return res;

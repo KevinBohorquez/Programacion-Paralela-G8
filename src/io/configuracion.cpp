@@ -3,11 +3,13 @@
 // NOTA: docs/contratos.md (T02) no está en el repositorio. Este formato (YAML plano
 // "clave: valor") y estas banderas son la interpretación provisional del plan S08 y
 // deben contrastarse con el contrato de David antes de congelarse.
+#include <climits>
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
 #include <sstream>
 #include <stdexcept>
+#include <string>
 
 #include "progreso.hpp"
 #include "resultados.hpp"
@@ -47,6 +49,16 @@ uint64_t a_uint64(const std::string& clave, const std::string& v) {
     }
 }
 
+// Entero sin signo que debe caber en int (hilos, bloques, hilos_por_bloque, repeticion, dias): sin esta
+// comprobación, static_cast<int> truncaría en silencio (p. ej. 2^32 bloques pasaría como 0 = automático).
+int a_int(const std::string& clave, const std::string& v) {
+    const uint64_t x = a_uint64(clave, v);
+    if (x > static_cast<uint64_t>(INT_MAX))
+        throw std::runtime_error("valor fuera de rango para '" + clave + "': '" + v + "' (máximo " +
+                                 std::to_string(INT_MAX) + ")");
+    return static_cast<int>(x);
+}
+
 // Asigna un par clave/valor; devuelve false si la clave no existe.
 bool asignar(Configuracion& c, const std::string& k, const std::string& v) {
     if (k == "backend") c.backend = v;
@@ -55,11 +67,13 @@ bool asignar(Configuracion& c, const std::string& k, const std::string& v) {
     else if (k == "config_id") c.config_id = a_uint64(k, v);
     else if (k == "semilla") c.semilla = a_uint64(k, v);
     else if (k == "n") c.n = a_uint64(k, v);
-    else if (k == "hilos") c.hilos = static_cast<int>(a_uint64(k, v));
+    else if (k == "hilos") c.hilos = a_int(k, v);
     else if (k == "schedule") c.schedule = v;
     else if (k == "salida") c.salida = v;
     else if (k == "lote") c.lote = a_uint64(k, v);
-    else if (k == "repeticion") c.repeticion = static_cast<int>(a_uint64(k, v));
+    else if (k == "bloques") c.bloques = a_int(k, v);
+    else if (k == "hilos_por_bloque") c.hilos_por_bloque = a_int(k, v);
+    else if (k == "repeticion") c.repeticion = a_int(k, v);
     else if (k == "p01") c.params.p01 = a_double(k, v);
     else if (k == "p11") c.params.p11 = a_double(k, v);
     else if (k == "alfa") c.params.alfa = a_double(k, v);
@@ -67,7 +81,7 @@ bool asignar(Configuracion& c, const std::string& k, const std::string& v) {
     else if (k == "kappa") c.params.kappa = a_double(k, v);
     else if (k == "capacidad") c.params.capacidad = a_double(k, v);
     else if (k == "umbral") c.params.umbral = a_double(k, v);
-    else if (k == "dias") c.params.dias = static_cast<int>(a_uint64(k, v));
+    else if (k == "dias") c.params.dias = a_int(k, v);
     else return false;
     return true;
 }
@@ -85,6 +99,8 @@ void ayuda() {
         "  --schedule S        static|dynamic|guided[:chunk]; vacío usa OMP_SCHEDULE\n"
         "  --salida ruta.csv   agrega una fila al CSV de resultados\n"
         "  --lote B            tamaño de bloque de la cola (solo mpi_dinamico; por defecto 62500)\n"
+        "  --bloques G         bloques de la grilla (solo pp_cuda; 0 = los que caben a la vez en la GPU)\n"
+        "  --hilos-por-bloque H   hilos por bloque (solo pp_cuda; múltiplo de 32, por defecto 256)\n"
         "  --repeticion R      etiqueta de la fila del CSV (0 = calentamiento)\n"
         "  --calentamiento     marca la fila como calentamiento (repeticion 0)\n"
         "  --verificar         MPI: compara k e histograma con la referencia secuencial (V1)\n"
@@ -153,6 +169,9 @@ void validar(const Configuracion& c) {
     if (p.capacidad < 0.0 || p.umbral < 0.0) throw std::runtime_error("capacidad y umbral deben ser >= 0");
     if (c.lote == 0) throw std::runtime_error("lote debe ser > 0");
     if (c.hilos < 0) throw std::runtime_error("hilos debe ser >= 0");
+    if (c.bloques < 0) throw std::runtime_error("bloques debe ser >= 0");
+    if (c.hilos_por_bloque < 32 || c.hilos_por_bloque > 1024 || c.hilos_por_bloque % 32 != 0)
+        throw std::runtime_error("hilos_por_bloque debe ser múltiplo de 32 entre 32 y 1024");
     // c*N + j debe caber en 64 bits para que el índice global sea único.
     if (c.config_id != 0 && c.n > UINT64_MAX / (c.config_id + 1))
         throw std::runtime_error("config_id*n + n desborda uint64");
