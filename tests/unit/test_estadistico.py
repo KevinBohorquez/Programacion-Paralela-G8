@@ -11,7 +11,7 @@
 #   2. Frente a lo observado (test_v6_frente_a_observado): series SENAMHI y parametros.csv de T06–T10.
 #      Se compara en la temporada de cada zona, la misma que usa calibrar.py (costa norte y Chosica
 #      enero–abril; Lima junio–setiembre), con día lluvioso >= 0,1 mm. Aquí la referencia es una MUESTRA
-#      de 17–30 temporadas, no un valor exacto, así que el criterio tiene en cuenta su incertidumbre
+#      de 7–53 temporadas, no un valor exacto, así que el criterio tiene en cuenta su incertidumbre
 #      (ver docs/validacion-v6.md §«Criterio estadístico»):
 #        - cada estadístico pasa si el error relativo es <= 10 % (criterio de la definición) o si el valor
 #          simulado cae dentro del IC bootstrap del observado, remuestreando temporadas completas;
@@ -148,8 +148,9 @@ def test_v6_control_negativo_detecta_parametros_equivocados():
     assert stats.kstest(muestra, "gamma", args=(params["alfa"], 0.0, params["theta"] * 1.3)).pvalue < ALFA_KS
 
 
-# ---------- V6 frente a lo OBSERVADO (series SENAMHI de T06–T10, fuera de Git) ----------
-# Se omite si faltan data/raw/*.csv o data/processed/{parametros,regimenes}.csv (p. ej. en el CI).
+# ---------- V6 frente a lo OBSERVADO (series SENAMHI de T06–T10) ----------
+# data/raw/*.csv y data/processed/{parametros,regimenes}.csv están versionados, así que la prueba corre en
+# CTest (v6_observado) y en el CI. Solo se omite si faltan esos archivos (p. ej. en una copia parcial).
 DATOS_RAW = RAIZ / "data" / "raw"
 PARAMETROS = Path(os.environ.get("PP_V6_PARAMETROS", RAIZ / "data" / "processed" / "parametros.csv"))
 REGIMENES = RAIZ / "data" / "processed" / "regimenes.csv"
@@ -192,7 +193,8 @@ def grupos_calibrados(conocidos=None):
                          {**{k: float(fila[k]) for k in ("p01", "p11", "alfa", "theta")},
                           "kappa": float(fila.get("kappa") or "inf")},
                          id=f"{fila['estacion']}-{fila['regimen']}",
-                         marks=[pytest.mark.xfail(strict=True, reason=conocidos[(fila["estacion"], fila["regimen"])])]
+                         marks=[pytest.mark.xfail(strict=True, raises=AssertionError,
+                                                  reason=conocidos[(fila["estacion"], fila["regimen"])])]
                          if (fila["estacion"], fila["regimen"]) in conocidos else [])
             for fila in filas]
 

@@ -2,7 +2,7 @@
 
 **Revisora:** Lita (R4) · **Fecha:** 19/11/2026 (S13) · **Versión revisada:** `origin/master`, commit `e4e34a4` (fusión de los PR #8 y #9)
 
-Esta revisión reemplaza la del 05/11, que se hizo sobre `miguel-docker-bench` antes de que se fusionara y cuando CUDA todavía figuraba como NO-GO. Los criterios salen de `cronograma/cronograma-interno.xlsx` (hoja «Tareas», columnas «Criterio de terminado» y «Evidencia verificable»).
+Esta revisión reemplaza la del 05/11, que se hizo sobre `miguel-docker-bench` antes de que se fusionara y cuando la decisión sobre CUDA todavía era la anterior. Los criterios salen de `cronograma/cronograma-interno.xlsx` (hoja «Tareas», columnas «Criterio de terminado» y «Evidencia verificable»).
 
 ## Resumen
 
@@ -85,14 +85,14 @@ E2 con `--progreso --verificar`, N = 10007 y `--lote 1000`, 4 procesos (extracto
 
 ## T29 · Decisión interna de CUDA
 
-**Criterio:** acta con go/no-go, evidencias, GPU disponible y tareas EXT activadas.
-**Evidencia pedida:** `docs/decision-cuda.md` con fecha, evidencia, go/no-go y tareas T38–T41 activadas o descartadas.
+**Criterio:** acta de decisión con evidencias, GPU disponible y tareas EXT activadas.
+**Evidencia pedida:** `docs/decision-cuda.md` con fecha, evidencia, decisión y tareas T38–T41 activadas o descartadas.
 
 - `docs/decision-cuda.md` está en `master`: fecha 05/11/2026, decisión (CUDA se incluye como extensión en desarrollo), GPU disponible (RTX 4060 de Lita y RTX 5090 Laptop de Miguel), plan por pasos, criterios V2/V8, restricciones (WDDM, TDR, Docker con GPU) y riesgos.
-- La versión NO-GO del 26/10 (`1ee5fd0`) se reemplazó el 05/11 (`a7f481f`). El guion de S11 se alineó con el cambio.
+- La versión anterior de la decisión, del 26/10 (`1ee5fd0`), se reemplazó el 05/11 (`a7f481f`). El guion de S11 se alineó con el cambio.
 
 **Observaciones:**
-1. **Falta la evidencia E1–E5.** El criterio dice «tras revisar E1–E5», y la versión NO-GO tenía esa tabla. La versión vigente la quitó y ya no justifica con datos por qué se activa la extensión. Hay que reponer una tabla corta con el estado de E1–E5 y su evidencia.
+1. **Falta la evidencia E1–E5.** El criterio dice «tras revisar E1–E5», y la versión anterior de la decisión tenía esa tabla. La versión vigente la quitó y ya no justifica con datos por qué se activa la extensión. Hay que reponer una tabla corta con el estado de E1–E5 y su evidencia.
 2. **Falta un criterio de salida con fecha.** La decisión es un GO condicionado, pero no dice qué pasa si EXT1 no pasa V2/V8 a tiempo. El cronograma ya prevé la salida («si no, se reporta CUDA como C4 aislado»). Propuesta: EXT1 validada antes del 24/11; si no, CUDA queda fuera del informe de S14. EXT2 solo si EXT1 está validada y hay clúster; si no, C4 aislado.
 3. **Datos desactualizados.** La tabla §6 dice «nvcc pendiente de instalar» en el PC de Lita. Hoy está CUDA 13.3 en WSL (Ubuntu-24.04), controlador 621.01, y `cudaGetDeviceProperties` confirma 24 SM.
 4. El criterio menciona un «Acta en Seguimiento», pero el cronograma solo tiene las hojas `Entregables`, `Tareas` y `Riesgos`. Hay que corregir el texto del criterio o aceptar el MD como acta.
