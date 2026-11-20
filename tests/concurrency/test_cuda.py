@@ -5,6 +5,11 @@
 # grilla en bloques/hilos_por_bloque (vacías en serial) y datos de la GPU en `hardware`. Además, que
 # --progreso no cambie el resultado y que los argumentos inválidos terminen con código 2.
 #
+# La igualdad exacta de hist512 es empírica, no garantizada: log/cos/pow de la GPU pueden diferir de
+# glibc en la última cifra (≈ 15 % de los amax en results/validacion/t38_v2_cuda.txt), y un amax junto
+# al borde de una clase la rompería. El criterio formal es la tolerancia de V2 (include/nucleo_hd.hpp).
+# Si solo falla hist512 con k dentro de 1e-6, es una diferencia de redondeo, no un error del kernel.
+#
 # Necesita una GPU NVIDIA y pp_cuda compilado (-DPP_BUILD_CUDA=ON, scripts/cuda/compilar_wsl.sh).
 # PP_CUDA_BIN_DIR apunta a <build>/src/backends (por defecto build/cuda/src/backends). Sin GPU o sin
 # pp_cuda se omite: en el CI de GitHub no hay GPU. Corre con pytest o directamente con python3

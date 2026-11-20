@@ -6,15 +6,15 @@ NVIDIA GeForce RTX 4060 (CC 8.9, 24 SM, 8 GiB, controlador 621.01), CUDA 13.3 en
 Todo se midió en este mismo equipo y sesión (regla 2 de `AGENTS.md`), con T1 propio.
 
 Las cifras de GPU se publican porque V2 y V8 pasan (`docs/decision-cuda.md`, `results/validacion/t38_v2_cuda.txt`
-y `t39_v8_cuda.txt`). En **todos** los puntos de este documento, k y el histograma de 512 clases son idénticos al
-secuencial.
+y `t39_v8_cuda.txt`). En **todos** los puntos de este documento, k y el histograma de 512 clases resultaron idénticos al
+secuencial. Es una igualdad observada, no garantizada: el criterio formal de la GPU es la tolerancia de V2 (≤ 10⁻⁶).
 
 ## 1. X5 · bloques × hilos por bloque (T40)
 
 **Datos:** `results/bench/lita_i5-12400F/cuda.csv` (una fila por corrida) y `cuda_resumen.csv` (una por punto),
 registro en `cuda_log.txt`, figura `results/figures/cuda_x5.png`. **Script:** `scripts/bench/medir_cuda.py`.
 **Carga:** `config/sintetico.yaml`, N = 10⁷, semilla 20261015, calentamiento + 5 repeticiones por punto; commit
-`a79c998`. El tiempo es el `tiempo_s` del CSV: cómputo, reducción y copia del resultado, sin crear el contexto CUDA.
+`a79c998`. El tiempo es el `tiempo_s` del CSV: reserva de memoria en el dispositivo, cómputo, reducción y copia del resultado, sin crear el contexto CUDA. La reserva (`cudaMalloc`) entra porque `MotorCuda` se construye dentro de `simular_cuda`, que se llama dentro de la región medida (`src/backends/cuda/main.cpp`); no se midió por separado, pero frente a 4,3–34,4 s se espera despreciable.
 Todos los puntos tienen CV < 2 %.
 
 | Grilla | SM usados (observados) | Ocupación observada por SM | Tiempo medio (s) | Speedup frente a T1 | Frente a OpenMP 6 hilos |
@@ -73,8 +73,9 @@ N = 10⁷, semilla 20261015, bloques de la cola de 62 500 escenarios (el valor p
   cambio es que el **último rango** procesa cada bloque `[i0, i1)` con un lanzamiento del kernel de EXT1 en lugar de
   recorrerlo en la CPU. Para eso E2 recibe una función por bloque (`esquema_dinamico_bloques`); `pp_mpi_dinamico` usa
   la de siempre y su comportamiento no cambia (las 16 pruebas MPI y del híbrido siguen pasando).
-- Como la GPU usa el mismo núcleo y el mismo contador Philox que la CPU, el resultado es **idéntico bit a bit** al
-  secuencial: `--verificar` (V1) pasa con la GPU en la cola (pruebas `ext2_*` de CTest).
+- Como la GPU usa el mismo núcleo y el mismo contador Philox que la CPU, el resultado salió **idéntico bit a bit** al
+  secuencial: `--verificar` (V1) pasa con la GPU en la cola (pruebas `ext2_*` de CTest). Es una igualdad empírica:
+  log/cos/pow de la GPU pueden diferir en la última cifra (≈ 15 % de los amax en V2), así que no está garantizada.
 - El contexto CUDA se crea antes de `MPI_Init`, fuera del tiempo medido (0,14–0,18 s; queda en el CSV), y el rango
   GPU espera al kernel con `cudaDeviceScheduleBlockingSync`, así que duerme en lugar de ocupar un núcleo.
 

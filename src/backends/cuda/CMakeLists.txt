@@ -66,6 +66,10 @@ endif()
 # EXT2 (T41): la GPU como trabajador MPI del esquema dinámico E2. Necesita -DPP_BUILD_MPI=ON.
 # V1 (bit a bit frente a la referencia secuencial, --verificar) y V3 (suma = N, cobertura de la cola)
 # con 2 procesos (maestro + solo GPU), 3 y 4 (maestro + CPU + GPU), y un caso con bloques grandes.
+# La igualdad bit a bit de V1 con la GPU es empírica, no garantizada: log/cos/pow de la GPU pueden
+# diferir en la última cifra (≈ 85 % de los amax coinciden bit a bit, results/validacion/t38_v2_cuda.txt).
+# El criterio formal de la GPU es la tolerancia de V2 (1e-6, include/nucleo_hd.hpp); si ext2_* falla
+# solo en v1_referencia, hay que comparar k con esa tolerancia antes de suponer un error.
 if(TARGET pp_mpi_esquemas)
   add_executable(pp_mpi_dinamico_gpu trabajador_mpi.cpp)
   target_link_libraries(pp_mpi_dinamico_gpu PRIVATE pp_mpi_esquemas pp_cuda_lib)
