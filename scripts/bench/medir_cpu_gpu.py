@@ -20,6 +20,9 @@ Uso (WSL Ubuntu-24.04, build/cuda compilado con MPI por scripts/cuda/compilar_ws
     python3 scripts/bench/medir_cpu_gpu.py --bloques 24 --hilos-por-bloque 128
     python3 scripts/bench/medir_cpu_gpu.py --n 20000 --repeticiones 1 --salida-dir /tmp/ext2   # prueba
     python3 scripts/bench/medir_cpu_gpu.py --graficar        # solo la figura (Docker con matplotlib)
+
+T56 (X8, tres niveles): --experimento x8 --hostfile /ruta/hosts --dry-run.
+Requiere T54/T55; protocolo y dependencias en docs/avance-angela.md.
 """
 import argparse
 import csv
@@ -93,6 +96,10 @@ def graficar(resumen, destino):
 
 
 def main():
+    # T56 se activa explícitamente; el protocolo EXT2 de Lita conserva su CLI.
+    if any(arg == "--experimento" or arg.startswith("--experimento=") for arg in sys.argv[1:]):
+        from _campana_x8 import main as main_x8
+        return main_x8(sys.argv[1:])
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--build-dir", default=str(RAIZ / "build" / "cuda"))
     ap.add_argument("--config", default=str(RAIZ / "config" / "sintetico.yaml"))
@@ -215,4 +222,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

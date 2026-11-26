@@ -173,6 +173,9 @@ Estado: **No iniciado** (0 %) · semana S15
 
 ### Angela (R2) — datos, riesgo y campañas X3, X6 y X8
 
+Avance técnico posterior al corte del 20/11: [auditoría y preparación de T34, T56 y T61 (26/11)](avance-angela.md).
+Las corridas pendientes y los respaldos siguen abiertos; este avance no cambia los estados del cronograma.
+
 | ID | Tarea | Estado | Revisor | Fecha límite |
 | --- | --- | --- | --- | --- |
 | T06 | Inventariar 3–5 series diarias SENAMHI candidatas con ≥ 20 años | Completado | Rhamses (R6) | 29/09 |

@@ -1,0 +1,51 @@
+# PLAN DRY-RUN: NO ES UNA MEDICIÓN
+# plan x3: 24 puntos x (1 calentamiento + 5 reps)
+  1 serial       n=1000000     1x1 ~    17.9s
+    'C:/Users/angel/Documets/Programación/Programacion-Paralela-G8/build/docker/src/backends/serial/pp_serial' --config 'C:/Users/angel/Documets/Programación/Programacion-Paralela-G8/config/sintetico.yaml' --n 1000000 --semilla 20261015 --config-id 0 --silencioso
+  2 serial       n=10000000    1x1 ~   179.4s
+    'C:/Users/angel/Documets/Programación/Programacion-Paralela-G8/build/docker/src/backends/serial/pp_serial' --config 'C:/Users/angel/Documets/Programación/Programacion-Paralela-G8/config/sintetico.yaml' --n 10000000 --semilla 20261015 --config-id 0 --silencioso
+  3 serial       n=100000000   1x1 ~  1794.0s
+    'C:/Users/angel/Documets/Programación/Programacion-Paralela-G8/build/docker/src/backends/serial/pp_serial' --config 'C:/Users/angel/Documets/Programación/Programacion-Paralela-G8/config/sintetico.yaml' --n 100000000 --semilla 20261015 --config-id 0 --silencioso
+  4 serial       n=1000000000  1x1 ~ 17940.0s
+    'C:/Users/angel/Documets/Programación/Programacion-Paralela-G8/build/docker/src/backends/serial/pp_serial' --config 'C:/Users/angel/Documets/Programación/Programacion-Paralela-G8/config/sintetico.yaml' --n 1000000000 --semilla 20261015 --config-id 0 --silencioso
+  5 openmp       n=1000000     1x8 ~     2.2s
+    'C:/Users/angel/Documets/Programación/Programacion-Paralela-G8/build/docker/src/backends/openmp/pp_openmp' --config 'C:/Users/angel/Documets/Programación/Programacion-Paralela-G8/config/sintetico.yaml' --n 1000000 --semilla 20261015 --config-id 0 --silencioso --hilos 8 --schedule static
+  6 openmp       n=10000000    1x8 ~    22.4s
+    'C:/Users/angel/Documets/Programación/Programacion-Paralela-G8/build/docker/src/backends/openmp/pp_openmp' --config 'C:/Users/angel/Documets/Programación/Programacion-Paralela-G8/config/sintetico.yaml' --n 10000000 --semilla 20261015 --config-id 0 --silencioso --hilos 8 --schedule static
+  7 openmp       n=100000000   1x8 ~   224.3s
+    'C:/Users/angel/Documets/Programación/Programacion-Paralela-G8/build/docker/src/backends/openmp/pp_openmp' --config 'C:/Users/angel/Documets/Programación/Programacion-Paralela-G8/config/sintetico.yaml' --n 100000000 --semilla 20261015 --config-id 0 --silencioso --hilos 8 --schedule static
+  8 openmp       n=1000000000  1x8 ~  2242.5s
+    'C:/Users/angel/Documets/Programación/Programacion-Paralela-G8/build/docker/src/backends/openmp/pp_openmp' --config 'C:/Users/angel/Documets/Programación/Programacion-Paralela-G8/config/sintetico.yaml' --n 1000000000 --semilla 20261015 --config-id 0 --silencioso --hilos 8 --schedule static
+  9 mpi_estatico n=1000000     8x1 ~     2.2s
+    mpirun -np 8 'C:/Users/angel/Documets/Programación/Programacion-Paralela-G8/build/docker/src/backends/mpi/pp_mpi_estatico' --config 'C:/Users/angel/Documets/Programación/Programacion-Paralela-G8/config/sintetico.yaml' --n 1000000 --semilla 20261015 --config-id 0 --silencioso
+ 10 mpi_estatico n=10000000    8x1 ~    22.4s
+    mpirun -np 8 'C:/Users/angel/Documets/Programación/Programacion-Paralela-G8/build/docker/src/backends/mpi/pp_mpi_estatico' --config 'C:/Users/angel/Documets/Programación/Programacion-Paralela-G8/config/sintetico.yaml' --n 10000000 --semilla 20261015 --config-id 0 --silencioso
+ 11 mpi_estatico n=100000000   8x1 ~   224.3s
+    mpirun -np 8 'C:/Users/angel/Documets/Programación/Programacion-Paralela-G8/build/docker/src/backends/mpi/pp_mpi_estatico' --config 'C:/Users/angel/Documets/Programación/Programacion-Paralela-G8/config/sintetico.yaml' --n 100000000 --semilla 20261015 --config-id 0 --silencioso
+ 12 mpi_estatico n=1000000000  8x1 ~  2242.5s
+    mpirun -np 8 'C:/Users/angel/Documets/Programación/Programacion-Paralela-G8/build/docker/src/backends/mpi/pp_mpi_estatico' --config 'C:/Users/angel/Documets/Programación/Programacion-Paralela-G8/config/sintetico.yaml' --n 1000000000 --semilla 20261015 --config-id 0 --silencioso
+ 13 mpi_dinamico n=1000000     8x1 ~     2.2s
+    mpirun -np 8 'C:/Users/angel/Documets/Programación/Programacion-Paralela-G8/build/docker/src/backends/mpi/pp_mpi_dinamico' --config 'C:/Users/angel/Documets/Programación/Programacion-Paralela-G8/config/sintetico.yaml' --n 1000000 --semilla 20261015 --config-id 0 --silencioso
+ 14 mpi_dinamico n=10000000    8x1 ~    22.4s
+    mpirun -np 8 'C:/Users/angel/Documets/Programación/Programacion-Paralela-G8/build/docker/src/backends/mpi/pp_mpi_dinamico' --config 'C:/Users/angel/Documets/Programación/Programacion-Paralela-G8/config/sintetico.yaml' --n 10000000 --semilla 20261015 --config-id 0 --silencioso
+ 15 mpi_dinamico n=100000000   8x1 ~   224.3s
+    mpirun -np 8 'C:/Users/angel/Documets/Programación/Programacion-Paralela-G8/build/docker/src/backends/mpi/pp_mpi_dinamico' --config 'C:/Users/angel/Documets/Programación/Programacion-Paralela-G8/config/sintetico.yaml' --n 100000000 --semilla 20261015 --config-id 0 --silencioso
+ 16 mpi_dinamico n=1000000000  8x1 ~  2242.5s
+    mpirun -np 8 'C:/Users/angel/Documets/Programación/Programacion-Paralela-G8/build/docker/src/backends/mpi/pp_mpi_dinamico' --config 'C:/Users/angel/Documets/Programación/Programacion-Paralela-G8/config/sintetico.yaml' --n 1000000000 --semilla 20261015 --config-id 0 --silencioso
+ 17 hibrido      n=1000000     2x4 ~     2.2s
+    mpirun -np 2 --bind-to none -x OMP_PROC_BIND -x OMP_PLACES 'C:/Users/angel/Documets/Programación/Programacion-Paralela-G8/build/docker/src/backends/hybrid/pp_hibrido' --config 'C:/Users/angel/Documets/Programación/Programacion-Paralela-G8/config/sintetico.yaml' --n 1000000 --semilla 20261015 --config-id 0 --silencioso --hilos 4 --schedule static
+ 18 hibrido      n=1000000     4x2 ~     2.2s
+    mpirun -np 4 --bind-to none -x OMP_PROC_BIND -x OMP_PLACES 'C:/Users/angel/Documets/Programación/Programacion-Paralela-G8/build/docker/src/backends/hybrid/pp_hibrido' --config 'C:/Users/angel/Documets/Programación/Programacion-Paralela-G8/config/sintetico.yaml' --n 1000000 --semilla 20261015 --config-id 0 --silencioso --hilos 2 --schedule static
+ 19 hibrido      n=10000000    2x4 ~    22.4s
+    mpirun -np 2 --bind-to none -x OMP_PROC_BIND -x OMP_PLACES 'C:/Users/angel/Documets/Programación/Programacion-Paralela-G8/build/docker/src/backends/hybrid/pp_hibrido' --config 'C:/Users/angel/Documets/Programación/Programacion-Paralela-G8/config/sintetico.yaml' --n 10000000 --semilla 20261015 --config-id 0 --silencioso --hilos 4 --schedule static
+ 20 hibrido      n=10000000    4x2 ~    22.4s
+    mpirun -np 4 --bind-to none -x OMP_PROC_BIND -x OMP_PLACES 'C:/Users/angel/Documets/Programación/Programacion-Paralela-G8/build/docker/src/backends/hybrid/pp_hibrido' --config 'C:/Users/angel/Documets/Programación/Programacion-Paralela-G8/config/sintetico.yaml' --n 10000000 --semilla 20261015 --config-id 0 --silencioso --hilos 2 --schedule static
+ 21 hibrido      n=100000000   2x4 ~   224.3s
+    mpirun -np 2 --bind-to none -x OMP_PROC_BIND -x OMP_PLACES 'C:/Users/angel/Documets/Programación/Programacion-Paralela-G8/build/docker/src/backends/hybrid/pp_hibrido' --config 'C:/Users/angel/Documets/Programación/Programacion-Paralela-G8/config/sintetico.yaml' --n 100000000 --semilla 20261015 --config-id 0 --silencioso --hilos 4 --schedule static
+ 22 hibrido      n=100000000   4x2 ~   224.3s
+    mpirun -np 4 --bind-to none -x OMP_PROC_BIND -x OMP_PLACES 'C:/Users/angel/Documets/Programación/Programacion-Paralela-G8/build/docker/src/backends/hybrid/pp_hibrido' --config 'C:/Users/angel/Documets/Programación/Programacion-Paralela-G8/config/sintetico.yaml' --n 100000000 --semilla 20261015 --config-id 0 --silencioso --hilos 2 --schedule static
+ 23 hibrido      n=1000000000  2x4 ~  2242.5s
+    mpirun -np 2 --bind-to none -x OMP_PROC_BIND -x OMP_PLACES 'C:/Users/angel/Documets/Programación/Programacion-Paralela-G8/build/docker/src/backends/hybrid/pp_hibrido' --config 'C:/Users/angel/Documets/Programación/Programacion-Paralela-G8/config/sintetico.yaml' --n 1000000000 --semilla 20261015 --config-id 0 --silencioso --hilos 4 --schedule static
+ 24 hibrido      n=1000000000  4x2 ~  2242.5s
+    mpirun -np 4 --bind-to none -x OMP_PROC_BIND -x OMP_PLACES 'C:/Users/angel/Documets/Programación/Programacion-Paralela-G8/build/docker/src/backends/hybrid/pp_hibrido' --config 'C:/Users/angel/Documets/Programación/Programacion-Paralela-G8/config/sintetico.yaml' --n 1000000000 --semilla 20261015 --config-id 0 --silencioso --hilos 2 --schedule static
+# estimación ideal: 539.8 min de puntos + 0.0 min de referencias serial (2.99 µs/escenario, speedup lineal hasta 24 núcleos)

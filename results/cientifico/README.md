@@ -1,5 +1,11 @@
 # Resultados científicos (X6, banda bootstrap, X7)
 
+T34, auditoría del 26/11: [`t34_integridad.json`](t34_integridad.json) registra
+SHA-256 de los archivos existentes y los totales por modelo. Los manifiestos
+X6/bootstrap incluyen el hash de su CSV y logs. Verificar con
+`python3 scripts/run/auditar_campana.py --verificar`. La meta y los dos respaldos
+siguen pendientes; detalle en [el avance de Angela](../../docs/avance-angela.md).
+
 > **Advertencia (V6).** La validación V6 contra los datos observados falla en los estadísticos de cola
 > (desviación estándar −32 %, percentil 99 −42 %) en 16/16 grupos estación × régimen: el generador de
 > lluvia subestima los extremos. Las probabilidades de esta carpeta pueden **subestimar** el riesgo

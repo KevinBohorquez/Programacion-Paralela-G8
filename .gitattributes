@@ -4,3 +4,8 @@
 Dockerfile  text eol=lf
 *.yaml      text eol=lf
 *.yml       text eol=lf
+# T34: los hashes de evidencia deben sobrevivir a clones Windows/Linux.
+results/cientifico/**/*.csv  text eol=lf
+results/cientifico/**/*.json text eol=lf
+results/cientifico/**/*.log  text eol=lf
+results/cientifico/**/*.md   text eol=lf

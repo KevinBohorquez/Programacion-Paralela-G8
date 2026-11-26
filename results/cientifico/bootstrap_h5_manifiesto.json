@@ -120072,5 +120072,20 @@
       "estado": "ok",
       "fin": "2026-11-19T12:52:06+00:00"
     }
-  ]
+  ],
+  "integridad": {
+    "algoritmo": "SHA-256",
+    "archivos": [
+      {
+        "ruta": "results/cientifico/bootstrap_h5.csv",
+        "bytes": 16279775,
+        "sha256": "825f8ebc074cf3dd2e1fcef315ec707009b1b04403fb7395ecd97eb007a0d1df"
+      },
+      {
+        "ruta": "results/cientifico/logs_h5/bootstrap_20261119T104653.log",
+        "bytes": 4134477,
+        "sha256": "082d43aef917c94596ac01ffe0e228338d0a5722e54e64c09d64de8f7bcbbae6"
+      }
+    ]
+  }
 }

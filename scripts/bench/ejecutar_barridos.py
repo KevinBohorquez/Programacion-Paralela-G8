@@ -86,6 +86,8 @@ class Opciones:
     mpirun_extra: list = field(default_factory=list)
     nucleos: int = 1  # núcleos físicos totales (para la marca de sobresuscripción)
     slots: int = 1    # slots de mpirun (para --oversubscribe)
+    excluir_serial_desde: int = 0
+    motivo_exclusion: str = ""
 
 
 # ---------- plan ----------
@@ -213,7 +215,11 @@ def crear_ejecutor(o, timeout=None, log=print):
         with tempfile.TemporaryDirectory() as d:
             salida = Path(d) / "r.csv"
             cmd = comando(punto, o) + ["--salida", str(salida)]
+            log(f"$ {shlex.join(cmd)}")
             r = subprocess.run(cmd, capture_output=True, text=True, env=entorno, timeout=timeout)
+            log(r.stdout)
+            if r.stderr:
+                log(r.stderr)
             if r.returncode != 0 or not salida.exists():
                 cola = "\n".join((r.stdout + r.stderr).splitlines()[-15:])
                 raise RuntimeError(f"falló ({r.returncode}): {shlex.join(cmd)}\n{cola}")
@@ -230,17 +236,21 @@ def _firma(fila):
 def ejecutar_plan(plan, correr, repeticiones, nucleos, meta, referencia="serial", calentamiento=True,
                   opciones=None, log=print):
     """Mide cada punto y devuelve las filas del CSV. `correr(punto) -> (fila_sim, verif)`."""
-    refs, filas = {}, []
+    refs, filas, fuentes_ref = {}, [], {}
     hosts = opciones.hosts if opciones else []
     for punto in plan:
-        if referencia == "serial" and punto.n not in refs and punto.backend != "serial":
+        serial_excluido = bool(opciones and opciones.excluir_serial_desde and
+                               punto.n >= opciones.excluir_serial_desde)
+        if referencia == "serial" and not serial_excluido and punto.n not in refs and punto.backend != "serial":
             fila_ref, _ = correr(Punto("referencia", "serial", punto.n, 1, 1))
             refs[punto.n] = _firma(fila_ref)
+            fuentes_ref[punto.n] = "serial"
         cal = correr(punto)[0] if calentamiento else None
         reps = [correr(punto) for _ in range(repeticiones)]
         sims = [s for s, _ in reps]
         if referencia != "ninguna" and punto.n not in refs:
             refs[punto.n] = _firma(sims[0])
+            fuentes_ref[punto.n] = punto.backend
         if referencia == "ninguna":
             equivalente = ""
         else:
@@ -262,6 +272,10 @@ def ejecutar_plan(plan, correr, repeticiones, nucleos, meta, referencia="serial"
             tiempos=";".join(str(t) for t in tiempos), media=statistics.mean(tiempos),
             desviacion=statistics.stdev(tiempos) if len(tiempos) > 1 else 0.0, minimo=min(tiempos),
             k=sims[0].get("k"), k_ref=refs[punto.n][0] if punto.n in refs else "", equivalente=equivalente,
+            backend_referencia=fuentes_ref.get(punto.n, ""),
+            nota=(f"Serial excluido desde N={opciones.excluir_serial_desde}: {opciones.motivo_exclusion}. "
+                  "Equivalencia entre backends paralelos; no validación contra serial."
+                  if serial_excluido else ""),
             trabajo_rangos=";".join(map(str, trabajos)), bloques_rangos=";".join(map(str, bloques)),
             desbalance=cb.desbalance(trabajos),
         )
@@ -272,7 +286,8 @@ def ejecutar_plan(plan, correr, repeticiones, nucleos, meta, referencia="serial"
         marca = " [SOBRESUSCRITO]" if fila["sobresuscrito"] else ""
         eq = {1: "ok", 0: "FALLA", "": "sin_ref"}[equivalente]
         log(f"{punto.backend:12s} n={punto.n:<11d} {punto.procesos:>2d}x{punto.hilos:<2d} "
-            f"media={fila['media']:.4f}s sd={fila['desviacion']:.4f}s k={fila['k']} V1={eq}{marca}")
+            f"media={fila['media']:.4f}s sd={fila['desviacion']:.4f}s k={fila['k']} "
+            f"equivalencia={eq} ref={fila['backend_referencia'] or '-'}{marca}")
     return filas
 
 
@@ -350,6 +365,9 @@ def construir_parser():
     ap.add_argument("--timeout", type=float, default=None, help="segundos por corrida")
     ap.add_argument("--us-por-escenario", type=float, default=US_T1, help="para la estimación del --dry-run")
     ap.add_argument("--dry-run", action="store_true", help="imprime el plan, los comandos y la duración estimada")
+    ap.add_argument("--excluir-serial-desde", type=float, default=0,
+                    help="solo X3: omite serial (incluida la referencia) desde este N; requiere motivo")
+    ap.add_argument("--motivo-exclusion", default="", help="justificación que quedará en CSV, log e informe")
     ap.add_argument("--permitir-debug", action="store_true")
     return ap
 
@@ -365,6 +383,7 @@ def opciones_desde_args(a):
         bind_mpi=a.bind_mpi, omp_bind=a.omp_bind, omp_places=a.omp_places,
         mpirun_extra=shlex.split(a.mpirun_extra), nucleos=a.nucleos or fisicos * nodos,
         slots=sum(s for _, s in hosts) if hosts else logicos,
+        excluir_serial_desde=int(a.excluir_serial_desde), motivo_exclusion=a.motivo_exclusion.strip(),
     )
 
 
@@ -372,9 +391,20 @@ def preparar(a):
     """Plan y opciones a partir de los argumentos (también lo usa comparar_mpi_heterogeneo.py)."""
     backends = [b.strip() for b in a.backend.split(",") if b.strip()]
     recursos = _enteros(a.recursos or DEF_RECURSOS[a.experimento])
+    if a.reps < 1 or not recursos or any(r < 1 for r in recursos):
+        raise ValueError("--reps y cada presupuesto de --recursos deben ser positivos")
+    if a.excluir_serial_desde and (a.experimento != "x3" or a.excluir_serial_desde < 1 or
+                                  not a.motivo_exclusion.strip() or a.referencia != "serial"):
+        raise ValueError("--excluir-serial-desde requiere X3, N positivo, --referencia serial y --motivo-exclusion")
+    if a.motivo_exclusion.strip() and not a.excluir_serial_desde:
+        raise ValueError("--motivo-exclusion requiere --excluir-serial-desde")
     n = int(a.n) if a.n else DEF_N[a.experimento]
     plan = generar_plan(a.experimento, backends, recursos, n, cargas=_enteros(a.cargas),
                         factorizaciones=parsear_factorizaciones(a.factorizaciones))
+    if a.excluir_serial_desde:
+        plan = [p for p in plan if p.backend != "serial" or p.n < a.excluir_serial_desde]
+    if not plan or any(p.n < 1 for p in plan):
+        raise ValueError("el plan debe contener puntos con N positivo")
     return plan, opciones_desde_args(a)
 
 
@@ -389,6 +419,9 @@ def comprobar_build(o, permitir_debug):
 def imprimir_plan(plan, o, a):
     reps = a.reps
     print(f"# plan {a.experimento}: {len(plan)} puntos x ({0 if a.sin_calentamiento else 1} calentamiento + {reps} reps)")
+    if o.excluir_serial_desde:
+        print(f"# EXCEPCIÓN serial desde N={o.excluir_serial_desde}: {o.motivo_exclusion}; "
+              "la equivalencia usa el primer backend paralelo de cada N excluido")
     for i, p in enumerate(plan, 1):
         est = estimar_segundos([p], reps, a.us_por_escenario, o.nucleos, not a.sin_calentamiento)
         marca = " [SOBRESUSCRITO]" if sobresuscrito(p, o.nucleos) else ""
@@ -397,6 +430,7 @@ def imprimir_plan(plan, o, a):
     total = estimar_segundos(plan, reps, a.us_por_escenario, o.nucleos, not a.sin_calentamiento)
     ns = {p.n for p in plan if p.backend != "serial"} - (
         {p.n for p in plan if p.backend == "serial"} if a.referencia == "serial" else set())
+    ns = {n for n in ns if not o.excluir_serial_desde or n < o.excluir_serial_desde}
     ref = sum(ns) * a.us_por_escenario / 1e6 if a.referencia == "serial" else 0.0
     print(f"# estimación ideal: {total / 60:.1f} min de puntos + {ref / 60:.1f} min de referencias serial "
           f"({a.us_por_escenario} µs/escenario, speedup lineal hasta {o.nucleos} núcleos)")
@@ -430,7 +464,7 @@ def main(argv=None):
         log(f"inicio {meta['comando']} | commit={meta['commit']} cpu={meta['cpu']} nucleos={o.nucleos} "
             f"gpu={meta['gpu'] or '-'} red={meta['red']}")
         try:
-            filas = ejecutar_plan(plan, crear_ejecutor(o, a.timeout), a.reps, o.nucleos, meta,
+            filas = ejecutar_plan(plan, crear_ejecutor(o, a.timeout, log=log), a.reps, o.nucleos, meta,
                                   referencia=a.referencia, calentamiento=not a.sin_calentamiento,
                                   opciones=o, log=log)
         except (RuntimeError, subprocess.TimeoutExpired) as e:

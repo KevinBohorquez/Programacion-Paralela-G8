@@ -1,0 +1,227 @@
+{
+  "version": 1,
+  "fecha_utc": "2026-11-26T18:15:02+00:00",
+  "alcance": "Auditoría de archivos existentes; no constituye una nueva corrida ni aprobación de la meta",
+  "campanas": {
+    "sin_h5": {
+      "x6": {
+        "filas": 170,
+        "escenarios": 1700000000,
+        "configuraciones_distintas": 170,
+        "filas_con_parametros_repetidos": 0
+      },
+      "bootstrap": {
+        "filas": 8000,
+        "escenarios": 8000000000,
+        "configuraciones_distintas": 7928,
+        "filas_con_parametros_repetidos": 72
+      },
+      "escenarios_total": 9700000000,
+      "meta_documentada": 13000000000,
+      "faltan_para_meta": 3300000000,
+      "meta_cumplida": false
+    },
+    "h5": {
+      "x6": {
+        "filas": 170,
+        "escenarios": 1700000000,
+        "configuraciones_distintas": 170,
+        "filas_con_parametros_repetidos": 0
+      },
+      "bootstrap": {
+        "filas": 8000,
+        "escenarios": 8000000000,
+        "configuraciones_distintas": 7928,
+        "filas_con_parametros_repetidos": 72
+      },
+      "escenarios_total": 9700000000,
+      "meta_documentada": 13000000000,
+      "faltan_para_meta": 3300000000,
+      "meta_cumplida": false
+    }
+  },
+  "archivos": [
+    {
+      "ruta": "results/cientifico/bootstrap.csv",
+      "bytes": 14002164,
+      "sha256": "a5df785f68792c8734ce05deb82bc8e0e3faa95f53252c9d9e1624c673e08e2d"
+    },
+    {
+      "ruta": "results/cientifico/bootstrap_h5.csv",
+      "bytes": 16279775,
+      "sha256": "825f8ebc074cf3dd2e1fcef315ec707009b1b04403fb7395ecd97eb007a0d1df"
+    },
+    {
+      "ruta": "results/cientifico/bootstrap_h5_manifiesto.json",
+      "bytes": 3230387,
+      "sha256": "48b8d472e81e53dfc2689af37661437d46e62924b286e57eec804047962f6591"
+    },
+    {
+      "ruta": "results/cientifico/bootstrap_manifiesto.json",
+      "bytes": 3230362,
+      "sha256": "3fd8668d10f17e4869b75dcb1b660e57b4613cf0f9eb32206511ed5dd3ab4c50"
+    },
+    {
+      "ruta": "results/cientifico/logs/bootstrap_20261105T191121.log",
+      "bytes": 4010061,
+      "sha256": "c8fe142eb9d6394d06d8bae66207a65fa49cbebc5e491f20434e9b615f4d1103"
+    },
+    {
+      "ruta": "results/cientifico/logs/x6_20261105T190350.log",
+      "bytes": 81773,
+      "sha256": "c043dda8289b6f32805ef9a5a6fd579f47cd3bda678fc749033dd309e8871653"
+    },
+    {
+      "ruta": "results/cientifico/logs/x7_20261105T191004.log",
+      "bytes": 14470,
+      "sha256": "ea9b433a9f36ed2e62fabf51afb09bdf9ce1035cdcca73ac70cd892242f9b99b"
+    },
+    {
+      "ruta": "results/cientifico/logs_h5/bootstrap_20261119T104653.log",
+      "bytes": 4134477,
+      "sha256": "082d43aef917c94596ac01ffe0e228338d0a5722e54e64c09d64de8f7bcbbae6"
+    },
+    {
+      "ruta": "results/cientifico/logs_h5/x6_20261119T102528.log",
+      "bytes": 83755,
+      "sha256": "c5f6430e67814e3c155ed892a61edf6b6c74d9655d7f32d01d06fbb78ee3fcad"
+    },
+    {
+      "ruta": "results/cientifico/logs_h5/x7_20261119T104322.log",
+      "bytes": 14779,
+      "sha256": "ef2ffd9e986d5120f6c0049e2e7a885c057bef2bf5373cd6bdb5eed2b159a31c"
+    },
+    {
+      "ruta": "results/cientifico/README.md",
+      "bytes": 4576,
+      "sha256": "26da0e71d98d11b2260d99d045972550a55267f12063a65a03275da48280ae81"
+    },
+    {
+      "ruta": "results/cientifico/tablas/comparacion_enso.csv",
+      "bytes": 5444,
+      "sha256": "b05e7c16e32deaa7ebba631d78b870d18f71eb9e02aed1e3ad8e36a45e3f8006"
+    },
+    {
+      "ruta": "results/cientifico/tablas/comparacion_enso.md",
+      "bytes": 6498,
+      "sha256": "fbd1a61d96620324c9d3492fb072eaf462f3d4b5c61e686fad20f85635eb3efc"
+    },
+    {
+      "ruta": "results/cientifico/tablas/riesgo.csv",
+      "bytes": 59118,
+      "sha256": "0bebba635ed32ef474ef8c786f8f574e14578efd3b4bd4abc5787df3aafacfa5"
+    },
+    {
+      "ruta": "results/cientifico/tablas/riesgo.md",
+      "bytes": 22455,
+      "sha256": "9c6724536b75d3dbf13ded4b3ef1643c4df096ab40eb58e5c661634c693e2a33"
+    },
+    {
+      "ruta": "results/cientifico/tablas/sensibilidad.csv",
+      "bytes": 9815,
+      "sha256": "d7ada9a01665d9aaaa25de3a6a5f13cc1f413da14b1299525900bcbc2a6eb03e"
+    },
+    {
+      "ruta": "results/cientifico/tablas/sensibilidad.md",
+      "bytes": 3299,
+      "sha256": "8c41778116494456fc8584f669d8ec2bd7141bb4f9ec29158607663fe106da8f"
+    },
+    {
+      "ruta": "results/cientifico/tablas_h5/comparacion_enso.csv",
+      "bytes": 6174,
+      "sha256": "b9ddbd56f71912417d99bda129fe5cf16eb60407d19bb8112ab2ff5b44669454"
+    },
+    {
+      "ruta": "results/cientifico/tablas_h5/comparacion_enso.md",
+      "bytes": 6655,
+      "sha256": "8ae5fb97fc3ce5eeb4d571073ec5c93ce8d5fcebdaab4f23ad70f37215e38175"
+    },
+    {
+      "ruta": "results/cientifico/tablas_h5/comparacion_h5_enso.md",
+      "bytes": 499,
+      "sha256": "37185a4b47010d3ab0e08e5fb9a5876edf53ae7394e340abd833bebbc9fbf20a"
+    },
+    {
+      "ruta": "results/cientifico/tablas_h5/comparacion_h5_x6.csv",
+      "bytes": 1171,
+      "sha256": "f36de02e18c8249747fcbd46209f595c87f0954c91dc87a5ddd9c37574b859ad"
+    },
+    {
+      "ruta": "results/cientifico/tablas_h5/comparacion_h5_x6.md",
+      "bytes": 1554,
+      "sha256": "df90c893edbdfb92b9f70e52cd5e599506137b7483ec71d8a5c1104cdd80a3f3"
+    },
+    {
+      "ruta": "results/cientifico/tablas_h5/comparacion_h5_x7.csv",
+      "bytes": 2298,
+      "sha256": "b244eb9d0d2f91654ec628614ab89fb4c06867bbb783dc0422bcc61119a2c5dc"
+    },
+    {
+      "ruta": "results/cientifico/tablas_h5/comparacion_h5_x7.md",
+      "bytes": 2418,
+      "sha256": "f9b0838f9e580ac3c14d1ff132119f7104c4f9366961baa98a36bfc888163d37"
+    },
+    {
+      "ruta": "results/cientifico/tablas_h5/riesgo.csv",
+      "bytes": 51584,
+      "sha256": "dd6199e1870d39ab98b83e043cfb1379d934bbed59ef98d701b3db27e4fed754"
+    },
+    {
+      "ruta": "results/cientifico/tablas_h5/riesgo.md",
+      "bytes": 23160,
+      "sha256": "ff90ff0dc5ae9ffa59bf6dfab7dd5ea922a6c30d9f56be70ace9d51d6a8950a1"
+    },
+    {
+      "ruta": "results/cientifico/tablas_h5/sensibilidad.csv",
+      "bytes": 8374,
+      "sha256": "10d4dfabe954fefd1976d0f3ec48808c1dbff94fed16592a5a4bddcbf59ee0ef"
+    },
+    {
+      "ruta": "results/cientifico/tablas_h5/sensibilidad.md",
+      "bytes": 3305,
+      "sha256": "946d146221ca01c0d8bbc8215991632c6a60cd3f8061233a7e2e5780d03b4e6e"
+    },
+    {
+      "ruta": "results/cientifico/x6.csv",
+      "bytes": 311216,
+      "sha256": "ece3defad1116bc56f01f55a0fda32dd95a97ab28855c67826c84ff54b9d7c18"
+    },
+    {
+      "ruta": "results/cientifico/x6_h5.csv",
+      "bytes": 390692,
+      "sha256": "f341767f439a5ec1e237a1af8fe22732b22b8f9a23aa46cbdcc64c5531373620"
+    },
+    {
+      "ruta": "results/cientifico/x6_h5_manifiesto.json",
+      "bytes": 70058,
+      "sha256": "73947c1a4c1b782621b52117049b443063fa9e0c44719577e9ce30b32c1f56b6"
+    },
+    {
+      "ruta": "results/cientifico/x6_manifiesto.json",
+      "bytes": 70076,
+      "sha256": "2938cd42a561f52d1eaf3210e5b1abd52531217e994d6d67fd173e8672c83ed3"
+    },
+    {
+      "ruta": "results/cientifico/x7.csv",
+      "bytes": 60915,
+      "sha256": "a41e0f8dc7750453e7b5b0a735327e8d3e1ee71b16acda9134e19781f9538b66"
+    },
+    {
+      "ruta": "results/cientifico/x7_h5.csv",
+      "bytes": 75912,
+      "sha256": "1023edfaa1aa0b94941999fde73a774d6a8246f79fbf12d68217fb02a0031e73"
+    },
+    {
+      "ruta": "results/cientifico/x7_h5_manifiesto.json",
+      "bytes": 13833,
+      "sha256": "d138e1b41c16d38064df7dfb513477e809951c1015ad6ff552740a053c668349"
+    },
+    {
+      "ruta": "results/cientifico/x7_manifiesto.json",
+      "bytes": 13871,
+      "sha256": "14c6e706965ef0a9ff09bf853d4963d31127feaf9611c7fdb888462eafb64858"
+    }
+  ],
+  "respaldos": [],
+  "dos_respaldos_verificados": false
+}

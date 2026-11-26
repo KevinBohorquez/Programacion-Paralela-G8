@@ -206,6 +206,29 @@ def test_referencia_ninguna_deja_vacio(eb):
     assert filas[0]["equivalente"] == "" and len(falso.llamadas) == 2
 
 
+def test_t61_exclusion_serial_tampoco_ejecuta_referencia_oculta(eb):
+    args = eb.construir_parser().parse_args([
+        "--experimento", "x3", "--backend", "serial,openmp,mpi_estatico", "--recursos", "8",
+        "--cargas", "1e6,1e9", "--excluir-serial-desde", "1e9",
+        "--motivo-exclusion", "no cabe en el turno de medición"])
+    plan, o = eb.preparar(args)
+    falso = Falso()
+    filas = eb.ejecutar_plan(plan, falso, 5, 24, META, opciones=o)
+    assert not any(p.backend == "serial" and p.n == 10**9 for p in falso.llamadas)
+    grandes = [f for f in filas if f["n"] == 10**9]
+    assert all(f["equivalente"] == 1 and f["backend_referencia"] == "openmp" for f in grandes)
+    assert all("no validación contra serial" in f["nota"] for f in grandes)
+    assert all(f["backend_referencia"] == "serial" for f in filas if f["n"] == 10**6)
+
+
+def test_t61_exclusion_exige_motivo(eb):
+    args = eb.construir_parser().parse_args([
+        "--experimento", "x3", "--backend", "serial,openmp", "--cargas", "1e9",
+        "--excluir-serial-desde", "1e9"])
+    with pytest.raises(ValueError, match="motivo"):
+        eb.preparar(args)
+
+
 def test_desbalance_y_trabajo_por_rango(eb):
     plan = eb.generar_plan("x1", ["mpi_estatico"], [4], n=400)
     fila = eb.ejecutar_plan(plan, Falso(), repeticiones=1, nucleos=4, meta=META, referencia="ninguna")[0]
